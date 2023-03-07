@@ -19,8 +19,27 @@ The playground can be used to understand how to use the keychain requests. Any t
 
 #### How to use the sdk
 
+The keychain-sdk allows you to override the rpc node to transmit the operations.
+To instatiate a new class, just follow the sample code bellow.
+
+- No rpc options needed.
+
 ```
 const sdk = new KeychainSDK(window);
+try
+  {
+    const encodeMessage = await sdk.encode(formParams);
+    console.log({ encodeMessage });
+   } catch (error) {
+    console.log({ error });
+}
+```
+
+- Rpc options needed.
+
+```
+const options = { rpc: 'https://rpcnode-url '};
+const sdk = new KeychainSDK(window, options);
 try
   {
     const encodeMessage = await sdk.encode(formParams);
