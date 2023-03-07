@@ -114,4 +114,13 @@ export const requestCategories = [
       },
     ],
   },
+  {
+    category: 'Utilities',
+    items: [
+      {
+        name: 'Login', 
+        requestType: 'login', //TODO to change when needed. For now using signBuffer in utils
+      },
+    ],
+  },
 ];

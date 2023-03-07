@@ -40,7 +40,6 @@ import { KeychainRequestTypes } from 'hive-keychain-commons';
 import CodeTester from './code-tester/code-tester';
 import { Utils } from '../utils/utils';
 
-const requestsNameToFilter = [KeychainRequestTypes.signedCall];
 export interface KeychainOptions {
   rpc?: string;
 }
@@ -79,16 +78,10 @@ const RequestSelectorComponent = ({
   useEffect(() => {
     if (!request) return;
     switch (request) {
-      //TODO ask quentin how to solve this as requestLogin do not exist in
-      //    hive_commons -> export declare enum KeychainRequestTypes
-      // case SDKRequestType.REQUEST_LOGIN:
-      //   setRequestCard(
-      //     <RequestLoginComponent
-      //       setRequestResult={setRequestResult}
-      //       enableLogs={enableLogs}
-      //     />,
-      //   );
-      //   break;
+      case 'login':
+        setRequestCard(
+          <RequestLoginComponent {...commonProps}/> );
+        break;
       case KeychainRequestTypes.encode:
         setRequestCard(<RequestEncodeMessageComponent {...commonProps} />);
         break;
@@ -180,12 +173,6 @@ const RequestSelectorComponent = ({
     }
   }, [request, setRequestResult]);
 
-  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (enableLogs) console.log(e.target.value);
-    setRequest(e.target.value);
-    setRequestResult(undefined);
-  };
-
   return (
     <Container fluid>
       <Row>
@@ -193,32 +180,6 @@ const RequestSelectorComponent = ({
           <Card className="d-flex justify-content-center">
             <Card.Header as={'h4'}>SDK Playground</Card.Header>
             <Card.Body>
-              {/* //TODO remove when final clean up */}
-              {/* <Form>
-                <Form.Select
-                  disabled={!enabledKeychain}
-                  aria-label="Default select example"
-                  onChange={handleChange}>
-                  <option>Please select a Request</option>
-                  {(
-                    Object.keys(
-                      KeychainRequestTypes,
-                    ) as Array<KeychainRequestTypes>
-                  ).map((_type) => {
-                    if (
-                      requestsNameToFilter.find((request) => request === _type)
-                    )
-                      return null;
-                    return (
-                      <option
-                        value={KeychainRequestTypes[_type]}
-                        key={`${_type}-rq-type`}>
-                        {_type}
-                      </option>
-                    );
-                  })}
-                </Form.Select>
-              </Form> */}
               <Container className="mt-2">
                 {requestCard ? requestCard : null}
               </Container>

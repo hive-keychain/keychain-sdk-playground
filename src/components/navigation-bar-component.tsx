@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { KeychainSDK } from 'keychain-sdk';
-import { Image, Navbar } from 'react-bootstrap';
+import { Button, Form, Image, Navbar } from 'react-bootstrap';
 import Container from 'react-bootstrap/esm/Container';
 import KeyChainDetectedIcon from '../assets/images/svgs/check_circle_black.svg';
 import KeychainError from '../assets/images/svgs/cancel_black.svg';
@@ -8,11 +8,13 @@ import KeychainError from '../assets/images/svgs/cancel_black.svg';
 type Props = {
   setEnabledKeychain: React.Dispatch<React.SetStateAction<boolean>>;
   enableLogs: boolean;
+  setModalShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const KeychainCheckerComponent = ({
+const NavigationBarComponent = ({
   setEnabledKeychain,
   enableLogs,
+  setModalShow,
 }: Props) => {
   const sdk = new KeychainSDK(window);
   const [keychainInstalled, setKeychainInstalled] = useState(false);
@@ -36,9 +38,10 @@ const KeychainCheckerComponent = ({
       window.removeEventListener('load', onLoadHandler);
     };
   });
+
   return (
     <Navbar bg="light" expand="lg" className="mb-2">
-      <Container className="d-flex justify-content-center">
+      <Container fluid>
         <Navbar.Brand
           href="home"
           title={
@@ -51,9 +54,19 @@ const KeychainCheckerComponent = ({
             src={keychainInstalled ? KeyChainDetectedIcon : KeychainError}
           />
         </Navbar.Brand>
+        <Form className="d-flex" onClick={() => setModalShow(true)} onSubmit={() => {}}>
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              disabled
+            />
+            <Button variant="outline-success">Search</Button>
+          </Form>
       </Container>
     </Navbar>
   );
 };
 
-export default KeychainCheckerComponent;
+export default NavigationBarComponent;

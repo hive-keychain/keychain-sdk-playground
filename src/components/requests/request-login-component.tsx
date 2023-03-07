@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeychainSDK } from 'keychain-sdk';
 import {
   ExcludeCommonParams,
@@ -6,12 +6,9 @@ import {
   RequestSignBuffer,
 } from 'hive-keychain-commons';
 import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { KeychainOptions } from '../request-selector-component';
+import { CommonProps, KeychainOptions } from '../request-selector-component';
 
-type Props = {
-  setRequestResult: any;
-  enableLogs: boolean;
-};
+type Props = {};
 
 //TODO what about cedric request of having undefined message?
 //  - add this to RequestSignBuffer?? or just locally here?
@@ -25,7 +22,7 @@ const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ['username', 'title', 'rpc'];
 //TODO finish on SDK + test here.
-const RequestLoginComponent = ({ setRequestResult, enableLogs }: Props) => {
+const RequestLoginComponent = ({ setRequestResult, enableLogs, setFormParamsToShow }: Props & CommonProps) => {
   const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
     data: ExcludeCommonParams<RequestSignBuffer>;
@@ -35,6 +32,10 @@ const RequestLoginComponent = ({ setRequestResult, enableLogs }: Props) => {
     options: DEFAULT_OPTIONS,
   });
 
+  useEffect(() => {
+    setFormParamsToShow(formParams);
+  }, [formParams]);
+  
   const handleFormParams = (e: any) => {
     const { name, value } = e.target;
     const tempValue =

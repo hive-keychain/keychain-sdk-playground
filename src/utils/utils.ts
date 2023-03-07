@@ -1,12 +1,12 @@
 import { KeychainRequestTypes } from 'hive-keychain-commons';
 
-const fromCodeToText = (formParams: any, requestType: KeychainRequestTypes) => {
+const fromCodeToText = (formParams: any, requestType: KeychainRequestTypes | string) => {
   if (!requestType) return;
   const capitalized =
     requestType[0].toUpperCase() +
     requestType.substring(1, requestType.length) +
     (requestType === KeychainRequestTypes.custom ? 'JSON' : '');
-  const requestCapitalizedName = `Request${capitalized}`;
+  const requestCapitalizedName = requestType === 'login' ? `RequestSignBuffer` : `Request${capitalized}`;
   const requestConstName = `request${capitalized}`;
 
   const requestObjectCall = !formParams.data

@@ -24,12 +24,10 @@ const SearchModal = ({ show, onHide, setRequest }: Props) => {
 
   const handleChange = (e: any) => {
     const { value } = e.target;
-    console.log(value); //TODO to remove
     setSearchValue(value);
   };
 
   const handleOnClickItem = (requestItemType: string) => {
-    console.log({ requestItemType }); //TODO to remove
     setRequest(requestItemType);
     onHide();
   };
@@ -42,13 +40,14 @@ const SearchModal = ({ show, onHide, setRequest }: Props) => {
         ) {
           return true;
         }
+        return false;
       });
       console.log({ foundOnIndex: indexCategoryFound });
       if (indexCategoryFound !== -1) {
         setActiveKeyAccordionCategory(indexCategoryFound.toString());
       }
-      //TODO keep working on this.
-      //    if not found on main name, then go find inside iterating on items.
+    }else{
+      setActiveKeyAccordionCategory('');
     }
   }, [searchValue]);
 
