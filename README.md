@@ -51,7 +51,7 @@ try
 
 #### React Hook Example
 
-Even when the keychain-sdk will detect if the extension is installed on your browser, to be sure as a best practice, you can use a hook to wait until all components have been mounted.
+Even when the keychain-sdk will detect if the extension is installed on your browser, to be sure as a best practice, you can use a hook to wait until all scripts have been loaded. This ensure the extension has all scripts libraries to work with.
 
 ```
 useEffect(() => {
