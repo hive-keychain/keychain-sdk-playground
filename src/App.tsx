@@ -8,7 +8,9 @@ import LogsEnablerComponent from './components/logs-enabler-component';
 import { Button, Card, Container } from 'react-bootstrap';
 import SearchModal from './components/search-modal';
 import NavigationBarComponent from './components/navigation-bar-component';
-
+//TODO important:
+//  when ready for production, add the following into package.json
+//  -> "keychain-sdk": "github:hive-keychain/keychain-sdk",
 function App() {
   const [enabledKeychain, setEnabledKeychain] = useState(false);
   const [requestResult, setRequestResult] = useState();
