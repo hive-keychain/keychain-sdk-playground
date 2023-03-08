@@ -1,28 +1,32 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
 import {
   ExcludeCommonParams,
   KeychainKeyTypes,
   RequestSignBuffer,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+} from "hive-keychain-commons";
+import { KeychainSDK } from "keychain-sdk";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
 //TODO what about cedric request of having undefined message?
 //  - add this to RequestSignBuffer?? or just locally here?
 const DEFAULT_PARAMS: ExcludeCommonParams<RequestSignBuffer> = {
-  username: undefined,
-  message: '',
+  username: "keychain.tests",
+  message: '{"login":"123"}',
   method: KeychainKeyTypes.posting,
-  title: undefined,
+  title: "Login",
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['username', 'title', 'rpc'];
+const undefinedParamsToValidate = ["username", "title", "rpc"];
 //TODO finish on SDK + test here.
-const RequestLoginComponent = ({ setRequestResult, enableLogs, setFormParamsToShow }: Props & CommonProps) => {
+const RequestLoginComponent = ({
+  setRequestResult,
+  enableLogs,
+  setFormParamsToShow,
+}: Props & CommonProps) => {
   const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
     data: ExcludeCommonParams<RequestSignBuffer>;
@@ -35,12 +39,12 @@ const RequestLoginComponent = ({ setRequestResult, enableLogs, setFormParamsToSh
   useEffect(() => {
     setFormParamsToShow(formParams);
   }, [formParams]);
-  
+
   const handleFormParams = (e: any) => {
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -60,19 +64,21 @@ const RequestLoginComponent = ({ setRequestResult, enableLogs, setFormParamsToSh
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const login = await sdk.login(formParams.data, formParams.options);
-      setRequestResult(login);
-      if (enableLogs) console.log({ login });
+      console.log("afer login", login);
+      // setRequestResult(login);
+      // if (enableLogs) console.log({ login });
     } catch (error) {
-      setRequestResult(error);
+      console.log(error);
+      // setRequestResult(error);
     }
   };
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Login</Card.Header>
+      <Card.Header as={"h5"}>Request Login</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -99,7 +105,8 @@ const RequestLoginComponent = ({ setRequestResult, enableLogs, setFormParamsToSh
             <Form.Select
               onChange={handleFormParams}
               value={formParams.data.method}
-              name="method">
+              name="method"
+            >
               <option>Please select a Method</option>
               <option value={KeychainKeyTypes.active}>
                 {KeychainKeyTypes.active}

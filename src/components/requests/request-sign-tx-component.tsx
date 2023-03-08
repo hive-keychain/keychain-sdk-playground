@@ -1,10 +1,20 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
+import {
+  Client,
+  DynamicGlobalProperties,
+  Operation,
+  OperationName,
+  Transaction,
+  VirtualOperationName,
+} from "@hiveio/dhive";
+import { Buffer } from "buffer";
 import {
   ExcludeCommonParams,
   KeychainKeyTypes,
   RequestSignTx,
-} from 'hive-keychain-commons';
+} from "hive-keychain-commons";
+import json5 from "json5";
+import { KeychainSDK } from "keychain-sdk";
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -12,18 +22,8 @@ import {
   Form,
   InputGroup,
   ListGroup,
-} from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
-import {
-  DynamicGlobalProperties,
-  Operation,
-  OperationName,
-  Transaction,
-  VirtualOperationName,
-} from '@hiveio/dhive';
-import json5 from 'json5';
-import { Buffer } from 'buffer';
-import { Client } from '@hiveio/dhive';
+} from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 //TODO here:
 //  - ask cedric about nasty dHive error
 //      -> error here:
@@ -33,37 +33,37 @@ import { Client } from '@hiveio/dhive';
 type Props = {};
 
 const DEFAULT_OPERATION: Operation = [
-  'transfer',
+  "transfer",
   {
-    from: 'keychain.tests',
-    to: 'theghost1980',
-    amount: '0.001 HIVE',
-    memo: 'testing keychain SDK - requestBroadcast',
+    from: "keychain.tests",
+    to: "theghost1980",
+    amount: "0.001 HIVE",
+    memo: "testing keychain SDK - requestBroadcast",
   },
 ];
 
 const DEFAULT_TX: Transaction = {
   ref_block_num: 1,
   ref_block_prefix: 1,
-  expiration: new Date(Date.now() + 60000).toISOString(),
+  expiration: new Date(Date.now() + 600000).toISOString().slice(0, -5),
   operations: [],
   extensions: [],
 };
 
 const DEFAULT_PARAMS: ExcludeCommonParams<RequestSignTx> = {
-  username: 'keychain.tests',
+  username: "keychain.tests",
   tx: DEFAULT_TX,
   method: KeychainKeyTypes.memo,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const client = new Client([
-  'https://api.hive.blog',
-  'https://anyx.io',
-  'https://api.openhive.network',
+  "https://api.hive.blog",
+  "https://anyx.io",
+  "https://api.openhive.network",
 ]);
 
-const undefinedParamsToValidate = ['']; //none to check
+const undefinedParamsToValidate = [""]; //none to check
 
 //TODO Cannot properly test:
 //    1. errors when trying to fetch data from hive(console warnings about dHive package)
@@ -73,7 +73,7 @@ const RequestSignTxComponent = ({
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
+  const sdk = new KeychainSDK(window); //TODO : this is recreated for every rerender, why?
   const [operation, setOperation] = useState<Operation>(DEFAULT_OPERATION);
   const [arrayOperations, setArrayOperations] = useState<Operation[]>([]);
 
@@ -91,10 +91,9 @@ const RequestSignTxComponent = ({
 
   const [dHiveprops, setDHiveProps] = useState<DynamicGlobalProperties>();
 
-  //TODO uncomment to take effect as some weird errors are showing in console.
-  // useEffect(() => {
-  //   initProps();
-  // });
+  useEffect(() => {
+    initProps();
+  }, []);
 
   //TODO remove, just for testing
   useEffect(() => {
@@ -110,7 +109,7 @@ const RequestSignTxComponent = ({
       formParams.data.tx.ref_block_num = dHiveprops.head_block_number & 0xffff;
       formParams.data.tx.ref_block_prefix = Buffer.from(
         dHiveprops.head_block_id,
-        'hex',
+        "hex"
       ).readUInt32LE(4);
     }
   }, [dHiveprops]);
@@ -121,25 +120,25 @@ const RequestSignTxComponent = ({
 
   const handleOperation = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === 'operation_name') {
+    if (name === "operation_name") {
       setOperation([
         value as OperationName | VirtualOperationName,
         operation[1],
       ]);
     } else {
-      if (String(value).trim() === '') return;
+      if (String(value).trim() === "") return;
       try {
         const jsonParsed = json5.parse<object>(value);
         if (enableLogs) console.log({ jsonParsed });
         setOperation([operation[0], jsonParsed]);
       } catch (error) {
-        console.log('Error trying to parse json: ', error);
+        console.log("Error trying to parse json: ", error);
       }
     }
   };
 
   const handleAddOperation = () => {
-    if (operation[0] && operation['1']) {
+    if (operation[0] && operation["1"]) {
       setArrayOperations((prevArrayOperations) => [
         ...prevArrayOperations,
         operation,
@@ -154,7 +153,7 @@ const RequestSignTxComponent = ({
       handleFormParams({
         target: {
           value: arrayOperations,
-          name: 'operations',
+          name: "operations",
         },
       });
       //end testing
@@ -169,7 +168,7 @@ const RequestSignTxComponent = ({
     const { name, value } = e.target;
     let tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -179,12 +178,12 @@ const RequestSignTxComponent = ({
         ...prevFormParams,
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
-    } else if (name === 'options') {
+    } else if (name === "options") {
       setFormParams((prevFormParams) => ({
         ...prevFormParams,
         options: { ...prevFormParams.options, [name]: tempValue },
       }));
-    } else if (name === 'operations') {
+    } else if (name === "operations") {
       setFormParams((prevFormParams) => ({
         ...prevFormParams,
         data: {
@@ -205,18 +204,19 @@ const RequestSignTxComponent = ({
     //   arrayOperations as Operation[],
     // ); //as quentin suggested
 
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
-      const broadcast = await sdk.signTx(formParams.data, formParams.options);
-      setRequestResult(broadcast);
-      if (enableLogs) console.log({ broadcast });
+      const sign = await sdk.signTx(formParams.data, formParams.options);
+      client.broadcast.send(sign.result as any);
+      setRequestResult(sign);
+      if (enableLogs) console.log({ sign });
     } catch (error) {
       setRequestResult(error);
     }
   };
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Sign Tx</Card.Header>
+      <Card.Header as={"h5"}>Request Sign Tx</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -254,7 +254,7 @@ const RequestSignTxComponent = ({
                   {arrayOperations.map((op, index) => {
                     return (
                       <ListGroup.Item key={`${index}-op-queue`}>
-                        On Queue: {op[0]} {op[1].amount ? op[1].amount : ''}
+                        On Queue: {op[0]} {op[1].amount ? op[1].amount : ""}
                       </ListGroup.Item>
                     );
                   })}
@@ -268,9 +268,10 @@ const RequestSignTxComponent = ({
           <InputGroup className="mb-3">
             <Form.Select
               onChange={handleFormParams}
-              className={'mt-1'}
+              className={"mt-1"}
               value={formParams.data.method}
-              name="method">
+              name="method"
+            >
               <option>Please select a Method</option>
               <option value={KeychainKeyTypes.active}>
                 {KeychainKeyTypes.active}
