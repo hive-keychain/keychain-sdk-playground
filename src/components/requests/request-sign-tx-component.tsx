@@ -207,7 +207,8 @@ const RequestSignTxComponent = ({
     if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const sign = await sdk.signTx(formParams.data, formParams.options);
-      client.broadcast.send(sign.result as any);
+      // TODO : broadcast or not based on a checkbox
+      // client.broadcast.send(sign.result as any);
       setRequestResult(sign);
       if (enableLogs) console.log({ sign });
     } catch (error) {
