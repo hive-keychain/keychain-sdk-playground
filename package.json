@@ -15,6 +15,7 @@
     "buffer": "^6.0.3",
     "hive-keychain-commons": "github:hive-keychain/hive-keychain-commons",
     "json5": "^2.2.3",
+    "keychain-sdk": "github:hive-keychain/keychain-sdk",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",

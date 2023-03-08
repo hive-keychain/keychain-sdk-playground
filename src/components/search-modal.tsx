@@ -1,5 +1,4 @@
-import { KeychainRequestTypes } from 'hive-keychain-commons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   Button,
@@ -7,9 +6,9 @@ import {
   InputGroup,
   ListGroup,
   Modal,
-} from 'react-bootstrap';
-import { AccordionEventKey } from 'react-bootstrap/esm/AccordionContext';
-import { requestCategories } from '../reference-data/requests-categories';
+} from "react-bootstrap";
+import { AccordionEventKey } from "react-bootstrap/esm/AccordionContext";
+import { requestCategories } from "../reference-data/requests-categories";
 
 type Props = {
   show: boolean;
@@ -17,15 +16,22 @@ type Props = {
   setRequest: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
-const SearchModal = ({ show, onHide, setRequest }: Props) => {
-  const [searchValue, setSearchValue] = useState<string>('');
-  const [activeKeyAccordionCategory, setActiveKeyAccordionCategory] =
-    useState('');
+interface RequestCategory {
+  category: string;
+  items: RequestItem[];
+}
 
-  const handleChange = (e: any) => {
-    const { value } = e.target;
-    setSearchValue(value);
-  };
+interface RequestItem {
+  name: string;
+  requestType: string;
+}
+
+const SearchModal = ({ show, onHide, setRequest }: Props) => {
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [activeKeyAccordionCategory, setActiveKeyAccordionCategory] =
+    useState("");
+  const [filteredRequests, setFilteredRequests] =
+    useState<RequestCategory[]>(requestCategories);
 
   const handleOnClickItem = (requestItemType: string) => {
     setRequest(requestItemType);
@@ -33,21 +39,29 @@ const SearchModal = ({ show, onHide, setRequest }: Props) => {
   };
 
   useEffect(() => {
-    if (searchValue && searchValue.trim().length !== 0) {
-      const indexCategoryFound = requestCategories.findIndex((cat) => {
-        if (
-          cat.category.toLowerCase().search(searchValue.toLowerCase()) !== -1
-        ) {
-          return true;
+    const categoryList: RequestCategory[] = [];
+    for (const category of requestCategories) {
+      const itemList: RequestItem[] = [];
+      for (const item of category.items) {
+        if (item.name.toLowerCase().includes(searchValue.toLowerCase())) {
+          itemList.push(item);
         }
-        return false;
-      });
-      console.log({ foundOnIndex: indexCategoryFound });
-      if (indexCategoryFound !== -1) {
-        setActiveKeyAccordionCategory(indexCategoryFound.toString());
       }
-    }else{
-      setActiveKeyAccordionCategory('');
+      if (itemList.length > 0) {
+        categoryList.push({ category: category.category, items: itemList });
+      }
+    }
+    setFilteredRequests(categoryList);
+
+    const indexCategoryFound = requestCategories.findIndex((cat) => {
+      if (cat.category.toLowerCase().search(searchValue.toLowerCase()) !== -1) {
+        return true;
+      }
+      return false;
+    });
+    console.log({ foundOnIndex: indexCategoryFound });
+    if (indexCategoryFound !== -1) {
+      setActiveKeyAccordionCategory(indexCategoryFound.toString());
     }
   }, [searchValue]);
 
@@ -62,7 +76,7 @@ const SearchModal = ({ show, onHide, setRequest }: Props) => {
               placeholder="type to search"
               name="search_value"
               value={searchValue}
-              onChange={handleChange}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
           </InputGroup>
         </Form>
@@ -72,12 +86,14 @@ const SearchModal = ({ show, onHide, setRequest }: Props) => {
           activeKey={activeKeyAccordionCategory}
           onSelect={(e: AccordionEventKey) =>
             setActiveKeyAccordionCategory(e as string)
-          }>
-          {requestCategories.map((cat, index) => {
+          }
+        >
+          {filteredRequests.map((cat, index) => {
             return (
               <Accordion.Item
                 eventKey={index.toString()}
-                key={cat.category + index}>
+                key={cat.category + index}
+              >
                 <Accordion.Header>{cat.category}</Accordion.Header>
                 <Accordion.Body>
                   <ListGroup>
@@ -86,7 +102,8 @@ const SearchModal = ({ show, onHide, setRequest }: Props) => {
                         <ListGroup.Item
                           action
                           onClick={() => handleOnClickItem(catItem.requestType)}
-                          key={catItem.requestType}>
+                          key={catItem.requestType}
+                        >
                           {catItem.name}
                         </ListGroup.Item>
                       );
