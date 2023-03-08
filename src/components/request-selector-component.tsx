@@ -1,44 +1,36 @@
-import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
-import {
-  Button,
-  Card,
-  Form,
-  Container,
-  Collapse,
-  Row,
-  Col,
-} from 'react-bootstrap';
-import RequestAddAccountAuthorityComponent from './requests/request-add-account-authority-component';
-import RequestAddKeyAuthorityComponent from './requests/request-add-key-authority-component';
-import RequestBroadcastComponent from './requests/request-broadcast-component';
-import RequestCreateClaimedAccountComponent from './requests/request-create-claimed-account-component';
-import RequestCreateProposalComponent from './requests/request-create-proposal-component';
-import RequestCustomJsonComponent from './requests/request-custom-json-component';
-import RequestDelegationComponent from './requests/request-delegation-component';
-import RequestEncodeMessageComponent from './requests/request-encode-message-component';
-import RequestLoginComponent from './requests/request-login-component';
-import RequestPostComponent from './requests/request-post-component';
-import RequestPowerDownComponent from './requests/request-power-down-component';
-import RequestPowerUpComponent from './requests/request-power-up-component';
-import RequestProxyComponent from './requests/request-proxy-component';
-import RequestRemoveAccountAuthorityComponent from './requests/request-remove-account-authority-component';
-import RequestRemoveKeyAuthorityComponent from './requests/request-remove-key-authority-component';
-import RequestRemoveProposalComponent from './requests/request-remove-proposal-component';
-import RequestSendTokenComponent from './requests/request-send-token-component';
-import RequestSignBufferComponent from './requests/request-sign-buffer-component';
-import RequestSignTxComponent from './requests/request-sign-tx-component';
-import RequestTransferComponent from './requests/request-transfer-component';
-import RequestUpdateProposalVoteComponent from './requests/request-update-proposal-vote-component';
-import RequestVerifyKeyComponent from './requests/request-verify-key-component';
-import RequestVoteComponent from './requests/request-vote-component';
-import RequestWitnessVoteComponent from './requests/request-witness-vote-component';
-import RequestAddAccountComponent from './requests/request-add-account-component';
-import RequestConversionComponent from './requests/request-conversion-component';
-import RequestRecurrentTransferComponent from './requests/request-recurrent-transfer-component';
-import { CopyBlock, solarizedDark } from 'react-code-blocks';
-import { KeychainRequestTypes } from 'hive-keychain-commons';
-import CodeTester from './code-tester/code-tester';
-import { Utils } from '../utils/utils';
+import { KeychainRequestTypes } from "hive-keychain-commons";
+import { ReactNode, useEffect, useState } from "react";
+import { Card, Col, Container, Row } from "react-bootstrap";
+import { CopyBlock, solarizedDark } from "react-code-blocks";
+import { Utils } from "../utils/utils";
+import CodeTester from "./code-tester/code-tester";
+import RequestAddAccountAuthorityComponent from "./requests/request-add-account-authority-component";
+import RequestAddAccountComponent from "./requests/request-add-account-component";
+import RequestAddKeyAuthorityComponent from "./requests/request-add-key-authority-component";
+import RequestBroadcastComponent from "./requests/request-broadcast-component";
+import RequestConversionComponent from "./requests/request-conversion-component";
+import RequestCreateClaimedAccountComponent from "./requests/request-create-claimed-account-component";
+import RequestCreateProposalComponent from "./requests/request-create-proposal-component";
+import RequestCustomJsonComponent from "./requests/request-custom-json-component";
+import RequestDelegationComponent from "./requests/request-delegation-component";
+import RequestEncodeMessageComponent from "./requests/request-encode-message-component";
+import RequestLoginComponent from "./requests/request-login-component";
+import RequestPostComponent from "./requests/request-post-component";
+import RequestPowerDownComponent from "./requests/request-power-down-component";
+import RequestPowerUpComponent from "./requests/request-power-up-component";
+import RequestProxyComponent from "./requests/request-proxy-component";
+import RequestRecurrentTransferComponent from "./requests/request-recurrent-transfer-component";
+import RequestRemoveAccountAuthorityComponent from "./requests/request-remove-account-authority-component";
+import RequestRemoveKeyAuthorityComponent from "./requests/request-remove-key-authority-component";
+import RequestRemoveProposalComponent from "./requests/request-remove-proposal-component";
+import RequestSendTokenComponent from "./requests/request-send-token-component";
+import RequestSignBufferComponent from "./requests/request-sign-buffer-component";
+import RequestSignTxComponent from "./requests/request-sign-tx-component";
+import RequestTransferComponent from "./requests/request-transfer-component";
+import RequestUpdateProposalVoteComponent from "./requests/request-update-proposal-vote-component";
+import RequestVerifyKeyComponent from "./requests/request-verify-key-component";
+import RequestVoteComponent from "./requests/request-vote-component";
+import RequestWitnessVoteComponent from "./requests/request-witness-vote-component";
 
 export interface KeychainOptions {
   rpc?: string;
@@ -78,9 +70,8 @@ const RequestSelectorComponent = ({
   useEffect(() => {
     if (!request) return;
     switch (request) {
-      case 'login':
-        setRequestCard(
-          <RequestLoginComponent {...commonProps}/> );
+      case "login":
+        setRequestCard(<RequestLoginComponent {...commonProps} />);
         break;
       case KeychainRequestTypes.encode:
         setRequestCard(<RequestEncodeMessageComponent {...commonProps} />);
@@ -93,12 +84,12 @@ const RequestSelectorComponent = ({
         break;
       case KeychainRequestTypes.addAccountAuthority:
         setRequestCard(
-          <RequestAddAccountAuthorityComponent {...commonProps} />,
+          <RequestAddAccountAuthorityComponent {...commonProps} />
         );
         break;
       case KeychainRequestTypes.removeAccountAuthority:
         setRequestCard(
-          <RequestRemoveAccountAuthorityComponent {...commonProps} />,
+          <RequestRemoveAccountAuthorityComponent {...commonProps} />
         );
         break;
       case KeychainRequestTypes.addKeyAuthority:
@@ -145,7 +136,7 @@ const RequestSelectorComponent = ({
         break;
       case KeychainRequestTypes.createClaimedAccount:
         setRequestCard(
-          <RequestCreateClaimedAccountComponent {...commonProps} />,
+          <RequestCreateClaimedAccountComponent {...commonProps} />
         );
         break;
       case KeychainRequestTypes.createProposal:
@@ -168,7 +159,7 @@ const RequestSelectorComponent = ({
         break;
       default:
         setRequestCard(null);
-        if (enableLogs) console.log('trying to set: ', { request });
+        if (enableLogs) console.log("trying to set: ", { request });
         break;
     }
   }, [request, setRequestResult]);
@@ -178,7 +169,7 @@ const RequestSelectorComponent = ({
       <Row>
         <Col className="w-50">
           <Card className="d-flex justify-content-center">
-            <Card.Header as={'h4'}>SDK Playground</Card.Header>
+            <Card.Header as={"h4"}>SDK Playground</Card.Header>
             <Card.Body>
               <Container className="mt-2">
                 {requestCard ? requestCard : null}
@@ -188,14 +179,14 @@ const RequestSelectorComponent = ({
         </Col>
         <Col className="w-50">
           <Card className="d-flex">
-            <Card.Header as={'h4'}>Code Sample</Card.Header>
+            <Card.Header as={"h4"}>Code Sample</Card.Header>
             <Card.Body>
               <CopyBlock
                 text={Utils.fromCodeToText(
                   formParamsToShow,
-                  request as KeychainRequestTypes,
+                  request as KeychainRequestTypes
                 )}
-                language={'typescript'}
+                language={"typescript"}
                 showLineNumbers={false}
                 startingLineNumber={1}
                 wrapLines
@@ -206,7 +197,7 @@ const RequestSelectorComponent = ({
         </Col>
       </Row>
       {/* TESTING to test code. Uncomment to use */}
-      {/* <CodeTester /> */}
+      <CodeTester />
       {/* END testing */}
     </Container>
   );

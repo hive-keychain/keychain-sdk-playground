@@ -1,18 +1,13 @@
-import {
-  ExcludeCommonParams,
-  KeychainKeyTypes,
-  RequestSignBuffer,
-} from "hive-keychain-commons";
+import { KeychainKeyTypes } from "hive-keychain-commons";
 import { KeychainSDK } from "keychain-sdk";
+import { Login } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-//TODO what about cedric request of having undefined message?
-//  - add this to RequestSignBuffer?? or just locally here?
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestSignBuffer> = {
+const DEFAULT_PARAMS: Login = {
   username: "keychain.tests",
   message: '{"login":"123"}',
   method: KeychainKeyTypes.posting,
@@ -20,16 +15,17 @@ const DEFAULT_PARAMS: ExcludeCommonParams<RequestSignBuffer> = {
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ["username", "title", "rpc"];
-//TODO finish on SDK + test here.
+const sdk = new KeychainSDK(window);
+
+const undefinedParamsToValidate = ["username", "message", "title", "rpc"];
+
 const RequestLoginComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestSignBuffer>;
+    data: Login;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -67,12 +63,10 @@ const RequestLoginComponent = ({
     if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const login = await sdk.login(formParams.data, formParams.options);
-      console.log("afer login", login);
-      // setRequestResult(login);
-      // if (enableLogs) console.log({ login });
+      setRequestResult(login);
+      if (enableLogs) console.log({ login });
     } catch (error) {
-      console.log(error);
-      // setRequestResult(error);
+      setRequestResult(error);
     }
   };
 

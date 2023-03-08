@@ -1,16 +1,34 @@
-import { useState } from 'react';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import RequestSelectorComponent from './components/request-selector-component';
-import RequestResultsComponent from './components/request-results-component';
-import FooterComponent from './components/footer-component';
-import LogsEnablerComponent from './components/logs-enabler-component';
-import { Button, Card, Container } from 'react-bootstrap';
-import SearchModal from './components/search-modal';
-import NavigationBarComponent from './components/navigation-bar-component';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
+import { Card, Container } from "react-bootstrap";
+import "./App.css";
+import FooterComponent from "./components/footer-component";
+import LogsEnablerComponent from "./components/logs-enabler-component";
+import NavigationBarComponent from "./components/navigation-bar-component";
+import RequestResultsComponent from "./components/request-results-component";
+import RequestSelectorComponent from "./components/request-selector-component";
+import SearchModal from "./components/search-modal";
 //TODO important:
 //  when ready for production, add the following into package.json
 //  -> "keychain-sdk": "github:hive-keychain/keychain-sdk",
+
+//TODO here:
+//    - change footer to be always at the bottom
+//    - change every check on forms to justify left.
+//    - change search button as blue using same
+//    - change search input on modal to be bellow and full width instead of in header.
+//    - remove "please click on search"
+//    - instead of using "title" use "tooltip" from React bootstrap
+//    - add decode to requests
+//    - create cat Blogging:
+//      - vote, post
+//    - create Transfer:
+//      - transfer, recurrent
+//    - create cat HP:
+//      - delegation, powerUp, powerDown.
+//    - remove enableLogs, always display the logs.
+//    - improve the sample code to show the object as an object instead of a stringifyed line of text which is hard to read
+//    - add responsiveness so it becomes columns if screen.width < XX check on boostrap
 function App() {
   const [enabledKeychain, setEnabledKeychain] = useState(false);
   const [requestResult, setRequestResult] = useState();
@@ -32,32 +50,34 @@ function App() {
           setRequest={setRequest}
         />
       </Container>
-      { request !== undefined ?
+      {request !== undefined ? (
         <>
-        <LogsEnablerComponent
-        enableLogs={enableLogs}
-        setEnableLogs={setEnableLogs}
-      />
-      <RequestSelectorComponent
-        setRequestResult={setRequestResult}
-        requestResult={requestResult}
-        enabledKeychain={enabledKeychain}
-        enableLogs={enableLogs}
-        request={request}
-        setRequest={setRequest}
-      />
-      {requestResult && (
-        <RequestResultsComponent
-          requestResult={requestResult}
-          enableLogs={enableLogs}
-        />
+          <LogsEnablerComponent
+            enableLogs={enableLogs}
+            setEnableLogs={setEnableLogs}
+          />
+          <RequestSelectorComponent
+            setRequestResult={setRequestResult}
+            requestResult={requestResult}
+            enabledKeychain={enabledKeychain}
+            enableLogs={enableLogs}
+            request={request}
+            setRequest={setRequest}
+          />
+          {requestResult && (
+            <RequestResultsComponent
+              requestResult={requestResult}
+              enableLogs={enableLogs}
+            />
+          )}
+        </>
+      ) : (
+        <Card className="mt-2 mb-2">
+          <Card.Header as={"h4"} className="text-center">
+            Please click on search, to select a request.
+          </Card.Header>
+        </Card>
       )}
-      </>
-      :
-      <Card className='mt-2 mb-2'>
-        <Card.Header as={'h4'} className="text-center">Please click on search, to select a request.</Card.Header>
-      </Card>
-      }
       <FooterComponent />
     </div>
   );

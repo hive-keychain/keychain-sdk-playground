@@ -1,19 +1,16 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  KeychainKeyTypes,
-  RequestEncode,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps } from '../request-selector-component';
+import { KeychainKeyTypes } from "hive-keychain-commons";
+import { KeychainSDK } from "keychain-sdk";
+import { Encode } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestEncode> = {
-  username: '',
-  receiver: '',
-  message: '',
+const DEFAULT_PARAMS: Encode = {
+  username: "keychain.tests",
+  receiver: "keychain.tests",
+  message: "#Keychain SDK v 1.0",
   method: KeychainKeyTypes.active,
 };
 
@@ -23,8 +20,7 @@ const RequestEncodeMessageComponent = ({
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const sdk = new KeychainSDK(window);
-  const [formParams, setFormParams] =
-    useState<ExcludeCommonParams<RequestEncode>>(DEFAULT_PARAMS);
+  const [formParams, setFormParams] = useState<Encode>(DEFAULT_PARAMS);
 
   useEffect(() => {
     setFormParamsToShow(formParams);
@@ -32,16 +28,15 @@ const RequestEncodeMessageComponent = ({
 
   const handleFormParams = (e: any) => {
     const { name, value } = e.target;
-    if (value !== '') {
+    if (value !== "") {
       setFormParams((prevFormParams) => ({ ...prevFormParams, [name]: value }));
     }
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process: ', { formParams });
+    if (enableLogs) console.log("about to process: ", { formParams });
     try {
-      //TODO change as [requestType]
       const encodeMessage = await sdk.encode(formParams);
       setRequestResult(encodeMessage);
       if (enableLogs) console.log({ encodeMessage });
@@ -51,7 +46,7 @@ const RequestEncodeMessageComponent = ({
   };
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request encode message</Card.Header>
+      <Card.Header as={"h5"}>Request encode message</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -89,7 +84,8 @@ const RequestEncodeMessageComponent = ({
             <Form.Select
               onChange={handleFormParams}
               value={formParams.method}
-              name="method">
+              name="method"
+            >
               <option>Please select a Method</option>
               <option value={KeychainKeyTypes.active}>
                 {KeychainKeyTypes.active}
