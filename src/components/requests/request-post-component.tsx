@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { ExcludeCommonParams, RequestPost } from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { Post } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestPost> = {
-  username: 'keychain.tests',
-  title: 'Keychain Playground SDK',
-  body: '## This is a blog post n And this is some text. Testing the brand new Keychain SDK v1.0',
-  parent_perm: 'blog',
+const DEFAULT_PARAMS: Post = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  title: "Keychain Playground SDK",
+  body: "## This is a blog post n And this is some text. Testing the brand new Keychain SDK v1.0",
+  parent_perm: "blog",
   parent_username: undefined,
   json_metadata: JSON.stringify({
-    format: 'markdown',
-    description: 'A blog post',
-    tags: ['Blog'],
+    format: "markdown",
+    description: "A blog post",
+    tags: ["Blog"],
   }),
-  permlink: 'a-permlink-post-sample',
+  permlink: "a-permlink-post-sample",
   comment_options: JSON.stringify({
-    author: 'keychain.tests',
-    permlink: 'a-post-by-keychaintests-fourth-part-post',
-    max_accepted_payout: '10000.000 SBD',
+    author: localStorage.getItem("last_username") || "keychain.tests",
+    permlink: "a-post-by-keychaintests-fourth-part-post",
+    max_accepted_payout: "10000.000 SBD",
     allow_votes: true,
     allow_curation_rewards: true,
     extensions: [],
@@ -30,16 +30,17 @@ const DEFAULT_PARAMS: ExcludeCommonParams<RequestPost> = {
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['title', 'parent_username', 'rpc'];
+const undefinedParamsToValidate = ["title", "parent_username", "rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestPostComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestPost>;
+    data: Post;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -54,7 +55,7 @@ const RequestPostComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -74,7 +75,7 @@ const RequestPostComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const post = await sdk.post(formParams.data, formParams.options);
       setRequestResult(post);
@@ -86,7 +87,7 @@ const RequestPostComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Post</Card.Header>
+      <Card.Header as={"h5"}>Request Post</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -110,7 +111,7 @@ const RequestPostComponent = ({
           <InputGroup className="mb-3">
             <InputGroup.Text>Body</InputGroup.Text>
             <Form.Control
-              as={'textarea'}
+              as={"textarea"}
               rows={3}
               placeholder="Body of post. Markdown or text"
               name="body"

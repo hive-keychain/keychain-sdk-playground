@@ -1,34 +1,32 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  KeychainKeyTypes,
-  RequestAddAccountAuthority,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainKeyTypes } from "hive-keychain-commons";
+import { KeychainSDK } from "keychain-sdk";
+import { AddAccountAuthority } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestAddAccountAuthority> = {
-  username: '',
-  authorizedUsername: '',
+const DEFAULT_PARAMS: AddAccountAuthority = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  authorizedUsername: localStorage.getItem("last_username") || "keychain.tests",
   role: KeychainKeyTypes.posting,
   weight: 1,
   method: KeychainKeyTypes.active,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['']; //none to check
+const undefinedParamsToValidate = [""]; //none to check
+
+const sdk = new KeychainSDK(window);
 
 const RequestAddAccountAuthorityComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestAddAccountAuthority>;
+    data: AddAccountAuthority;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -43,7 +41,7 @@ const RequestAddAccountAuthorityComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -63,11 +61,11 @@ const RequestAddAccountAuthorityComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const addAccountAuthority = await sdk.addAccountAuthority(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
 
       setRequestResult(addAccountAuthority);
@@ -78,7 +76,7 @@ const RequestAddAccountAuthorityComponent = ({
   };
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request add Account Authority</Card.Header>
+      <Card.Header as={"h5"}>Request add Account Authority</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -105,7 +103,8 @@ const RequestAddAccountAuthorityComponent = ({
             <Form.Select
               onChange={handleFormParams}
               value={formParams.data.role}
-              name="role">
+              name="role"
+            >
               <option>Please select a Role to authorize</option>
               <option value={KeychainKeyTypes.active}>
                 {KeychainKeyTypes.active}

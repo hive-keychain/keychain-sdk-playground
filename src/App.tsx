@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Container } from "react-bootstrap";
 import "./App.css";
 import FooterComponent from "./components/footer-component";
@@ -29,12 +29,27 @@ import SearchModal from "./components/search-modal";
 //    - remove enableLogs, always display the logs.
 //    - improve the sample code to show the object as an object instead of a stringifyed line of text which is hard to read
 //    - add responsiveness so it becomes columns if screen.width < XX check on boostrap
+type LocalStorageObject = { [key: string]: string };
+
+const localStorageValues: LocalStorageObject = {
+  last_username: "keychain.tests",
+};
+
 function App() {
   const [enabledKeychain, setEnabledKeychain] = useState(false);
   const [requestResult, setRequestResult] = useState();
   const [enableLogs, setEnableLogs] = useState(true);
   const [modalShow, setModalShow] = useState(false);
   const [request, setRequest] = useState<string>();
+
+  useEffect(() => {
+    const lastUsername = localStorage.getItem("last_username");
+    if (!lastUsername) {
+      Object.entries(localStorageValues).forEach((item) => {
+        localStorage.setItem(item[0], item[1]);
+      });
+    }
+  }, []);
 
   return (
     <div className="App">

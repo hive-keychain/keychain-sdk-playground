@@ -8,18 +8,19 @@ import { CommonProps } from "../request-selector-component";
 type Props = {};
 
 const DEFAULT_PARAMS: Encode = {
-  username: "keychain.tests",
+  username: localStorage.getItem("last_username") || "keychain.tests",
   receiver: "keychain.tests",
   message: "#Keychain SDK v 1.0",
   method: KeychainKeyTypes.active,
 };
+
+const sdk = new KeychainSDK(window);
 
 const RequestEncodeMessageComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<Encode>(DEFAULT_PARAMS);
 
   useEffect(() => {

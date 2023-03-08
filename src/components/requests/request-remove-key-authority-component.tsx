@@ -1,33 +1,31 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  KeychainKeyTypes,
-  RequestRemoveKeyAuthority,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainKeyTypes } from "hive-keychain-commons";
+import { KeychainSDK } from "keychain-sdk";
+import { RemoveKeyAuthority } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestRemoveKeyAuthority> = {
-  username: '',
-  authorizedKey: '',
+const DEFAULT_PARAMS: RemoveKeyAuthority = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  authorizedKey: localStorage.getItem("last_username") || "keychain.tests",
   role: KeychainKeyTypes.posting,
   method: KeychainKeyTypes.active,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['']; //none to check
+const undefinedParamsToValidate = [""]; //none to check
+
+const sdk = new KeychainSDK(window);
 
 const RequestRemoveKeyAuthorityComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestRemoveKeyAuthority>;
+    data: RemoveKeyAuthority;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -42,7 +40,7 @@ const RequestRemoveKeyAuthorityComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -62,11 +60,11 @@ const RequestRemoveKeyAuthorityComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const removeKeyAuthority = await sdk.removeKeyAuthority(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(removeKeyAuthority);
       if (enableLogs) console.log({ removeKeyAuthority });
@@ -76,7 +74,7 @@ const RequestRemoveKeyAuthorityComponent = ({
   };
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request remove key Authority</Card.Header>
+      <Card.Header as={"h5"}>Request remove key Authority</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -102,7 +100,8 @@ const RequestRemoveKeyAuthorityComponent = ({
             <Form.Select
               onChange={handleFormParams}
               value={formParams.data.role}
-              name="role">
+              name="role"
+            >
               <option>Please select a Role to remove</option>
               <option value={KeychainKeyTypes.active}>
                 {KeychainKeyTypes.active}

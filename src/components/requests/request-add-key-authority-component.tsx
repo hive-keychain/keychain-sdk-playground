@@ -1,34 +1,32 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  KeychainKeyTypes,
-  RequestAddKeyAuthority,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainKeyTypes } from "hive-keychain-commons";
+import { KeychainSDK } from "keychain-sdk";
+import { AddKeyAuthority } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestAddKeyAuthority> = {
-  username: '',
-  authorizedKey: '',
+const DEFAULT_PARAMS: AddKeyAuthority = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  authorizedKey: localStorage.getItem("last_username") || "keychain.tests",
   role: KeychainKeyTypes.posting,
   weight: 1,
   method: KeychainKeyTypes.active,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['']; //none to check
+const undefinedParamsToValidate = [""]; //none to check
+
+const sdk = new KeychainSDK(window);
 
 const RequestAddKeyAuthorityComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestAddKeyAuthority>;
+    data: AddKeyAuthority;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -43,7 +41,7 @@ const RequestAddKeyAuthorityComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -63,12 +61,11 @@ const RequestAddKeyAuthorityComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
-      //TODO change as [requestType]
       const addKeyAuthority = await sdk.addKeyAuthority(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(addKeyAuthority);
       if (enableLogs) console.log({ addKeyAuthority });
@@ -78,7 +75,7 @@ const RequestAddKeyAuthorityComponent = ({
   };
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Add Key Authority</Card.Header>
+      <Card.Header as={"h5"}>Request Add Key Authority</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -114,7 +111,8 @@ const RequestAddKeyAuthorityComponent = ({
             <Form.Select
               onChange={handleFormParams}
               value={formParams.data.role}
-              name="role">
+              name="role"
+            >
               <option>Please select a Role to authorize</option>
               <option value={KeychainKeyTypes.active}>
                 {KeychainKeyTypes.active}

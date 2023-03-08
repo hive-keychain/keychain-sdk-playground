@@ -6,9 +6,10 @@ import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
-
+//TODO to delete
+// message: '#message to decode here, # is required to encrypt',
 const DEFAULT_PARAMS: Login = {
-  username: "keychain.tests",
+  username: localStorage.getItem("last_username") || "keychain.tests",
   message: '{"login":"123"}',
   method: KeychainKeyTypes.posting,
   title: "Login",

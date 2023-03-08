@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Accordion, Card, Container, ListGroup } from 'react-bootstrap';
+import { useEffect } from "react";
+import { Accordion, Card, Container, ListGroup } from "react-bootstrap";
 
 type Props = {
   requestResult: any;
@@ -8,12 +8,15 @@ type Props = {
 
 const RequestResultsComponent = ({ requestResult, enableLogs }: Props) => {
   const error =
-    typeof requestResult.error === 'object'
+    typeof requestResult.error === "object"
       ? JSON.stringify(requestResult.error)
       : requestResult.error;
 
   useEffect(() => {
     if (enableLogs) console.log({ requestResult });
+    if (requestResult && requestResult.data && requestResult.data.username) {
+      localStorage.setItem("last_username", requestResult.data.username);
+    }
   });
 
   return (
@@ -22,9 +25,10 @@ const RequestResultsComponent = ({ requestResult, enableLogs }: Props) => {
         text={
           requestResult.error ||
           (requestResult.error && Object.keys(requestResult.error).length > 0)
-            ? 'danger'
-            : 'success'
-        }>
+            ? "danger"
+            : "success"
+        }
+      >
         {requestResult.error ? (
           <Card.Body>
             <Card.Text>Error: {error}</Card.Text>
@@ -37,8 +41,8 @@ const RequestResultsComponent = ({ requestResult, enableLogs }: Props) => {
               Success: {requestResult.success.toString()}
             </Card.Subtitle>
             <Card.Text>
-              Result:{' '}
-              {typeof requestResult.result === 'object'
+              Result:{" "}
+              {typeof requestResult.result === "object"
                 ? JSON.stringify(requestResult.result)
                 : requestResult.result.toString()}
             </Card.Text>

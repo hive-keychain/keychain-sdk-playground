@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  KeychainKeyTypes,
-  RequestBroadcast,
-} from 'hive-keychain-commons';
+import { Operation, OperationName, VirtualOperationName } from "@hiveio/dhive";
+import { KeychainKeyTypes } from "hive-keychain-commons";
+import json5 from "json5";
+import { KeychainSDK } from "keychain-sdk";
+import { Broadcast } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -12,59 +11,42 @@ import {
   Form,
   InputGroup,
   ListGroup,
-} from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
-import { Operation, OperationName, VirtualOperationName } from '@hiveio/dhive';
-import json5 from 'json5';
+} from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
-type Props = {
-  // setRequestResult: any;
-  // enableLogs: boolean;
-};
+type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestBroadcast> = {
-  username: '',
+const DEFAULT_PARAMS: Broadcast = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
   operations: [],
   method: KeychainKeyTypes.active,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
-// const DEFAULT_OPERATION: [
-//   string,
-//   {
-//     [key: string]: any;
-//   },
-// ] = [
-//   'transfer',
-//   {
-//     from: 'keychain.tests',
-//     to: 'theghost1980',
-//     amount: '0.001 HIVE',
-//     memo: 'testing keychain SDK - requestBroadcast',
-//   },
-// ];
+
 const DEFAULT_OPERATION: Operation = [
-  'transfer',
+  "transfer",
   {
-    from: 'keychain.tests',
-    to: 'theghost1980',
-    amount: '0.001 HIVE',
-    memo: 'testing keychain SDK - requestBroadcast',
+    from: localStorage.getItem("last_username") || "keychain.tests",
+    to: localStorage.getItem("last_username") || "keychain.tests",
+    amount: "0.001 HIVE",
+    memo: "testing keychain SDK - requestBroadcast",
   },
 ];
 
-const undefinedParamsToValidate = ['']; //none to check
+const undefinedParamsToValidate = [""]; //none to check
+
+const sdk = new KeychainSDK(window);
 
 const RequestBroadcastComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [operation, setOperation] = useState<Operation>(DEFAULT_OPERATION);
   const [arrayOperations, setArrayOperations] = useState<Operation[]>([]);
 
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestBroadcast>;
+    data: Broadcast;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -77,25 +59,25 @@ const RequestBroadcastComponent = ({
 
   const handleOperation = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === 'operation_name') {
+    if (name === "operation_name") {
       setOperation([
         value as OperationName | VirtualOperationName,
         operation[1],
       ]);
     } else {
-      if (String(value).trim() === '') return;
+      if (String(value).trim() === "") return;
       try {
         const jsonParsed = json5.parse<object>(value);
         console.log({ jsonParsed });
         setOperation([operation[0], jsonParsed]);
       } catch (error) {
-        console.log('Error trying to parse json: ', error);
+        console.log("Error trying to parse json: ", error);
       }
     }
   };
 
   const handleAddOperation = () => {
-    if (operation[0] && operation['1']) {
+    if (operation[0] && operation["1"]) {
       setArrayOperations((prevArrayOperations) => [
         ...prevArrayOperations,
         operation,
@@ -108,7 +90,7 @@ const RequestBroadcastComponent = ({
       handleFormParams({
         target: {
           value: arrayOperations,
-          name: 'operations',
+          name: "operations",
         },
       });
     }
@@ -122,7 +104,7 @@ const RequestBroadcastComponent = ({
     const { name, value } = e.target;
     let tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -142,11 +124,11 @@ const RequestBroadcastComponent = ({
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const broadcast = await sdk.broadcast(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(broadcast);
       if (enableLogs) console.log({ broadcast });
@@ -156,7 +138,7 @@ const RequestBroadcastComponent = ({
   };
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Generic Broadcast</Card.Header>
+      <Card.Header as={"h5"}>Request Generic Broadcast</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -195,7 +177,7 @@ const RequestBroadcastComponent = ({
                     {arrayOperations.map((op, index) => {
                       return (
                         <ListGroup.Item key={`${index}-op-queue`}>
-                          On Queue: {op[0]} {op[1].amount ? op[1].amount : ''}
+                          On Queue: {op[0]} {op[1].amount ? op[1].amount : ""}
                         </ListGroup.Item>
                       );
                     })}

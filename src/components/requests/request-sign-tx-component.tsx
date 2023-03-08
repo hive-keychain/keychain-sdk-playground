@@ -7,13 +7,10 @@ import {
   VirtualOperationName,
 } from "@hiveio/dhive";
 import { Buffer } from "buffer";
-import {
-  ExcludeCommonParams,
-  KeychainKeyTypes,
-  RequestSignTx,
-} from "hive-keychain-commons";
+import { KeychainKeyTypes } from "hive-keychain-commons";
 import json5 from "json5";
 import { KeychainSDK } from "keychain-sdk";
+import { SignTx } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -35,8 +32,8 @@ type Props = {};
 const DEFAULT_OPERATION: Operation = [
   "transfer",
   {
-    from: "keychain.tests",
-    to: "theghost1980",
+    from: localStorage.getItem("last_username") || "keychain.tests",
+    to: localStorage.getItem("last_username") || "keychain.tests",
     amount: "0.001 HIVE",
     memo: "testing keychain SDK - requestBroadcast",
   },
@@ -50,8 +47,8 @@ const DEFAULT_TX: Transaction = {
   extensions: [],
 };
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestSignTx> = {
-  username: "keychain.tests",
+const DEFAULT_PARAMS: SignTx = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
   tx: DEFAULT_TX,
   method: KeychainKeyTypes.memo,
 };
@@ -65,20 +62,19 @@ const client = new Client([
 
 const undefinedParamsToValidate = [""]; //none to check
 
-//TODO Cannot properly test:
-//    1. errors when trying to fetch data from hive(console warnings about dHive package)
-//    2. error when sending the request but no description about that error.
+const sdk = new KeychainSDK(window);
+
+//TODO Check & tests + add checkbox to broadcast or not & cleanUp
 const RequestSignTxComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window); //TODO : this is recreated for every rerender, why?
   const [operation, setOperation] = useState<Operation>(DEFAULT_OPERATION);
   const [arrayOperations, setArrayOperations] = useState<Operation[]>([]);
 
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestSignTx>;
+    data: SignTx;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -197,6 +193,7 @@ const RequestSignTxComponent = ({
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    //TODO remove clean up
     // formParams['data']['tx']['operations'] = arrayOperations as Operation[]; //As common types require
 
     // //@ts-ignore

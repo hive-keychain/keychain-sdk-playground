@@ -1,33 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  KeychainKeyTypes,
-  RequestSignBuffer,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainKeyTypes } from "hive-keychain-commons";
+import { KeychainSDK } from "keychain-sdk";
+import { SignBuffer } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestSignBuffer> = {
-  username: undefined,
-  message: '',
+const DEFAULT_PARAMS: SignBuffer = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  message: "#message to decode here, # is required to encrypt",
   method: KeychainKeyTypes.active,
   title: undefined,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['username', 'title', 'rpc'];
+const undefinedParamsToValidate = ["username", "title", "rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestSignBufferComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestSignBuffer>;
+    data: SignBuffer;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -42,7 +40,7 @@ const RequestSignBufferComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -62,11 +60,11 @@ const RequestSignBufferComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const signBuffer = await sdk.signBuffer(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(signBuffer);
       if (enableLogs) console.log({ signBuffer });
@@ -76,7 +74,7 @@ const RequestSignBufferComponent = ({
   };
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request sign buffer</Card.Header>
+      <Card.Header as={"h5"}>Request sign buffer</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -114,7 +112,8 @@ const RequestSignBufferComponent = ({
             <Form.Select
               onChange={handleFormParams}
               value={formParams.data.method}
-              name="method">
+              name="method"
+            >
               <option>Please select a Method</option>
               <option value={KeychainKeyTypes.active}>
                 {KeychainKeyTypes.active}

@@ -1,5 +1,5 @@
 import { KeychainSDK } from "keychain-sdk";
-import { Login } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { Encode } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { Button, Card, Form } from "react-bootstrap";
 
 type Props = {};
@@ -12,14 +12,13 @@ const CodeTester = (props: Props) => {
     try {
       const keychain = new KeychainSDK(window);
       const formParamsAsObject = {
-        data: { username: "keychain.tests", method: "Posting", title: "Login" },
-        options: {},
+        username: "keychain.tests",
+        receiver: "keychain.tests",
+        message: "#Keychain SDK v 1.0",
+        method: "Active",
       };
-      const login = await keychain.login(
-        formParamsAsObject.data as Login,
-        formParamsAsObject.options
-      );
-      console.log({ login });
+      const encode = await keychain.encode(formParamsAsObject as Encode);
+      console.log({ encode });
     } catch (error) {
       console.log({ error });
     }
