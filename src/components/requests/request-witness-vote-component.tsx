@@ -1,28 +1,29 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { ExcludeCommonParams, RequestWitnessVote } from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { WitnessVote } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestWitnessVote> = {
-  username: 'keychain.tests',
-  witness: 'stoodkev',
+const DEFAULT_PARAMS: WitnessVote = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  witness: "keychain",
   vote: true,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['username', 'rpc'];
+const undefinedParamsToValidate = ["username", "rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestWitnessVoteComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestWitnessVote>;
+    data: WitnessVote;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -37,7 +38,7 @@ const RequestWitnessVoteComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -57,11 +58,11 @@ const RequestWitnessVoteComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const witnessVote = await sdk.witnessVote(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(witnessVote);
       if (enableLogs) console.log({ witnessVote });
@@ -72,7 +73,7 @@ const RequestWitnessVoteComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Witness Vote</Card.Header>
+      <Card.Header as={"h5"}>Request Witness Vote</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -93,13 +94,13 @@ const RequestWitnessVoteComponent = ({
               onChange={handleFormParams}
             />
           </InputGroup>
-          <InputGroup className="d-flex justify-content-center mb-3 align-items-center">
+          <InputGroup className="d-flex mb-3 align-items-center">
             <InputGroup.Text>Vote</InputGroup.Text>
             <Form.Check
-              className="ms-5"
+              className="ms-3"
               type="checkbox"
               name="vote"
-              value={formParams.data.vote ? 'true' : 'false'}
+              value={formParams.data.vote ? "true" : "false"}
               checked={formParams.data.vote}
               onChange={(e) =>
                 handleFormParams({

@@ -1,29 +1,30 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { ExcludeCommonParams, RequestDelegation } from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { Delegation } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestDelegation> = {
-  username: 'theghost1980',
-  delegatee: 'keychain.tests',
-  amount: '1.000',
-  unit: 'HP',
+const DEFAULT_PARAMS: Delegation = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  delegatee: localStorage.getItem("last_username") || "keychain.tests",
+  amount: "1.000",
+  unit: "HP",
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['username', 'rpc'];
+const undefinedParamsToValidate = ["username", "rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestDelegationComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestDelegation>;
+    data: Delegation;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -38,7 +39,7 @@ const RequestDelegationComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -58,11 +59,11 @@ const RequestDelegationComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const delegation = await sdk.delegation(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(delegation);
       if (enableLogs) console.log({ delegation });
@@ -73,7 +74,7 @@ const RequestDelegationComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Delegation</Card.Header>
+      <Card.Header as={"h5"}>Request Delegation</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -105,10 +106,11 @@ const RequestDelegationComponent = ({
             <Form.Select
               onChange={handleFormParams}
               value={formParams.data.unit}
-              name="unit">
+              name="unit"
+            >
               <option>Please select a UNIT</option>
-              <option value={'HP'}>HP</option>
-              <option value={'VESTS'}>VESTS</option>
+              <option value={"HP"}>HP</option>
+              <option value={"VESTS"}>VESTS</option>
             </Form.Select>
           </InputGroup>
           <InputGroup className="mb-3">

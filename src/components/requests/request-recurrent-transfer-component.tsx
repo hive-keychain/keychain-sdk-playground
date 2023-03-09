@@ -1,26 +1,23 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  RequestRecurrentTransfer,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { RecurrentTransfer } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestRecurrentTransfer> = {
-  username: 'keychain.tests',
-  to: 'theghost1980',
-  amount: '1.000',
-  currency: 'HIVE',
-  memo: '#Encrypted memo sample',
+const DEFAULT_PARAMS: RecurrentTransfer = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  to: localStorage.getItem("last_username") || "keychain.tests",
+  amount: "1.000",
+  currency: "HIVE",
+  memo: "#Encrypted memo sample",
   recurrence: 24,
   executions: 2,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['rpc'];
+const undefinedParamsToValidate = ["rpc"];
 
 const RequestRecurrentTransferComponent = ({
   setRequestResult,
@@ -29,7 +26,7 @@ const RequestRecurrentTransferComponent = ({
 }: Props & CommonProps) => {
   const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestRecurrentTransfer>;
+    data: RecurrentTransfer;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -44,7 +41,7 @@ const RequestRecurrentTransferComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -64,11 +61,11 @@ const RequestRecurrentTransferComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const conversion = await sdk.recurrentTransfer(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(conversion);
       if (enableLogs) console.log({ conversion });
@@ -79,7 +76,7 @@ const RequestRecurrentTransferComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Recurrent Transfer</Card.Header>
+      <Card.Header as={"h5"}>Request Recurrent Transfer</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -114,16 +111,17 @@ const RequestRecurrentTransferComponent = ({
             <Form.Select
               onChange={handleFormParams}
               value={formParams.data.currency}
-              name="currency">
+              name="currency"
+            >
               <option>Please select a currency</option>
-              <option value={'HIVE'}>HIVE</option>
-              <option value={'HBD'}>HBD</option>
+              <option value={"HIVE"}>HIVE</option>
+              <option value={"HBD"}>HBD</option>
             </Form.Select>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Memo</InputGroup.Text>
             <Form.Control
-              as={'textarea'}
+              as={"textarea"}
               title="Transfer memo, use # to encrypt"
               placeholder="transfer memo"
               name="memo"

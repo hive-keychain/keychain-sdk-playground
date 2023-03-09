@@ -1,36 +1,34 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  RequestCreateProposal,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { CreateProposal } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestCreateProposal> = {
-  username: 'keychain.tests',
-  receiver: 'keychain.tests',
-  subject: 'The New proposal title',
-  permlink: 'proposal-keychain-dev-permlink',
-  start: '2023-02-25T00:00:00',
-  end: '2024-02-25T00:00:00',
-  daily_pay: '390.000 HBD',
+const DEFAULT_PARAMS: CreateProposal = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  receiver: localStorage.getItem("last_username") || "keychain.tests",
+  subject: "The New proposal title",
+  permlink: "proposal-keychain-dev-permlink",
+  start: "2023-02-25T00:00:00",
+  end: "2024-02-25T00:00:00",
+  daily_pay: "390.000 HBD",
   extensions: JSON.stringify([]),
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['rpc'];
+const undefinedParamsToValidate = ["rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestCreateProposalComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestCreateProposal>;
+    data: CreateProposal;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -45,7 +43,7 @@ const RequestCreateProposalComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -65,11 +63,11 @@ const RequestCreateProposalComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const createProposal = await sdk.createProposal(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(createProposal);
       if (enableLogs) console.log({ createProposal });
@@ -80,7 +78,7 @@ const RequestCreateProposalComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Create Proposal</Card.Header>
+      <Card.Header as={"h5"}>Request Create Proposal</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">

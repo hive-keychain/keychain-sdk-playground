@@ -1,28 +1,29 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { ExcludeCommonParams, RequestPowerUp } from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup, Stack } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { PowerUp } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestPowerUp> = {
-  username: 'keychain.tests',
-  recipient: 'keychain.tests',
-  hive: '1.000',
+const DEFAULT_PARAMS: PowerUp = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  recipient: localStorage.getItem("last_username") || "keychain.tests",
+  hive: "1.000",
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['rpc'];
+const undefinedParamsToValidate = ["rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestPowerUpComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestPowerUp>;
+    data: PowerUp;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -37,7 +38,7 @@ const RequestPowerUpComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -57,7 +58,7 @@ const RequestPowerUpComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const powerUp = await sdk.powerUp(formParams.data, formParams.options);
       setRequestResult(powerUp);
@@ -69,7 +70,7 @@ const RequestPowerUpComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Power Up</Card.Header>
+      <Card.Header as={"h5"}>Request Power Up</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">

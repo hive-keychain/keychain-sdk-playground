@@ -52,17 +52,6 @@ const SearchModal = ({ show, onHide, setRequest }: Props) => {
       }
     }
     setFilteredRequests(categoryList);
-
-    const indexCategoryFound = requestCategories.findIndex((cat) => {
-      if (cat.category.toLowerCase().search(searchValue.toLowerCase()) !== -1) {
-        return true;
-      }
-      return false;
-    });
-    console.log({ foundOnIndex: indexCategoryFound });
-    if (indexCategoryFound !== -1) {
-      setActiveKeyAccordionCategory(indexCategoryFound.toString());
-    }
   }, [searchValue]);
 
   return (

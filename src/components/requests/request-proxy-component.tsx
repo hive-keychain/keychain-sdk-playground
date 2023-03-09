@@ -1,27 +1,28 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { ExcludeCommonParams, RequestProxy } from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { Proxy } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestProxy> = {
-  username: 'keychain.tests',
-  proxy: 'stoodkev',
+const DEFAULT_PARAMS: Proxy = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  proxy: "keychain",
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['username', 'rpc'];
+const undefinedParamsToValidate = ["username", "rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestProxyComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestProxy>;
+    data: Proxy;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -36,7 +37,7 @@ const RequestProxyComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -56,7 +57,7 @@ const RequestProxyComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const proxy = await sdk.proxy(formParams.data, formParams.options);
       setRequestResult(proxy);
@@ -68,7 +69,7 @@ const RequestProxyComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Proxy</Card.Header>
+      <Card.Header as={"h5"}>Request Proxy</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">

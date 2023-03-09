@@ -1,30 +1,31 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { ExcludeCommonParams, RequestSendToken } from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { SendToken } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestSendToken> = {
-  username: 'keychain.tests',
-  to: 'theghost1980',
-  amount: '0.001',
-  memo: '#Test Keychain SDK transfer(will be encrypted)',
-  currency: 'LEO',
+const DEFAULT_PARAMS: SendToken = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  to: localStorage.getItem("last_username") || "keychain.tests",
+  amount: "0.001",
+  memo: "#Test Keychain SDK transfer(will be encrypted)",
+  currency: "LEO",
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['rpc'];
+const undefinedParamsToValidate = ["rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestSendTokenComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestSendToken>;
+    data: SendToken;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -39,7 +40,7 @@ const RequestSendTokenComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -59,11 +60,11 @@ const RequestSendTokenComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const sendToken = await sdk.sendToken(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(sendToken);
       if (enableLogs) console.log({ sendToken });
@@ -74,7 +75,7 @@ const RequestSendTokenComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Send Token</Card.Header>
+      <Card.Header as={"h5"}>Request Send Token</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">

@@ -1,27 +1,28 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { ExcludeCommonParams, RequestPowerDown } from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup, Stack } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { PowerDown } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestPowerDown> = {
-  username: 'keychain.tests',
-  hive_power: '1.000',
+const DEFAULT_PARAMS: PowerDown = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  hive_power: "1.000",
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['rpc'];
+const undefinedParamsToValidate = ["rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestPowerDownComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestPowerDown>;
+    data: PowerDown;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -36,7 +37,7 @@ const RequestPowerDownComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -56,11 +57,11 @@ const RequestPowerDownComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const powerDown = await sdk.powerDown(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(powerDown);
       if (enableLogs) console.log({ powerDown });
@@ -71,7 +72,7 @@ const RequestPowerDownComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Power Down</Card.Header>
+      <Card.Header as={"h5"}>Request Power Down</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">

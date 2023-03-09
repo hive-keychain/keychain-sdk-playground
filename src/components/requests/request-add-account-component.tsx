@@ -1,17 +1,14 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  RequestAddAccount,
-  RequestAddAccountKeys,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps } from '../request-selector-component';
+import { RequestAddAccountKeys } from "hive-keychain-commons";
+import { KeychainSDK } from "keychain-sdk";
+import { AddAccount } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestAddAccount> = {
-  username: 'keychain.tests',
+const DEFAULT_PARAMS: AddAccount = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
   keys: {
     posting: undefined,
     active: undefined,
@@ -19,14 +16,14 @@ const DEFAULT_PARAMS: ExcludeCommonParams<RequestAddAccount> = {
   } as RequestAddAccountKeys,
 };
 
+const sdk = new KeychainSDK(window);
+
 const RequestAddAccountComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
-  const [formParams, setFormParams] =
-    useState<ExcludeCommonParams<RequestAddAccount>>(DEFAULT_PARAMS);
+  const [formParams, setFormParams] = useState<AddAccount>(DEFAULT_PARAMS);
 
   useEffect(() => {
     setFormParamsToShow(formParams);
@@ -34,7 +31,7 @@ const RequestAddAccountComponent = ({
 
   const handleFormParams = (e: any) => {
     const { name, value } = e.target;
-    if (name === 'username') {
+    if (name === "username") {
       setFormParams((prevFormParams) => ({
         ...prevFormParams,
         username: value,
@@ -49,7 +46,7 @@ const RequestAddAccountComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const addAccount = await sdk.addAccount(formParams);
       setRequestResult(addAccount);
@@ -61,7 +58,7 @@ const RequestAddAccountComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Add Account</Card.Header>
+      <Card.Header as={"h5"}>Request Add Account</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">

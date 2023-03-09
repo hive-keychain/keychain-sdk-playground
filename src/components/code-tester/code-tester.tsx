@@ -1,5 +1,5 @@
 import { KeychainSDK } from "keychain-sdk";
-import { Encode } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { RecurrentTransfer } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { Button, Card, Form } from "react-bootstrap";
 
 type Props = {};
@@ -12,13 +12,22 @@ const CodeTester = (props: Props) => {
     try {
       const keychain = new KeychainSDK(window);
       const formParamsAsObject = {
-        username: "keychain.tests",
-        receiver: "keychain.tests",
-        message: "#Keychain SDK v 1.0",
-        method: "Active",
+        data: {
+          username: "keychain.tests",
+          to: "keychain.tests",
+          amount: "1.000",
+          currency: "HBD",
+          memo: "#Encrypted memo sample",
+          recurrence: 24,
+          executions: 2,
+        },
+        options: {},
       };
-      const encode = await keychain.encode(formParamsAsObject as Encode);
-      console.log({ encode });
+      const recurrenttransfer = await keychain.recurrentTransfer(
+        formParamsAsObject.data as RecurrentTransfer,
+        formParamsAsObject.options
+      );
+      console.log({ recurrenttransfer });
     } catch (error) {
       console.log({ error });
     }

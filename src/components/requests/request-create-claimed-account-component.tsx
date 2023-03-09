@@ -1,26 +1,24 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  RequestCreateClaimedAccount,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
-import { Authority, AuthorityType } from '@hiveio/dhive';
+import { KeychainSDK } from "keychain-sdk";
+import { CreateClaimedAccount } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestCreateClaimedAccount> = {
-  username: 'keychain.tests',
-  new_account: 'newAccountName',
+const DEFAULT_PARAMS: CreateClaimedAccount = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  new_account: localStorage.getItem("last_username") || "keychain.tests",
   owner: JSON.stringify({}),
   active: JSON.stringify({}),
   posting: JSON.stringify({}),
-  memo: 'STM8eALyQwyb2C4XhXJ7eZfjfjfSeNeeZREaxPcJRApie1uwzzcuF',
+  memo: "STM8eALyQwyb2C4XhXJ7eZfjfjfSeNeeZREaxPcJRApie1uwzzcuF",
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['rpc'];
+const undefinedParamsToValidate = ["rpc"];
+
+const sdk = new KeychainSDK(window);
 
 //TODO needs to be discussed about differ types(keychainsdk vs common-types).
 const RequestCreateClaimedAccountComponent = ({
@@ -28,9 +26,8 @@ const RequestCreateClaimedAccountComponent = ({
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestCreateClaimedAccount>;
+    data: CreateClaimedAccount;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -45,7 +42,7 @@ const RequestCreateClaimedAccountComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -65,11 +62,11 @@ const RequestCreateClaimedAccountComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const createClaimedAccount = await sdk.createClaimedAccount(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(createClaimedAccount);
       if (enableLogs) console.log({ createClaimedAccount });
@@ -80,7 +77,7 @@ const RequestCreateClaimedAccountComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Create Claimed Account</Card.Header>
+      <Card.Header as={"h5"}>Request Create Claimed Account</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">

@@ -107,11 +107,6 @@ const RequestSelectorComponent = ({
       case KeychainRequestTypes.post:
         setRequestCard(<RequestPostComponent {...commonProps} />);
         break;
-      //TODO continue from here ---->
-      //  - updating the types: formParams + default_params
-      //  - moving outer scope, sdk instance.
-      //  - loading username from local....
-
       case KeychainRequestTypes.vote:
         setRequestCard(<RequestVoteComponent {...commonProps} />);
         break;

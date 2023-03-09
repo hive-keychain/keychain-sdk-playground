@@ -1,29 +1,30 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { ExcludeCommonParams, RequestVote } from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { Vote } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestVote> = {
-  username: '',
-  permlink: '',
-  author: '',
+const DEFAULT_PARAMS: Vote = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  permlink: "perm-link-post-sample",
+  author: localStorage.getItem("last_username") || "keychain.tests",
   weight: 10000,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['rpc'];
+const undefinedParamsToValidate = ["rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestVoteComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestVote>;
+    data: Vote;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -38,7 +39,7 @@ const RequestVoteComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -58,11 +59,11 @@ const RequestVoteComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
-      const signBuffer = await sdk.vote(formParams.data, formParams.options);
-      setRequestResult(signBuffer);
-      if (enableLogs) console.log({ signBuffer });
+      const vote = await sdk.vote(formParams.data, formParams.options);
+      setRequestResult(vote);
+      if (enableLogs) console.log({ vote });
     } catch (error) {
       setRequestResult(error);
     }
@@ -70,7 +71,7 @@ const RequestVoteComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Vote</Card.Header>
+      <Card.Header as={"h5"}>Request Vote</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">

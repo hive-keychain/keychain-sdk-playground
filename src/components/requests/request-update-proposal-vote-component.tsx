@@ -1,32 +1,30 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import {
-  ExcludeCommonParams,
-  RequestUpdateProposalVote,
-} from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { UpdateProposalVote } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestUpdateProposalVote> = {
-  username: 'keychain.tests',
+const DEFAULT_PARAMS: UpdateProposalVote = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
   proposal_ids: JSON.stringify([1, 2, 3]),
   approve: false,
   extensions: JSON.stringify([]),
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['rpc'];
+const undefinedParamsToValidate = ["rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestUpdateProposalVoteComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestUpdateProposalVote>;
+    data: UpdateProposalVote;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -41,7 +39,7 @@ const RequestUpdateProposalVoteComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -61,11 +59,11 @@ const RequestUpdateProposalVoteComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const updateProposalVote = await sdk.updateProposalVote(
         formParams.data,
-        formParams.options,
+        formParams.options
       );
       setRequestResult(updateProposalVote);
       if (enableLogs) console.log({ updateProposalVote });
@@ -76,7 +74,7 @@ const RequestUpdateProposalVoteComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Update Proposal Vote</Card.Header>
+      <Card.Header as={"h5"}>Request Update Proposal Vote</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -99,14 +97,14 @@ const RequestUpdateProposalVoteComponent = ({
               onChange={handleFormParams}
             />
           </InputGroup>
-          <Form.Group
-            className="d-flex mb-3 justify-content-center"
-            controlId="formBasicEnforce">
+          <InputGroup className="d-flex mb-3 align-items-center">
+            <InputGroup.Text>Vote</InputGroup.Text>
             <Form.Check
-              label="Approve"
+              className="ms-3"
               type="checkbox"
               name="approve"
-              value={formParams.data.approve ? 'true' : 'false'}
+              value={formParams.data.approve ? "true" : "false"}
+              checked={formParams.data.approve}
               onChange={(e) =>
                 handleFormParams({
                   target: {
@@ -116,7 +114,7 @@ const RequestUpdateProposalVoteComponent = ({
                 })
               }
             />
-          </Form.Group>
+          </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Extensions</InputGroup.Text>
             <Form.Control

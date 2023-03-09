@@ -1,28 +1,29 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { ExcludeCommonParams, RequestConvert } from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { Convert } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestConvert> = {
-  username: 'keychain.tests',
-  amount: '1.000',
+const DEFAULT_PARAMS: Convert = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  amount: "1.000",
   collaterized: false,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['rpc'];
+const undefinedParamsToValidate = ["rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestConversionComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestConvert>;
+    data: Convert;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -37,7 +38,7 @@ const RequestConversionComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -57,7 +58,7 @@ const RequestConversionComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const conversion = await sdk.convert(formParams.data, formParams.options);
       setRequestResult(conversion);
@@ -69,7 +70,7 @@ const RequestConversionComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Conversion</Card.Header>
+      <Card.Header as={"h5"}>Request Conversion</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -82,25 +83,28 @@ const RequestConversionComponent = ({
               onChange={handleFormParams}
             />
           </InputGroup>
-          <Form.Group className="mb-3 d-flex justify-content-center">
+          <InputGroup className="mb-3 align-items-center">
+            <InputGroup.Text>
+              {formParams.data.collaterized ? "HIVE to HBD" : "HBD to HIVE"}
+            </InputGroup.Text>
             <Form.Check
+              className="ms-3"
               type="switch"
               id="custom-switch"
-              label="Collateralized"
               title={
-                'true to convert HIVE to HBD. false to convert HBD to HIVE.'
+                "true to convert HIVE to HBD. false to convert HBD to HIVE."
               }
-              value={formParams.data.collaterized ? 'true' : 'false'}
+              value={formParams.data.collaterized ? "true" : "false"}
               onChange={(e) =>
                 handleFormParams({
                   target: {
-                    name: 'collaterized',
+                    name: "collaterized",
                     value: e.target.checked,
                   },
                 })
               }
             />
-          </Form.Group>
+          </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Amount</InputGroup.Text>
             <Form.Control
@@ -111,7 +115,7 @@ const RequestConversionComponent = ({
               onChange={handleFormParams}
             />
             <InputGroup.Text>
-              {formParams.data.collaterized ? 'HIVE' : 'HBD'}
+              {formParams.data.collaterized ? "HIVE" : "HBD"}
             </InputGroup.Text>
           </InputGroup>
 

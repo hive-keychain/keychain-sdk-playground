@@ -1,31 +1,32 @@
-import { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { ExcludeCommonParams, RequestTransfer } from 'hive-keychain-commons';
-import { Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { CommonProps, KeychainOptions } from '../request-selector-component';
+import { KeychainSDK } from "keychain-sdk";
+import { Transfer } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { useEffect, useState } from "react";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
 
-const DEFAULT_PARAMS: ExcludeCommonParams<RequestTransfer> = {
-  username: 'keychain.tests',
-  to: 'theghost1980',
-  amount: '1.000',
-  memo: '#Test Keychain SDK transfer(will be encrypted)',
+const DEFAULT_PARAMS: Transfer = {
+  username: localStorage.getItem("last_username") || "keychain.tests",
+  to: localStorage.getItem("last_username") || "keychain.tests",
+  amount: "1.000",
+  memo: "#Test Keychain SDK transfer(will be encrypted)",
   enforce: false,
-  currency: 'HIVE',
+  currency: "HIVE",
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const undefinedParamsToValidate = ['rpc'];
+const undefinedParamsToValidate = ["rpc"];
+
+const sdk = new KeychainSDK(window);
 
 const RequestTransferComponent = ({
   setRequestResult,
   enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
-    data: ExcludeCommonParams<RequestTransfer>;
+    data: Transfer;
     options: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -40,7 +41,7 @@ const RequestTransferComponent = ({
     const { name, value } = e.target;
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ''
+      value.trim() === ""
         ? undefined
         : value;
     if (
@@ -60,7 +61,7 @@ const RequestTransferComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log('about to process ...: ', { formParams });
+    if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const transfer = await sdk.transfer(formParams.data, formParams.options);
       setRequestResult(transfer);
@@ -72,7 +73,7 @@ const RequestTransferComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={'h5'}>Request Transfer</Card.Header>
+      <Card.Header as={"h5"}>Request Transfer</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -104,10 +105,11 @@ const RequestTransferComponent = ({
             <Form.Select
               onChange={handleFormParams}
               value={formParams.data.currency}
-              name="currency">
+              name="currency"
+            >
               <option>Please select a Currency</option>
-              <option value={'HIVE'}>HIVE</option>
-              <option value={'HBD'}>HBD</option>
+              <option value={"HIVE"}>HIVE</option>
+              <option value={"HBD"}>HBD</option>
             </Form.Select>
           </InputGroup>
           <InputGroup className="mb-3">
@@ -126,7 +128,7 @@ const RequestTransferComponent = ({
               type="checkbox"
               title="If set to true, user cannot chose to make the transfer from another account"
               name="enforce"
-              value={formParams.data.enforce ? 'true' : 'false'}
+              value={formParams.data.enforce ? "true" : "false"}
               onChange={(e) =>
                 handleFormParams({
                   target: {
