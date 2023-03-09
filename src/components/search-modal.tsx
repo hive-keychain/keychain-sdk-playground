@@ -14,6 +14,7 @@ type Props = {
   show: boolean;
   onHide: () => void;
   setRequest: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setRequestResult: React.Dispatch<React.SetStateAction<undefined>>;
 };
 
 interface RequestCategory {
@@ -26,7 +27,7 @@ interface RequestItem {
   requestType: string;
 }
 
-const SearchModal = ({ show, onHide, setRequest }: Props) => {
+const SearchModal = ({ show, onHide, setRequest, setRequestResult }: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [activeKeyAccordionCategory, setActiveKeyAccordionCategory] =
     useState("");
@@ -34,6 +35,7 @@ const SearchModal = ({ show, onHide, setRequest }: Props) => {
     useState<RequestCategory[]>(requestCategories);
 
   const handleOnClickItem = (requestItemType: string) => {
+    setRequestResult(undefined);
     setRequest(requestItemType);
     onHide();
   };

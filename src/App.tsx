@@ -13,7 +13,6 @@ import SearchModal from "./components/search-modal";
 //    - change every check on forms to justify left.
 //    - change search button as blue using same
 //    - change search input on modal to be bellow and full width instead of in header.
-//    - remove "please click on search"
 //    - instead of using "title" use "tooltip" from React bootstrap
 //    - add decode to requests
 //    - create cat Blogging:
@@ -59,6 +58,7 @@ function App() {
           show={modalShow}
           onHide={() => setModalShow(false)}
           setRequest={setRequest}
+          setRequestResult={setRequestResult}
         />
       </Container>
       {request !== undefined && (

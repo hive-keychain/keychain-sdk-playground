@@ -3,7 +3,6 @@ import { ReactNode, useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { CopyBlock, solarizedDark } from "react-code-blocks";
 import { Utils } from "../utils/utils";
-import CodeTester from "./code-tester/code-tester";
 import RequestAddAccountAuthorityComponent from "./requests/request-add-account-authority-component";
 import RequestAddAccountComponent from "./requests/request-add-account-component";
 import RequestAddKeyAuthorityComponent from "./requests/request-add-key-authority-component";
@@ -197,7 +196,7 @@ const RequestSelectorComponent = ({
         </Col>
       </Row>
       {/* TESTING to test code. Uncomment to use */}
-      <CodeTester />
+      {/* <CodeTester /> */}
       {/* END testing */}
     </Container>
   );

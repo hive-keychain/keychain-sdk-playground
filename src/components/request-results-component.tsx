@@ -55,7 +55,11 @@ const RequestResultsComponent = ({ requestResult, enableLogs }: Props) => {
             )}
             <Accordion defaultActiveKey="0">
               <Accordion.Item eventKey="0">
-                <Accordion.Header>Data:</Accordion.Header>
+                <Accordion.Header>
+                  Data: {Object.entries(requestResult.data).length.toString()}{" "}
+                  field
+                  {Object.entries(requestResult.data).length === 0 ? "" : "s"}
+                </Accordion.Header>
                 <Accordion.Body>
                   <ListGroup>
                     {Object.entries(requestResult.data).map((dataItem: any) => {
