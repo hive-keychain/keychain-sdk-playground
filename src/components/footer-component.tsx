@@ -7,7 +7,7 @@ type Props = {};
 
 export default function FooterComponent({}: Props) {
   return (
-    <Container className="d-flex justify-content-center bottom-0 mt-5 sticky-lg-bottom">
+    <Container className="d-flex justify-content-center bottom-0 mt-5 sticky-bottom">
       <ListGroup className="d-flex justify-content-center">
         <ListGroup.Item action href={"https://hive-keychain.com/"}>
           Made with ❤ by Keychain Team

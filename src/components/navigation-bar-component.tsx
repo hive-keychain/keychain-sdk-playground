@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { KeychainSDK } from 'keychain-sdk';
-import { Button, Form, Image, Navbar } from 'react-bootstrap';
-import Container from 'react-bootstrap/esm/Container';
-import KeyChainDetectedIcon from '../assets/images/svgs/check_circle_black.svg';
-import KeychainError from '../assets/images/svgs/cancel_black.svg';
+import { KeychainSDK } from "keychain-sdk";
+import React, { useEffect, useState } from "react";
+import { Button, Form, Image, Navbar } from "react-bootstrap";
+import Container from "react-bootstrap/esm/Container";
+import AlertIconRed from "../assets/images/pngs/icons8-alert-sign.png";
+import KeyChainPngIcon from "../assets/images/pngs/keychain_icon_small.png";
+import CheckMarkGreen from "../assets/images/svgs/icons8-check-mark-green.svg";
 
 type Props = {
   setEnabledKeychain: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,7 +22,7 @@ const NavigationBarComponent = ({
 
   useEffect(() => {
     const onLoadHandler = async () => {
-      if (enableLogs) console.log('Fully loaded!');
+      if (enableLogs) console.log("Fully loaded!");
       try {
         const enabled = await sdk.isKeyChainInstalled();
         setKeychainInstalled(enabled);
@@ -32,38 +33,48 @@ const NavigationBarComponent = ({
       }
     };
 
-    window.addEventListener('load', onLoadHandler);
+    window.addEventListener("load", onLoadHandler);
 
     return () => {
-      window.removeEventListener('load', onLoadHandler);
+      window.removeEventListener("load", onLoadHandler);
     };
   });
 
   return (
     <Navbar bg="light" expand="lg" className="mb-2">
       <Container fluid>
-        <Navbar.Brand
-          href="home"
-          title={
-            keychainInstalled
-              ? 'Good to play with requests'
-              : 'Install keychain or reload extension on settings.'
-          }>
-          {keychainInstalled ? 'Keychain Detected' : 'Keychain Not Detected'}
+        <Navbar.Brand href="home">
+          {/* //TODO here acomplish the tooltip as a component and apply to all needs. */}
+          {/* <Tooltip placement={"right"}>
+            {keychainInstalled
+              ? "Good to play with requests"
+              : "Install keychain or reload extension on settings."}
+          </Tooltip> */}
           <Image
-            src={keychainInstalled ? KeyChainDetectedIcon : KeychainError}
+            src={KeyChainPngIcon}
+            height={30}
+            width={30}
+            style={{ backgroundColor: "black", borderRadius: 50, padding: 3 }}
+          />
+          <Image
+            src={keychainInstalled ? CheckMarkGreen : AlertIconRed}
+            height={30}
           />
         </Navbar.Brand>
-        <Form className="d-flex" onClick={() => setModalShow(true)} onSubmit={() => {}}>
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-              disabled
-            />
-            <Button variant="outline-success">Search</Button>
-          </Form>
+        <Form
+          className="d-flex"
+          onClick={() => setModalShow(true)}
+          onSubmit={() => {}}
+        >
+          <Form.Control
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+            disabled
+          />
+          <Button variant="outline-success">Search</Button>
+        </Form>
       </Container>
     </Navbar>
   );
