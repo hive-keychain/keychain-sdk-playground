@@ -121,10 +121,10 @@ const RequestTransferComponent = ({
               onChange={handleFormParams}
             />
           </InputGroup>
-          <InputGroup className="d-flex justify-content-center mb-3 align-items-center">
-            <InputGroup.Text>Enforce Transfer</InputGroup.Text>
+          <InputGroup className="d-flex mb-3 align-items-center">
+            <InputGroup.Text>Enforce</InputGroup.Text>
             <Form.Check
-              className="ms-5"
+              className="ms-3"
               type="checkbox"
               title="If set to true, user cannot chose to make the transfer from another account"
               name="enforce"

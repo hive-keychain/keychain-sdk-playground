@@ -1,16 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
-import { Card, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import "./App.css";
 import FooterComponent from "./components/footer-component";
-import LogsEnablerComponent from "./components/logs-enabler-component";
 import NavigationBarComponent from "./components/navigation-bar-component";
 import RequestResultsComponent from "./components/request-results-component";
 import RequestSelectorComponent from "./components/request-selector-component";
 import SearchModal from "./components/search-modal";
-//TODO important:
-//  when ready for production, add the following into package.json
-//  -> "keychain-sdk": "github:hive-keychain/keychain-sdk",
 
 //TODO here:
 //    - change footer to be always at the bottom
@@ -39,7 +35,7 @@ function App() {
   const [enabledKeychain, setEnabledKeychain] = useState(false);
   const [requestResult, setRequestResult] = useState();
   const [enableLogs, setEnableLogs] = useState(true);
-  const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(true);
   const [request, setRequest] = useState<string>();
 
   useEffect(() => {
@@ -65,12 +61,8 @@ function App() {
           setRequest={setRequest}
         />
       </Container>
-      {request !== undefined ? (
+      {request !== undefined && (
         <>
-          <LogsEnablerComponent
-            enableLogs={enableLogs}
-            setEnableLogs={setEnableLogs}
-          />
           <RequestSelectorComponent
             setRequestResult={setRequestResult}
             requestResult={requestResult}
@@ -86,12 +78,6 @@ function App() {
             />
           )}
         </>
-      ) : (
-        <Card className="mt-2 mb-2">
-          <Card.Header as={"h4"} className="text-center">
-            Please click on search, to select a request.
-          </Card.Header>
-        </Card>
       )}
       <FooterComponent />
     </div>

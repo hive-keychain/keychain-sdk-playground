@@ -58,26 +58,13 @@ const RequestResultsComponent = ({ requestResult, enableLogs }: Props) => {
                 <Accordion.Header>Data:</Accordion.Header>
                 <Accordion.Body>
                   <ListGroup>
-                    <ListGroup.Item>
-                      Key: {requestResult.data.key}
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      Message: {requestResult.data.message}
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      Method: {requestResult.data.method}
-                    </ListGroup.Item>
-                    {requestResult.receiver && (
-                      <ListGroup.Item>
-                        Receiver: {requestResult.data.receiver}
-                      </ListGroup.Item>
-                    )}
-                    <ListGroup.Item>
-                      Type: {requestResult.data.type}
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      Username: {requestResult.data.username}
-                    </ListGroup.Item>
+                    {Object.entries(requestResult.data).map((dataItem: any) => {
+                      return (
+                        <ListGroup.Item key={dataItem[0]}>
+                          {dataItem[0]}: {dataItem[1].toString()}
+                        </ListGroup.Item>
+                      );
+                    })}
                   </ListGroup>
                 </Accordion.Body>
               </Accordion.Item>

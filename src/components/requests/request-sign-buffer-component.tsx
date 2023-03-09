@@ -9,9 +9,9 @@ type Props = {};
 
 const DEFAULT_PARAMS: SignBuffer = {
   username: localStorage.getItem("last_username") || "keychain.tests",
-  message: "#message to decode here, # is required to encrypt",
+  message: "sample message to sign",
   method: KeychainKeyTypes.active,
-  title: undefined,
+  title: "title",
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
@@ -92,7 +92,7 @@ const RequestSignBufferComponent = ({
             <Form.Control
               as="textarea"
               rows={3}
-              placeholder="To encode. # is required on message"
+              placeholder="Message to sign"
               name="message"
               value={formParams.data.message}
               onChange={handleFormParams}
