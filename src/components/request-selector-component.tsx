@@ -166,9 +166,10 @@ const RequestSelectorComponent = ({
   }, [request, setRequestResult]);
 
   return (
-    <Container fluid>
+    <Container>
       <Row>
-        <Col className="w-50">
+        {/* //TODO check if needed //Initially was as className="w-50" */}
+        <Col lg={true} className="mb-3">
           <Card className="d-flex justify-content-center">
             <Card.Header as={"h4"}>SDK Playground</Card.Header>
             <Card.Body>
@@ -178,7 +179,7 @@ const RequestSelectorComponent = ({
             </Card.Body>
           </Card>
         </Col>
-        <Col className="w-50">
+        <Col lg={true}>
           <CustomToolTip
             placement={"top"}
             toolTipText={fieldToolTipText.codeBlockSample}

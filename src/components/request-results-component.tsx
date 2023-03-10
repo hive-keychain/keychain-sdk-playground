@@ -26,7 +26,7 @@ const RequestResultsComponent = ({
   });
 
   return (
-    <Container className="w-50 mt-2 mb-2">
+    <Container className="mt-2 mb-2">
       <Card
         text={
           requestResult.error ||

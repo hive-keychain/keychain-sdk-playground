@@ -8,8 +8,6 @@ import RequestResultsComponent from "./components/request-results-component";
 import RequestSelectorComponent from "./components/request-selector-component";
 import SearchModal from "./components/search-modal";
 
-//TODO
-//    - add responsiveness so it becomes columns if screen.width < XX check on boostrap
 type LocalStorageObject = { [key: string]: string };
 
 const localStorageValues: LocalStorageObject = {
