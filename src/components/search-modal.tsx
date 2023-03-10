@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import { AccordionEventKey } from "react-bootstrap/esm/AccordionContext";
 import { requestCategories } from "../reference-data/requests-categories";
+import { Utils } from "../utils/utils";
 
 type Props = {
   show: boolean;
@@ -42,7 +43,10 @@ const SearchModal = ({ show, onHide, setRequest, setRequestResult }: Props) => {
 
   useEffect(() => {
     const categoryList: RequestCategory[] = [];
-    for (const category of requestCategories) {
+    const orderedRequestCategories = requestCategories.sort((a, b) =>
+      Utils.sortByKeyNames(a, b, "category")
+    );
+    for (const category of orderedRequestCategories) {
       const itemList: RequestItem[] = [];
       for (const item of category.items) {
         if (item.name.toLowerCase().includes(searchValue.toLowerCase())) {

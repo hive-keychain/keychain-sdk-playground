@@ -88,21 +88,10 @@ export const requestCategories = [
         name: "Sign Tx",
         requestType: KeychainRequestTypes.signTx,
       },
-      {
-        name: "Post",
-        requestType: KeychainRequestTypes.post,
-      },
-      { name: "Vote", requestType: KeychainRequestTypes.vote },
+
       { name: "Custom Json", requestType: KeychainRequestTypes.custom },
-      { name: "Transfer", requestType: KeychainRequestTypes.transfer },
-      { name: "Delegation", requestType: KeychainRequestTypes.delegation },
-      { name: "Power Up", requestType: KeychainRequestTypes.powerUp },
-      { name: "Power Down", requestType: KeychainRequestTypes.powerDown },
+
       { name: "Conversion", requestType: KeychainRequestTypes.convert },
-      {
-        name: "Recurrent Transfer",
-        requestType: KeychainRequestTypes.recurrentTransfer,
-      },
     ],
   },
   {
@@ -121,6 +110,34 @@ export const requestCategories = [
         name: "Login",
         requestType: "login",
       },
+    ],
+  },
+  {
+    category: "Blogging",
+    items: [
+      {
+        name: "Post",
+        requestType: KeychainRequestTypes.post,
+      },
+      { name: "Vote", requestType: KeychainRequestTypes.vote },
+    ],
+  },
+  {
+    category: "Transfer",
+    items: [
+      { name: "Transfer", requestType: KeychainRequestTypes.transfer },
+      {
+        name: "Recurrent Transfer",
+        requestType: KeychainRequestTypes.recurrentTransfer,
+      },
+    ],
+  },
+  {
+    category: "HP(HIVE power)",
+    items: [
+      { name: "Delegation", requestType: KeychainRequestTypes.delegation },
+      { name: "Power Up", requestType: KeychainRequestTypes.powerUp },
+      { name: "Power Down", requestType: KeychainRequestTypes.powerDown },
     ],
   },
 ];
