@@ -14,7 +14,7 @@ const fromCodeToText = (
     : `await keychain
               .${requestType}(formParamsAsObject.data as ${capitalized},
               formParamsAsObject.options)`;
-
+  //TODO add bellow a check on formParams.broadcastSignedTx and write extra code & test it
   return `try
   {
     const keychain = new KeychainSDK(window);

@@ -20,6 +20,8 @@ import {
   InputGroup,
   ListGroup,
 } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../request-selector-component";
 //TODO here:
 //  - ask cedric about nasty dHive error
@@ -35,7 +37,7 @@ const DEFAULT_OPERATION: Operation = [
     from: localStorage.getItem("last_username") || "keychain.tests",
     to: localStorage.getItem("last_username") || "keychain.tests",
     amount: "0.001 HIVE",
-    memo: "testing keychain SDK - requestBroadcast",
+    memo: "Testing keychain SDK - requestSignTx & broadcast",
   },
 ];
 
@@ -50,7 +52,7 @@ const DEFAULT_TX: Transaction = {
 const DEFAULT_PARAMS: SignTx = {
   username: localStorage.getItem("last_username") || "keychain.tests",
   tx: DEFAULT_TX,
-  method: KeychainKeyTypes.memo,
+  method: KeychainKeyTypes.posting,
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
@@ -72,13 +74,14 @@ const RequestSignTxComponent = ({
 }: Props & CommonProps) => {
   const [operation, setOperation] = useState<Operation>(DEFAULT_OPERATION);
   const [arrayOperations, setArrayOperations] = useState<Operation[]>([]);
-
   const [formParams, setFormParams] = useState<{
     data: SignTx;
     options: KeychainOptions;
+    broadcastSignedTx: boolean;
   }>({
     data: DEFAULT_PARAMS,
     options: DEFAULT_OPTIONS,
+    broadcastSignedTx: false,
   });
 
   useEffect(() => {
@@ -187,27 +190,30 @@ const RequestSignTxComponent = ({
           tx: { ...prevFormParams.data.tx, operations: tempValue },
         },
       }));
+    } else {
+      //using just new field on signTx as 'broadcast'
+      setFormParams((prevFormParams) => ({ ...prevFormParams, [name]: value }));
     }
   };
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    //TODO remove clean up
-    // formParams['data']['tx']['operations'] = arrayOperations as Operation[]; //As common types require
-
-    // //@ts-ignore
-    // formParams['data']['tx']['operations'] = JSON.stringify(
-    //   arrayOperations as Operation[],
-    // ); //as quentin suggested
-
     if (enableLogs) console.log("about to process ...: ", { formParams });
     try {
       const sign = await sdk.signTx(formParams.data, formParams.options);
-      // TODO : broadcast or not based on a checkbox
-      // client.broadcast.send(sign.result as any);
-      setRequestResult(sign);
-      if (enableLogs) console.log({ sign });
+      let signedTxBroadcast;
+      if (formParams.broadcastSignedTx) {
+        signedTxBroadcast = await client.broadcast.send(sign.result as any);
+      }
+      setRequestResult(
+        formParams.broadcastSignedTx
+          ? { success: true, result: signedTxBroadcast }
+          : sign
+      );
+      if (enableLogs)
+        console.log(
+          formParams.broadcastSignedTx ? { signedTxBroadcast } : { sign }
+        );
     } catch (error) {
       setRequestResult(error);
     }
@@ -218,34 +224,65 @@ const RequestSignTxComponent = ({
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
-            <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              placeholder="Hive username to perform the request"
-              name="username"
-              value={formParams.data.username}
-              onChange={handleFormParams}
-            />
+            <InputGroup.Text>Username @</InputGroup.Text>
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.username}
+            >
+              <Form.Control
+                placeholder="Hive username to perform the request"
+                name="username"
+                value={formParams.data.username}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
-
           <Form.Group className="mb-3">
             <Form.Label>Operations</Form.Label>
             <Container>
-              <Form.Control
-                placeholder="Operation type"
-                name="operation_name"
-                onChange={handleOperation}
-              />
-              <Form.Control
-                as="textarea"
-                rows={5}
-                placeholder="JSON"
-                name="json"
-                onChange={handleOperation}
-              />
+              <CustomToolTip
+                placement="top"
+                toolTipText={fieldToolTipText.operationType}
+              >
+                <Form.Control
+                  placeholder="Operation type"
+                  name="operation_name"
+                  onChange={handleOperation}
+                />
+              </CustomToolTip>
+              <CustomToolTip
+                placement="top"
+                toolTipText={fieldToolTipText.jsonObject}
+              >
+                <Form.Control
+                  as="textarea"
+                  rows={5}
+                  placeholder="JSON"
+                  name="json"
+                  onChange={handleOperation}
+                />
+              </CustomToolTip>
             </Container>
-            <Button className="mt-2" onClick={handleAddOperation}>
-              +
-            </Button>
+            <Container className="d-flex mt-2 mb-2 justify-content-center">
+              <CustomToolTip
+                placement="top"
+                toolTipText={fieldToolTipText.clickToAddOperation}
+              >
+                <Button onClick={handleAddOperation}>+</Button>
+              </CustomToolTip>
+              <CustomToolTip
+                placement="top"
+                toolTipText={fieldToolTipText.resetOperationList}
+              >
+                <Button
+                  className="ms-3"
+                  onClick={handleResetList}
+                  variant="outline-primary"
+                >
+                  reset queue list
+                </Button>
+              </CustomToolTip>
+            </Container>
             {arrayOperations.length > 0 && (
               <Container>
                 <ListGroup>
@@ -257,9 +294,6 @@ const RequestSignTxComponent = ({
                     );
                   })}
                 </ListGroup>
-                <Button onClick={handleResetList} variant="outline-primary">
-                  reset
-                </Button>
               </Container>
             )}
           </Form.Group>
@@ -278,6 +312,33 @@ const RequestSignTxComponent = ({
                 {KeychainKeyTypes.posting}
               </option>
             </Form.Select>
+          </InputGroup>
+          <InputGroup className="d-flex mb-3 align-items-center">
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.broadcastAfterSignTx}
+            >
+              <InputGroup.Text>Broadcast</InputGroup.Text>
+            </CustomToolTip>
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.broadcastAfterSignTx}
+            >
+              <Form.Check
+                className="ms-3"
+                type="checkbox"
+                name="broadcastSignedTx"
+                value={formParams.broadcastSignedTx ? "true" : "false"}
+                onChange={(e) =>
+                  handleFormParams({
+                    target: {
+                      value: e.target.checked,
+                      name: e.target.name,
+                    },
+                  })
+                }
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>

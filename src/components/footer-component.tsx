@@ -7,8 +7,8 @@ type Props = {};
 
 function FooterComponent({}: Props): JSX.Element {
   return (
-    <Container className="d-flex justify-content-center bottom-0 mt-auto sticky-bottom">
-      <ListGroup className="d-flex justify-content-center">
+    <Container className="d-flex justify-content-center bottom-0 mt-auto">
+      <ListGroup className="d-flex justify-content-center mt-4">
         <ListGroup.Item action href={"https://hive-keychain.com/"}>
           Made with ❤ by Keychain Team
         </ListGroup.Item>

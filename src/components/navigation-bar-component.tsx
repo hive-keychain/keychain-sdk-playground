@@ -43,7 +43,7 @@ const NavigationBarComponent = ({
 
   return (
     <Navbar bg="light" expand="lg" className="mb-2">
-      <Container fluid>
+      <Container>
         <Navbar.Brand href="home">
           <CustomToolTip
             children={
@@ -93,7 +93,7 @@ const NavigationBarComponent = ({
             aria-label="Search"
             disabled
           />
-          <Button variant="outline-success">Search</Button>
+          <Button variant="outline-primary">Search</Button>
         </Form>
       </Container>
     </Navbar>

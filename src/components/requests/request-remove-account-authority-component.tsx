@@ -3,6 +3,8 @@ import { KeychainSDK } from "keychain-sdk";
 import { RemoveAccountAuthority } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
@@ -79,22 +81,31 @@ const RequestRemoveAccountAuthorityComponent = ({
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              placeholder="Hive username to perform the request"
-              name="username"
-              value={formParams.data.username}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.username}
+            >
+              <Form.Control
+                placeholder="Hive username to perform the request"
+                name="username"
+                value={formParams.data.username}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Authorized @</InputGroup.Text>
-            <Form.Control
-              title="Account to lose authority"
-              placeholder="Hive username to authorize"
-              name="authorizedUsername"
-              value={formParams.data.authorizedUsername}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.toUnauthorizedAccount}
+            >
+              <Form.Control
+                placeholder="Hive username to authorize"
+                name="authorizedUsername"
+                value={formParams.data.authorizedUsername}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Method</InputGroup.Text>

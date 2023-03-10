@@ -3,6 +3,8 @@ import { KeychainSDK } from "keychain-sdk";
 import { Encode } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps } from "../request-selector-component";
 
 type Props = {};
@@ -52,12 +54,17 @@ const RequestEncodeMessageComponent = ({
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              title="Hive account to perform the request"
-              placeholder="Hive username"
-              name="username"
-              value={formParams.username}
-              onChange={handleFormParams}
+            <CustomToolTip
+              children={
+                <Form.Control
+                  placeholder="Hive username"
+                  name="username"
+                  value={formParams.username}
+                  onChange={handleFormParams}
+                />
+              }
+              placement={"top"}
+              toolTipText={fieldToolTipText.username}
             />
           </InputGroup>
           <InputGroup className="mb-3">

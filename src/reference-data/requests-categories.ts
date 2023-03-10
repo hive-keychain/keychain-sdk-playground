@@ -133,7 +133,7 @@ export const requestCategories = [
     ],
   },
   {
-    category: "HP(HIVE power)",
+    category: "HP (HIVE power)",
     items: [
       { name: "Delegation", requestType: KeychainRequestTypes.delegation },
       { name: "Power Up", requestType: KeychainRequestTypes.powerUp },

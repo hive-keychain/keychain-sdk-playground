@@ -8,21 +8,7 @@ import RequestResultsComponent from "./components/request-results-component";
 import RequestSelectorComponent from "./components/request-selector-component";
 import SearchModal from "./components/search-modal";
 
-//TODO here:
-//    - change footer to be always at the bottom
-//    - change every check on forms to justify left.
-//    - change search button as blue using same
-//    - change search input on modal to be bellow and full width instead of in header.
-//    - instead of using "title" use "tooltip" from React bootstrap
-//    - add decode to requests
-//    - create cat Blogging:
-//      - vote, post
-//    - create Transfer:
-//      - transfer, recurrent
-//    - create cat HP:
-//      - delegation, powerUp, powerDown.
-//    - remove enableLogs, always display the logs.
-//    - improve the sample code to show the object as an object instead of a stringifyed line of text which is hard to read
+//TODO
 //    - add responsiveness so it becomes columns if screen.width < XX check on boostrap
 type LocalStorageObject = { [key: string]: string };
 
@@ -62,7 +48,14 @@ function App() {
         />
       </Container>
       {request !== undefined && (
-        <>
+        <Container>
+          {requestResult && (
+            <RequestResultsComponent
+              requestResult={requestResult}
+              enableLogs={enableLogs}
+              setRequestResult={setRequestResult}
+            />
+          )}
           <RequestSelectorComponent
             setRequestResult={setRequestResult}
             requestResult={requestResult}
@@ -71,13 +64,7 @@ function App() {
             request={request}
             setRequest={setRequest}
           />
-          {requestResult && (
-            <RequestResultsComponent
-              requestResult={requestResult}
-              enableLogs={enableLogs}
-            />
-          )}
-        </>
+        </Container>
       )}
       <FooterComponent />
     </div>

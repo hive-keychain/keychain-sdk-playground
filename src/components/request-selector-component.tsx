@@ -2,7 +2,9 @@ import { KeychainRequestTypes } from "hive-keychain-commons";
 import { ReactNode, useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { CopyBlock, solarizedDark } from "react-code-blocks";
+import { fieldToolTipText } from "../reference-data/form-field-tool-tip-text";
 import { Utils } from "../utils/utils";
+import CustomToolTip from "./custom-tool-tip";
 import RequestAddAccountAuthorityComponent from "./requests/request-add-account-authority-component";
 import RequestAddAccountComponent from "./requests/request-add-account-component";
 import RequestAddKeyAuthorityComponent from "./requests/request-add-key-authority-component";
@@ -177,22 +179,27 @@ const RequestSelectorComponent = ({
           </Card>
         </Col>
         <Col className="w-50">
-          <Card className="d-flex">
-            <Card.Header as={"h4"}>Code Sample</Card.Header>
-            <Card.Body>
-              <CopyBlock
-                text={Utils.fromCodeToText(
-                  formParamsToShow,
-                  request as KeychainRequestTypes
-                )}
-                language={"typescript"}
-                showLineNumbers={false}
-                startingLineNumber={1}
-                wrapLines
-                theme={solarizedDark}
-              />
-            </Card.Body>
-          </Card>
+          <CustomToolTip
+            placement={"top"}
+            toolTipText={fieldToolTipText.codeBlockSample}
+          >
+            <Card className="d-flex">
+              <Card.Header as={"h4"}>Code Sample</Card.Header>
+              <Card.Body>
+                <CopyBlock
+                  text={Utils.fromCodeToText(
+                    formParamsToShow,
+                    request as KeychainRequestTypes
+                  )}
+                  language={"typescript"}
+                  showLineNumbers={false}
+                  startingLineNumber={1}
+                  wrapLines
+                  theme={solarizedDark}
+                />
+              </Card.Body>
+            </Card>
+          </CustomToolTip>
         </Col>
       </Row>
       {/* TESTING to test code. Uncomment to use */}

@@ -64,8 +64,10 @@ const SearchModal = ({ show, onHide, setRequest, setRequestResult }: Props) => {
     <Modal show={show} onHide={onHide} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Search Keychain Request </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
         <Form onSubmit={() => {}}>
-          <InputGroup>
+          <InputGroup className="mb-2">
             <Form.Control
               title="Type to show content bellow"
               placeholder="type to search"
@@ -75,8 +77,6 @@ const SearchModal = ({ show, onHide, setRequest, setRequestResult }: Props) => {
             />
           </InputGroup>
         </Form>
-      </Modal.Header>
-      <Modal.Body>
         <Accordion
           activeKey={activeKeyAccordionCategory}
           onSelect={(e: AccordionEventKey) =>

@@ -3,11 +3,12 @@ import { KeychainSDK } from "keychain-sdk";
 import { Login } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../request-selector-component";
 
 type Props = {};
-//TODO to delete
-// message: '#message to decode here, # is required to encrypt',
+
 const DEFAULT_PARAMS: Login = {
   username: localStorage.getItem("last_username") || "keychain.tests",
   message: '{"login":"123"}',
@@ -78,21 +79,32 @@ const RequestLoginComponent = ({
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              placeholder="Hive username"
-              name="username"
-              value={formParams.data.username}
-              onChange={handleFormParams}
+            <CustomToolTip
+              children={
+                <Form.Control
+                  placeholder="Hive username"
+                  name="username"
+                  value={formParams.data.username}
+                  onChange={handleFormParams}
+                />
+              }
+              placement={"top"}
+              toolTipText={fieldToolTipText.username}
             />
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Message</InputGroup.Text>
-            <Form.Control
-              title="Message to sign, if undefined, random message will be generated"
-              placeholder="Message to sign"
-              name="message"
-              value={formParams.data.message}
-              onChange={handleFormParams}
+            <CustomToolTip
+              children={
+                <Form.Control
+                  placeholder="Message to sign"
+                  name="message"
+                  value={formParams.data.message}
+                  onChange={handleFormParams}
+                />
+              }
+              placement={"top"}
+              toolTipText={fieldToolTipText.messageLogin}
             />
           </InputGroup>
           <InputGroup className="mb-3">
@@ -116,11 +128,16 @@ const RequestLoginComponent = ({
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Title</InputGroup.Text>
-            <Form.Control
-              placeholder="Title to be shown on popup"
-              name="title"
-              value={formParams.data.title}
-              onChange={handleFormParams}
+            <CustomToolTip
+              children={
+                <Form.Control
+                  name="title"
+                  value={formParams.data.title}
+                  onChange={handleFormParams}
+                />
+              }
+              placement={"top"}
+              toolTipText={fieldToolTipText.titlePopUp}
             />
           </InputGroup>
           <InputGroup className="mb-3">
