@@ -5,6 +5,7 @@ import Container from "react-bootstrap/esm/Container";
 import AlertIconRed from "../assets/images/pngs/icons8-alert-sign.png";
 import KeyChainPngIcon from "../assets/images/pngs/keychain_icon_small.png";
 import CheckMarkGreen from "../assets/images/svgs/icons8-check-mark-green.svg";
+import CustomToolTip from "./custom-tool-tip";
 
 type Props = {
   setEnabledKeychain: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,21 +45,40 @@ const NavigationBarComponent = ({
     <Navbar bg="light" expand="lg" className="mb-2">
       <Container fluid>
         <Navbar.Brand href="home">
-          {/* //TODO here acomplish the tooltip as a component and apply to all needs. */}
-          {/* <Tooltip placement={"right"}>
-            {keychainInstalled
-              ? "Good to play with requests"
-              : "Install keychain or reload extension on settings."}
-          </Tooltip> */}
-          <Image
-            src={KeyChainPngIcon}
-            height={30}
-            width={30}
-            style={{ backgroundColor: "black", borderRadius: 50, padding: 3 }}
+          <CustomToolTip
+            children={
+              <Image
+                id="keychain-logo"
+                src={KeyChainPngIcon}
+                height={30}
+                width={30}
+                style={{
+                  backgroundColor: "black",
+                  borderRadius: 50,
+                  padding: 3,
+                }}
+              />
+            }
+            toolTipText={
+              keychainInstalled
+                ? "Good to play with requests"
+                : "Install keychain or reload extension on settings."
+            }
+            placement={"bottom"}
           />
-          <Image
-            src={keychainInstalled ? CheckMarkGreen : AlertIconRed}
-            height={30}
+          <CustomToolTip
+            children={
+              <Image
+                src={keychainInstalled ? CheckMarkGreen : AlertIconRed}
+                height={30}
+              />
+            }
+            toolTipText={
+              keychainInstalled
+                ? "Keychain extension installed and detected!"
+                : "Keychain could not be found, please check documentation, error section."
+            }
+            placement={"bottom"}
           />
         </Navbar.Brand>
         <Form

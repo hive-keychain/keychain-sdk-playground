@@ -5,9 +5,9 @@ import TwitterLogoSvg from "../assets/images/svgs/twitter.svg";
 
 type Props = {};
 
-export default function FooterComponent({}: Props) {
+function FooterComponent({}: Props): JSX.Element {
   return (
-    <Container className="d-flex justify-content-center bottom-0 mt-5 sticky-bottom">
+    <Container className="d-flex justify-content-center bottom-0 mt-auto sticky-bottom">
       <ListGroup className="d-flex justify-content-center">
         <ListGroup.Item action href={"https://hive-keychain.com/"}>
           Made with ❤ by Keychain Team
@@ -32,3 +32,5 @@ export default function FooterComponent({}: Props) {
     </Container>
   );
 }
+
+export default FooterComponent;

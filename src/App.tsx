@@ -55,7 +55,7 @@ function App() {
       />
       <Container className="d-flex justify-content-center mt-2 mb-2">
         <SearchModal
-          show={modalShow}
+          show={modalShow && enabledKeychain}
           onHide={() => setModalShow(false)}
           setRequest={setRequest}
           setRequestResult={setRequestResult}
