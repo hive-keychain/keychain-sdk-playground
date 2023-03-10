@@ -12,15 +12,27 @@ const fromCodeToText = (
     ? `await keychain
               .${requestType}(formParamsAsObject as ${capitalized});`
     : `await keychain
-              .${requestType}(formParamsAsObject.data as ${capitalized},
+              .${requestType}(formParamsAsObject.data as ${
+        capitalized === "SignTx" ? "any" : capitalized
+      },
               formParamsAsObject.options)`;
-  //TODO add bellow a check on formParams.broadcastSignedTx and write extra code & test it
+
+  const extraCodeOnSignTx = formParams.broadcastSignedTx
+    ? `const client = new Client([
+      "https://api.hive.blog",
+      "https://anyx.io",
+      "https://api.openhive.network",
+    ]);
+    let signedTxBroadcast = await client.broadcast.send(signtx.result as any);
+    console.log({ signedTxBroadcast });`
+    : `console.log({ ${requestType.toLowerCase()} });`;
+
   return `try
   {
     const keychain = new KeychainSDK(window);
     const formParamsAsObject = ${JSON.stringify(formParams, undefined, "    ")};
     const ${requestType.toLowerCase()} = ${requestObjectCall};
-    console.log({ ${requestType.toLowerCase()} });
+    ${extraCodeOnSignTx}
   } catch (error) {
     console.log({ error });
   }`;

@@ -168,7 +168,6 @@ const RequestSelectorComponent = ({
   return (
     <Container>
       <Row>
-        {/* //TODO check if needed //Initially was as className="w-50" */}
         <Col lg={true} className="mb-3">
           <Card className="d-flex justify-content-center">
             <Card.Header as={"h4"}>SDK Playground</Card.Header>
@@ -203,7 +202,7 @@ const RequestSelectorComponent = ({
           </CustomToolTip>
         </Col>
       </Row>
-      {/* TESTING to test code. Uncomment to use */}
+      {/* TESTING to test code. Uncomment bellow to use */}
       {/* <CodeTester /> */}
       {/* END testing */}
     </Container>

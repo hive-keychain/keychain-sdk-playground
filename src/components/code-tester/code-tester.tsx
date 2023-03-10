@@ -1,5 +1,3 @@
-import { KeychainSDK } from "keychain-sdk";
-import { RecurrentTransfer } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { Button, Card, Form } from "react-bootstrap";
 
 type Props = {};
@@ -9,28 +7,7 @@ const CodeTester = (props: Props) => {
     e.preventDefault();
     //////////////////////
     //copy & paste here///
-    try {
-      const keychain = new KeychainSDK(window);
-      const formParamsAsObject = {
-        data: {
-          username: "keychain.tests",
-          to: "keychain.tests",
-          amount: "1.000",
-          currency: "HBD",
-          memo: "#Encrypted memo sample",
-          recurrence: 24,
-          executions: 2,
-        },
-        options: {},
-      };
-      const recurrenttransfer = await keychain.recurrentTransfer(
-        formParamsAsObject.data as RecurrentTransfer,
-        formParamsAsObject.options
-      );
-      console.log({ recurrenttransfer });
-    } catch (error) {
-      console.log({ error });
-    }
+
     //end copy/paste//////
     //////////////////////
   };

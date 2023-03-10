@@ -24,11 +24,8 @@ import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text"
 import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../request-selector-component";
 //TODO here:
-//  - ask cedric about nasty dHive error
-//      -> error here:
-// WARNING in ./node_modules/@hiveio/dhive/dist/dhive.js
-// Module Warning (from ./node_modules/source-map-loader/dist/cjs.js):
-// Failed to parse source map from 'C:\cygwin64\home\Saturno\KeyChain\keychain-sdk\sdk-playground\node_modules\@hiveio\dhive\dist\src\utils.ts' file: Error: ENOENT: no such file or directory, open 'C:\cygwin64\home\Saturno\KeyChain\keychain-sdk\sdk-playground\node_modules\@hiveio\dhive\dist\src\utils.ts'
+//  there are still some nasty errors on console
+//  complaining about 'Failed to parse source map from...'
 type Props = {};
 
 const DEFAULT_OPERATION: Operation = [
@@ -66,7 +63,6 @@ const undefinedParamsToValidate = [""]; //none to check
 
 const sdk = new KeychainSDK(window);
 
-//TODO Check & tests + add checkbox to broadcast or not & cleanUp
 const RequestSignTxComponent = ({
   setRequestResult,
   enableLogs,
@@ -94,14 +90,9 @@ const RequestSignTxComponent = ({
     initProps();
   }, []);
 
-  //TODO remove, just for testing
   useEffect(() => {
     console.log({ arrayOperations });
   }, [arrayOperations]);
-  // useEffect(() => {
-  //   console.log({ operation });
-  // }, [operation]);
-  //end remove
 
   useEffect(() => {
     if (dHiveprops) {
@@ -147,15 +138,12 @@ const RequestSignTxComponent = ({
 
   useEffect(() => {
     if (arrayOperations) {
-      //TODO clean up
-      //testing to set here instead of onSubmit
       handleFormParams({
         target: {
           value: arrayOperations,
           name: "operations",
         },
       });
-      //end testing
     }
   }, [arrayOperations]);
 
@@ -191,7 +179,7 @@ const RequestSignTxComponent = ({
         },
       }));
     } else {
-      //using just new field on signTx as 'broadcast'
+      //using just field on signTx as 'broadcastSignedTx'
       setFormParams((prevFormParams) => ({ ...prevFormParams, [name]: value }));
     }
   };

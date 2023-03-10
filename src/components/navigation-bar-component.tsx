@@ -86,14 +86,24 @@ const NavigationBarComponent = ({
           onClick={() => setModalShow(true)}
           onSubmit={() => {}}
         >
-          <Form.Control
-            type="search"
-            placeholder="Search"
-            className="me-2"
-            aria-label="Search"
-            disabled
-          />
-          <Button variant="outline-primary">Search</Button>
+          <CustomToolTip
+            placement="bottom"
+            toolTipText="Click to show requests list"
+          >
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              disabled
+            />
+          </CustomToolTip>
+          <CustomToolTip
+            placement="bottom"
+            toolTipText="Click to show requests list"
+          >
+            <Button variant="outline-primary">Search</Button>
+          </CustomToolTip>
         </Form>
       </Container>
     </Navbar>
