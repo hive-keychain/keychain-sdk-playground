@@ -45,11 +45,11 @@ export type CommonProps = {
 };
 
 type Props = {};
-//TODO handle the click icon on navBar as responsive
+
 const RequestCard = (props: Props) => {
   let { requestType } = useParams();
 
-  console.log("assigned: ", { requestType }); //TODO to remove
+  console.log("assigned request: ", { requestType });
 
   const [requestCard, setRequestCard] = useState<ReactNode>();
   const [requestResult, setRequestResult] = useState();
@@ -153,12 +153,14 @@ const RequestCard = (props: Props) => {
       default:
         setRequestCard(null);
         console.log("trying to set: ", { requestType });
-        //TODO find a way to report this notFound request type, as a failed route
-        break;
+        throw new Response("", {
+          status: 404,
+          statusText: "Not Found",
+        });
     }
-  }, [requestType]); //TODO removed setRequestResult
+  }, [requestType]);
 
-  return (
+  return requestType ? (
     <Container>
       <Row>
         {requestResult && (
@@ -207,7 +209,7 @@ const RequestCard = (props: Props) => {
       {/* <CodeTester /> */}
       {/* END testing */}
     </Container>
-  );
+  ) : null;
 };
 
 export default RequestCard;

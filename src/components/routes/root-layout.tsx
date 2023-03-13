@@ -5,25 +5,20 @@ import { Outlet } from "react-router-dom";
 import AlertIconRed from "../../assets/images/pngs/icons8-alert-sign.png";
 import KeyChainPngIcon from "../../assets/images/pngs/keychain_icon_small.png";
 import CheckMarkGreen from "../../assets/images/svgs/icons8-check-mark-green.svg";
-import MouseClickIconSvg from "../../assets/images/svgs/mouse_black.svg";
 import CustomToolTip from "../custom-tool-tip";
 import FooterComponent from "../footer-component";
+import SearchModal from "../search-modal";
 
 type Props = {};
 
 const sdk = new KeychainSDK(window);
 
 export default function RootLayout({}: Props) {
-  //structure:
-  //  navBar component + search modal
-  //  request results
-  //  request component
-  //  footer
-
   //navBar
   const [keychainInstalled, setKeychainInstalled] = useState(false);
   const [activeBorderOnSearchContainer, setActiveBorderOnSearchContainer] =
     useState(false);
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
     const onLoadHandler = async () => {
@@ -83,6 +78,7 @@ export default function RootLayout({}: Props) {
               children={
                 <Image
                   src={keychainInstalled ? CheckMarkGreen : AlertIconRed}
+                  width={30}
                   height={30}
                 />
               }
@@ -95,16 +91,15 @@ export default function RootLayout({}: Props) {
             />
           </Navbar.Brand>
           <Nav
-            className="m-auto"
-            // className={
-            //   activeBorderOnSearchContainer
-            //     ? "m-auto border border-primary rounded border-1"
-            //     : "m-auto"
-            // }
+            className={
+              activeBorderOnSearchContainer
+                ? "m-auto border border-primary rounded border-1"
+                : "m-auto"
+            }
           >
             <Form
               className="d-flex"
-              // onClick={() => setModalShow(true)}
+              onClick={() => setModalShow(true)}
               onSubmit={() => {}}
             >
               <CustomToolTip
@@ -126,10 +121,12 @@ export default function RootLayout({}: Props) {
                 <Button variant="outline-primary">Search</Button>
               </CustomToolTip>
             </Form>
-            {activeBorderOnSearchContainer && <Image src={MouseClickIconSvg} />}
           </Nav>
         </Container>
       </Navbar>
+      <Container className="d-flex justify-content-center mt-2 mb-2">
+        <SearchModal show={modalShow} onHide={() => setModalShow(false)} />
+      </Container>
       <div id="detail">
         <Outlet />
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Accordion,
   Button,
@@ -6,16 +6,17 @@ import {
   InputGroup,
   ListGroup,
   Modal,
+  Nav,
 } from "react-bootstrap";
 import { AccordionEventKey } from "react-bootstrap/esm/AccordionContext";
+import { LinkContainer } from "react-router-bootstrap";
 import { requestCategories } from "../reference-data/requests-categories";
 import { Utils } from "../utils/utils";
 
 type Props = {
   show: boolean;
   onHide: () => void;
-  setRequest: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setRequestResult: React.Dispatch<React.SetStateAction<undefined>>;
+  // setRequestResult: React.Dispatch<React.SetStateAction<undefined>>; //TODO removed
 };
 
 interface RequestCategory {
@@ -28,18 +29,12 @@ interface RequestItem {
   requestType: string;
 }
 
-const SearchModal = ({ show, onHide, setRequest, setRequestResult }: Props) => {
+const SearchModal = ({ show, onHide }: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [activeKeyAccordionCategory, setActiveKeyAccordionCategory] =
     useState("");
   const [filteredRequests, setFilteredRequests] =
     useState<RequestCategory[]>(requestCategories);
-
-  const handleOnClickItem = (requestItemType: string) => {
-    setRequestResult(undefined);
-    setRequest(requestItemType);
-    onHide();
-  };
 
   useEffect(() => {
     const categoryList: RequestCategory[] = [];
@@ -96,10 +91,12 @@ const SearchModal = ({ show, onHide, setRequest, setRequestResult }: Props) => {
                       return (
                         <ListGroup.Item
                           action
-                          onClick={() => handleOnClickItem(catItem.requestType)}
+                          onClick={() => onHide()}
                           key={catItem.requestType}
                         >
-                          {catItem.name}
+                          <LinkContainer to={`/request/${catItem.requestType}`}>
+                            <Nav.Link>{catItem.name}</Nav.Link>
+                          </LinkContainer>
                         </ListGroup.Item>
                       );
                     })}
