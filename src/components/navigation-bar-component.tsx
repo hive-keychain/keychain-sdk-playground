@@ -1,10 +1,11 @@
 import { KeychainSDK } from "keychain-sdk";
 import React, { useEffect, useState } from "react";
-import { Button, Form, Image, Navbar } from "react-bootstrap";
+import { Button, Form, Image, Nav, Navbar } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
 import AlertIconRed from "../assets/images/pngs/icons8-alert-sign.png";
 import KeyChainPngIcon from "../assets/images/pngs/keychain_icon_small.png";
 import CheckMarkGreen from "../assets/images/svgs/icons8-check-mark-green.svg";
+import MouseClickIconSvg from "../assets/images/svgs/mouse_black.svg";
 import CustomToolTip from "./custom-tool-tip";
 
 type Props = {
@@ -20,6 +21,8 @@ const NavigationBarComponent = ({
 }: Props) => {
   const sdk = new KeychainSDK(window);
   const [keychainInstalled, setKeychainInstalled] = useState(false);
+  const [activeBorderOnSearchContainer, setActiveBorderOnSearchContainer] =
+    useState(false);
 
   useEffect(() => {
     const onLoadHandler = async () => {
@@ -42,7 +45,13 @@ const NavigationBarComponent = ({
   });
 
   return (
-    <Navbar bg="light" expand="lg" className="mb-2">
+    <Navbar
+      bg="light"
+      expand="lg"
+      className="mb-2"
+      onMouseEnter={() => setActiveBorderOnSearchContainer(true)}
+      onMouseLeave={() => setActiveBorderOnSearchContainer(false)}
+    >
       <Container>
         <Navbar.Brand href="home">
           <CustomToolTip
@@ -81,30 +90,39 @@ const NavigationBarComponent = ({
             placement={"bottom"}
           />
         </Navbar.Brand>
-        <Form
-          className="d-flex"
-          onClick={() => setModalShow(true)}
-          onSubmit={() => {}}
+        <Nav
+          className={
+            activeBorderOnSearchContainer
+              ? "m-auto border border-primary rounded border-1"
+              : "m-auto"
+          }
         >
-          <CustomToolTip
-            placement="bottom"
-            toolTipText="Click to show requests list"
+          <Form
+            className="d-flex"
+            onClick={() => setModalShow(true)}
+            onSubmit={() => {}}
           >
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-              disabled
-            />
-          </CustomToolTip>
-          <CustomToolTip
-            placement="bottom"
-            toolTipText="Click to show requests list"
-          >
-            <Button variant="outline-primary">Search</Button>
-          </CustomToolTip>
-        </Form>
+            <CustomToolTip
+              placement="bottom"
+              toolTipText="Click to show requests list"
+            >
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2"
+                aria-label="Search"
+                disabled
+              />
+            </CustomToolTip>
+            <CustomToolTip
+              placement="bottom"
+              toolTipText="Click to show requests list"
+            >
+              <Button variant="outline-primary">Search</Button>
+            </CustomToolTip>
+          </Form>
+          {activeBorderOnSearchContainer && <Image src={MouseClickIconSvg} />}
+        </Nav>
       </Container>
     </Navbar>
   );
