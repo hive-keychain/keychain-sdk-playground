@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../custom-tool-tip";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -22,7 +22,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestVoteComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -61,11 +60,11 @@ const RequestVoteComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const vote = await sdk.vote(formParams.data, formParams.options);
       setRequestResult(vote);
-      if (enableLogs) console.log({ vote });
+      console.log({ vote });
     } catch (error) {
       setRequestResult(error);
     }

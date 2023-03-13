@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../custom-tool-tip";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -17,13 +17,12 @@ const DEFAULT_PARAMS: Login = {
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const sdk = new KeychainSDK(window);
+const sdk = new KeychainSDK(window); //TODO move it to request-card?
 
 const undefinedParamsToValidate = ["username", "message", "title", "rpc"];
 
 const RequestLoginComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -62,11 +61,11 @@ const RequestLoginComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const login = await sdk.login(formParams.data, formParams.options);
       setRequestResult(login);
-      if (enableLogs) console.log({ login });
+      console.log({ login });
     } catch (error) {
       setRequestResult(error);
     }

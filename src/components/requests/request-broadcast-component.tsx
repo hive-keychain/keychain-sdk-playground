@@ -14,7 +14,7 @@ import {
 } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../custom-tool-tip";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -41,7 +41,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestBroadcastComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [operation, setOperation] = useState<Operation>(DEFAULT_OPERATION);
@@ -126,14 +125,14 @@ const RequestBroadcastComponent = ({
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const broadcast = await sdk.broadcast(
         formParams.data,
         formParams.options
       );
       setRequestResult(broadcast);
-      if (enableLogs) console.log({ broadcast });
+      console.log({ broadcast });
     } catch (error) {
       setRequestResult(error);
     }

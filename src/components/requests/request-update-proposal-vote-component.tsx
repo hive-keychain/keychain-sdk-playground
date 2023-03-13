@@ -2,7 +2,7 @@ import { KeychainSDK } from "keychain-sdk";
 import { UpdateProposalVote } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -20,7 +20,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestUpdateProposalVoteComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -59,14 +58,14 @@ const RequestUpdateProposalVoteComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const updateProposalVote = await sdk.updateProposalVote(
         formParams.data,
         formParams.options
       );
       setRequestResult(updateProposalVote);
-      if (enableLogs) console.log({ updateProposalVote });
+      console.log({ updateProposalVote });
     } catch (error) {
       setRequestResult(error);
     }

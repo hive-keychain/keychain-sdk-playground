@@ -2,7 +2,7 @@ import { KeychainSDK } from "keychain-sdk";
 import { CreateProposal } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -24,7 +24,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestCreateProposalComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -63,14 +62,14 @@ const RequestCreateProposalComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const createProposal = await sdk.createProposal(
         formParams.data,
         formParams.options
       );
       setRequestResult(createProposal);
-      if (enableLogs) console.log({ createProposal });
+      console.log({ createProposal });
     } catch (error) {
       setRequestResult(error);
     }

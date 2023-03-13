@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../custom-tool-tip";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -24,7 +24,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestAddKeyAuthorityComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -63,14 +62,14 @@ const RequestAddKeyAuthorityComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const addKeyAuthority = await sdk.addKeyAuthority(
         formParams.data,
         formParams.options
       );
       setRequestResult(addKeyAuthority);
-      if (enableLogs) console.log({ addKeyAuthority });
+      console.log({ addKeyAuthority });
     } catch (error) {
       setRequestResult(error);
     }

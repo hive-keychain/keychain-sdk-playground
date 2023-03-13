@@ -5,6 +5,7 @@ export const fieldToolTipText = {
   titlePopUp: "Title to be shown on popup",
   messageToEncrypt:
     "Message to encrypt, # is required. I.e: #This will be encrypted",
+  messageToDecode: "Message to decode, must start with #",
   codeBlockSample: "Just copy & paste, and test it in a typescript file",
   authorizedAccount: "Authorized account",
   weightAuthority: "Weight of the authority",

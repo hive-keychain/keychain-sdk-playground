@@ -2,7 +2,7 @@ import { KeychainSDK } from "keychain-sdk";
 import { Transfer } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -22,7 +22,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestTransferComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -61,11 +60,11 @@ const RequestTransferComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const transfer = await sdk.transfer(formParams.data, formParams.options);
       setRequestResult(transfer);
-      if (enableLogs) console.log({ transfer });
+      console.log({ transfer });
     } catch (error) {
       setRequestResult(error);
     }

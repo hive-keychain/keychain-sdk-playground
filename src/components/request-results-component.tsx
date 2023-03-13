@@ -4,13 +4,11 @@ import CustomCloseButton from "./custom-close-button";
 
 type Props = {
   requestResult: any;
-  enableLogs: boolean;
   setRequestResult: React.Dispatch<React.SetStateAction<undefined>>;
 };
 
 const RequestResultsComponent = ({
   requestResult,
-  enableLogs,
   setRequestResult,
 }: Props) => {
   const error =
@@ -19,7 +17,7 @@ const RequestResultsComponent = ({
       : requestResult.error;
 
   useEffect(() => {
-    if (enableLogs) console.log({ requestResult });
+    console.log({ requestResult });
     if (requestResult && requestResult.data && requestResult.data.username) {
       localStorage.setItem("last_username", requestResult.data.username);
     }

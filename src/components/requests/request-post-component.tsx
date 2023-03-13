@@ -2,7 +2,7 @@ import { KeychainSDK } from "keychain-sdk";
 import { Post } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -36,7 +36,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestPostComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -75,11 +74,11 @@ const RequestPostComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const post = await sdk.post(formParams.data, formParams.options);
       setRequestResult(post);
-      if (enableLogs) console.log({ post });
+      console.log({ post });
     } catch (error) {
       setRequestResult(error);
     }

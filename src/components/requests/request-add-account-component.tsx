@@ -3,7 +3,7 @@ import { KeychainSDK } from "keychain-sdk";
 import { AddAccount } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { CommonProps } from "../request-selector-component";
+import { CommonProps } from "../routes/request-card";
 
 type Props = {};
 
@@ -20,7 +20,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestAddAccountComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<AddAccount>(DEFAULT_PARAMS);
@@ -46,11 +45,11 @@ const RequestAddAccountComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const addAccount = await sdk.addAccount(formParams);
       setRequestResult(addAccount);
-      if (enableLogs) console.log({ addAccount });
+      console.log({ addAccount });
     } catch (error) {
       setRequestResult(error);
     }

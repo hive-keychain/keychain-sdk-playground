@@ -2,7 +2,7 @@ import { KeychainSDK } from "keychain-sdk";
 import { PowerDown } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -18,7 +18,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestPowerDownComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -57,14 +56,14 @@ const RequestPowerDownComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const powerDown = await sdk.powerDown(
         formParams.data,
         formParams.options
       );
       setRequestResult(powerDown);
-      if (enableLogs) console.log({ powerDown });
+      console.log({ powerDown });
     } catch (error) {
       setRequestResult(error);
     }

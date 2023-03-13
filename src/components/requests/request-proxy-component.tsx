@@ -2,7 +2,7 @@ import { KeychainSDK } from "keychain-sdk";
 import { Proxy } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -18,7 +18,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestProxyComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -57,11 +56,11 @@ const RequestProxyComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const proxy = await sdk.proxy(formParams.data, formParams.options);
       setRequestResult(proxy);
-      if (enableLogs) console.log({ proxy });
+      console.log({ proxy });
     } catch (error) {
       setRequestResult(error);
     }

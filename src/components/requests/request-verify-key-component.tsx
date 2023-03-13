@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../custom-tool-tip";
-import { CommonProps } from "../request-selector-component";
+import { CommonProps } from "../routes/request-card";
 
 type Props = {};
-
+//TODO check why changes the width of the container when adding message to decode
 const DEFAULT_PARAMS: Decode = {
   username: localStorage.getItem("last_username") || "keychain.tests",
   message: "#message to encode here, # is required",
@@ -19,7 +19,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestVerifyKeyComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<Decode>(DEFAULT_PARAMS);
@@ -37,11 +36,11 @@ const RequestVerifyKeyComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process: ", { formParams });
+    console.log("about to process: ", { formParams });
     try {
       const verifyKey = await sdk.decode(formParams);
       setRequestResult(verifyKey);
-      if (enableLogs) console.log({ verifyKey });
+      console.log({ verifyKey });
     } catch (error) {
       setRequestResult(error);
     }
@@ -69,7 +68,7 @@ const RequestVerifyKeyComponent = ({
             <InputGroup.Text>Message</InputGroup.Text>
             <CustomToolTip
               placement={"top"}
-              toolTipText={fieldToolTipText.messageToEncrypt}
+              toolTipText={fieldToolTipText.messageToDecode}
             >
               <Form.Control
                 as="textarea"

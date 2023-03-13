@@ -3,7 +3,7 @@ import { KeychainSDK } from "keychain-sdk";
 import { Custom } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -26,7 +26,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestCustomJsonComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -65,11 +64,11 @@ const RequestCustomJsonComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const customJson = await sdk.custom(formParams.data, formParams.options);
       setRequestResult(customJson);
-      if (enableLogs) console.log({ customJson });
+      console.log({ customJson });
     } catch (error) {
       setRequestResult(error);
     }

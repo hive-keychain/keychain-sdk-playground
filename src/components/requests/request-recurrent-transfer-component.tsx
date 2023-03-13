@@ -2,7 +2,7 @@ import { KeychainSDK } from "keychain-sdk";
 import { RecurrentTransfer } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -21,7 +21,6 @@ const undefinedParamsToValidate = ["rpc"];
 
 const RequestRecurrentTransferComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const sdk = new KeychainSDK(window);
@@ -61,14 +60,14 @@ const RequestRecurrentTransferComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const conversion = await sdk.recurrentTransfer(
         formParams.data,
         formParams.options
       );
       setRequestResult(conversion);
-      if (enableLogs) console.log({ conversion });
+      console.log({ conversion });
     } catch (error) {
       setRequestResult(error);
     }

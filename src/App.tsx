@@ -50,7 +50,6 @@ function App() {
           {requestResult && (
             <RequestResultsComponent
               requestResult={requestResult}
-              enableLogs={enableLogs}
               setRequestResult={setRequestResult}
             />
           )}

@@ -2,7 +2,7 @@ import { KeychainSDK } from "keychain-sdk";
 import { CreateClaimedAccount } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
@@ -23,7 +23,6 @@ const sdk = new KeychainSDK(window);
 //TODO needs to be discussed about differ types(keychainsdk vs common-types).
 const RequestCreateClaimedAccountComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
@@ -62,14 +61,14 @@ const RequestCreateClaimedAccountComponent = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const createClaimedAccount = await sdk.createClaimedAccount(
         formParams.data,
         formParams.options
       );
       setRequestResult(createClaimedAccount);
-      if (enableLogs) console.log({ createClaimedAccount });
+      console.log({ createClaimedAccount });
     } catch (error) {
       setRequestResult(error);
     }

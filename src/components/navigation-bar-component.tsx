@@ -14,12 +14,13 @@ type Props = {
   setModalShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+const sdk = new KeychainSDK(window);
+
 const NavigationBarComponent = ({
   setEnabledKeychain,
   enableLogs,
   setModalShow,
 }: Props) => {
-  const sdk = new KeychainSDK(window);
   const [keychainInstalled, setKeychainInstalled] = useState(false);
   const [activeBorderOnSearchContainer, setActiveBorderOnSearchContainer] =
     useState(false);

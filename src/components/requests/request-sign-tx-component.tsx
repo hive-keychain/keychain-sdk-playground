@@ -22,7 +22,7 @@ import {
 } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../custom-tool-tip";
-import { CommonProps, KeychainOptions } from "../request-selector-component";
+import { CommonProps, KeychainOptions } from "../routes/request-card";
 //TODO here:
 //  there are still some nasty errors on console
 //  complaining about 'Failed to parse source map from...'
@@ -65,7 +65,6 @@ const sdk = new KeychainSDK(window);
 
 const RequestSignTxComponent = ({
   setRequestResult,
-  enableLogs,
   setFormParamsToShow,
 }: Props & CommonProps) => {
   const [operation, setOperation] = useState<Operation>(DEFAULT_OPERATION);
@@ -119,7 +118,7 @@ const RequestSignTxComponent = ({
       if (String(value).trim() === "") return;
       try {
         const jsonParsed = json5.parse<object>(value);
-        if (enableLogs) console.log({ jsonParsed });
+        console.log({ jsonParsed });
         setOperation([operation[0], jsonParsed]);
       } catch (error) {
         console.log("Error trying to parse json: ", error);
@@ -186,7 +185,7 @@ const RequestSignTxComponent = ({
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (enableLogs) console.log("about to process ...: ", { formParams });
+    console.log("about to process ...: ", { formParams });
     try {
       const sign = await sdk.signTx(formParams.data, formParams.options);
       let signedTxBroadcast;
@@ -198,10 +197,9 @@ const RequestSignTxComponent = ({
           ? { success: true, result: signedTxBroadcast }
           : sign
       );
-      if (enableLogs)
-        console.log(
-          formParams.broadcastSignedTx ? { signedTxBroadcast } : { sign }
-        );
+      console.log(
+        formParams.broadcastSignedTx ? { signedTxBroadcast } : { sign }
+      );
     } catch (error) {
       setRequestResult(error);
     }
