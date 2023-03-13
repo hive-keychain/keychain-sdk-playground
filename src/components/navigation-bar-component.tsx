@@ -108,7 +108,7 @@ const NavigationBarComponent = ({
             >
               <Form.Control
                 type="search"
-                placeholder="Search"
+                placeholder="Click to search"
                 className="me-2"
                 aria-label="Search"
                 disabled
