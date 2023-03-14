@@ -1,6 +1,8 @@
 import { Post } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
@@ -89,50 +91,75 @@ const RequestPostComponent = ({
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              placeholder="Hive username"
-              name="username"
-              value={formParams.data.username}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.username}
+            >
+              <Form.Control
+                placeholder="Hive username"
+                name="username"
+                value={formParams.data.username}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Title</InputGroup.Text>
-            <Form.Control
-              placeholder="Title of post. Can be undefined"
-              name="title"
-              value={formParams.data.title}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Title of post. Can be undefined"}
+            >
+              <Form.Control
+                placeholder="Title of post. Can be undefined"
+                name="title"
+                value={formParams.data.title}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Body</InputGroup.Text>
-            <Form.Control
-              as={"textarea"}
-              rows={3}
-              placeholder="Body of post. Markdown or text"
-              name="body"
-              value={formParams.data.body}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Body of post. You use canMarkdown or text"}
+            >
+              <Form.Control
+                as={"textarea"}
+                rows={3}
+                placeholder="Body of post. Markdown or text"
+                name="body"
+                value={formParams.data.body}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Parent perm</InputGroup.Text>
-            <Form.Control
-              placeholder="Permlink of the parent post. Main tag for a root post"
-              name="parent_perm"
-              value={formParams.data.parent_perm}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Main tag for a root post"}
+            >
+              <Form.Control
+                placeholder="Permlink of the parent post."
+                name="parent_perm"
+                value={formParams.data.parent_perm}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Json metadata</InputGroup.Text>
-            <Form.Control
-              placeholder="Parameters of the call"
-              name="json_metadata"
-              value={formParams.data.json_metadata}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Parameters of the call"}
+            >
+              <Form.Control
+                placeholder="Parameters of the call"
+                name="json_metadata"
+                value={formParams.data.json_metadata}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Permlink</InputGroup.Text>
@@ -145,22 +172,35 @@ const RequestPostComponent = ({
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Parent username</InputGroup.Text>
-            <Form.Control
-              placeholder="Author of the parent post. Pass undefined for root post"
-              name="parent_username"
-              value={formParams.data.parent_username}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "Author of the parent's post. Pass undefined for root post"
+              }
+            >
+              <Form.Control
+                placeholder="Author of the parent post."
+                name="parent_username"
+                value={formParams.data.parent_username}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Comment options</InputGroup.Text>
-            <Form.Control
-              title="Options attached to the blog post, must be stringyfied. Consult Hive documentation at https://developers.hive.io/apidefinitions/#broadcast_ops_comment_options to learn more about it. Note: Must be the same as data.permlink if is a Post."
-              placeholder="Options attached to the blog post"
-              name="comment_options"
-              value={formParams.data.comment_options}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "Consult Hive documentation at https://developers.hive.io/apidefinitions/#broadcast_ops_comment_options to learn more about it. Note: Must be the same as data.permlink if is a Post."
+              }
+            >
+              <Form.Control
+                placeholder="Options attached to the blog post"
+                name="comment_options"
+                value={formParams.data.comment_options}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>

@@ -1,6 +1,8 @@
 import { RecurrentTransfer } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
@@ -79,33 +81,47 @@ const RequestRecurrentTransferComponent = ({
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              title="Hive account to perform the request"
-              placeholder="Hive username"
-              name="username"
-              value={formParams.data.username}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.username}
+            >
+              <Form.Control
+                placeholder="Hive username"
+                name="username"
+                value={formParams.data.username}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              title="Hive account receiving the transfers"
-              placeholder="Receiver username"
-              name="to"
-              value={formParams.data.to}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Hive account receiving the transfers"}
+            >
+              <Form.Control
+                placeholder="Receiver username"
+                name="to"
+                value={formParams.data.to}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Amount</InputGroup.Text>
-            <Form.Control
-              title="Amount to be sent on each execution. Requires 3 decimals, i.e: '1.000'."
-              placeholder="Amount to send"
-              name="amount"
-              value={formParams.data.amount}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "Amount to be sent on each execution. Requires 3 decimals, i.e: '1.000'."
+              }
+            >
+              <Form.Control
+                placeholder="Amount to send"
+                name="amount"
+                value={formParams.data.amount}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
             <Form.Select
               onChange={handleFormParams}
               value={formParams.data.currency}
@@ -118,34 +134,50 @@ const RequestRecurrentTransferComponent = ({
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Memo</InputGroup.Text>
-            <Form.Control
-              as={"textarea"}
-              title="Transfer memo, use # to encrypt"
-              placeholder="transfer memo"
-              name="memo"
-              value={formParams.data.memo}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Transfer memo, use # to encrypt"}
+            >
+              <Form.Control
+                as={"textarea"}
+                placeholder="transfer memo"
+                name="memo"
+                value={formParams.data.memo}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Recurrence</InputGroup.Text>
-            <Form.Control
-              title="How often will the payment be triggered (in hours) - minimum 24"
-              placeholder="Recurrence i.e: '24'"
-              name="recurrence"
-              value={formParams.data.recurrence}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "How often will the payment be triggered (in hours) - minimum 24"
+              }
+            >
+              <Form.Control
+                placeholder="Recurrence i.e: '24'"
+                name="recurrence"
+                value={formParams.data.recurrence}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Executions</InputGroup.Text>
-            <Form.Control
-              title="The times the recurrent payment will be executed - minimum 2"
-              placeholder="executions i.e: '2'"
-              name="executions"
-              value={formParams.data.executions}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "The times the recurrent payment will be executed - minimum 2"
+              }
+            >
+              <Form.Control
+                placeholder="executions i.e: '2'"
+                name="executions"
+                value={formParams.data.executions}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>

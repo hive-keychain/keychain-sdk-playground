@@ -1,5 +1,6 @@
 export const fieldToolTipText = {
   username: "Hive account to perform the request",
+  newAccount: "New username of the HIVE account",
   messageLogin:
     "Message to sign, if undefined, random message will be generated",
   titlePopUp: "Title to be shown on popup",

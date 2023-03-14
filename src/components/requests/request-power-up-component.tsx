@@ -1,6 +1,8 @@
 import { PowerUp } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
@@ -72,33 +74,47 @@ const RequestPowerUpComponent = ({
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              title="Hive account to perform the request"
-              placeholder="Hive username"
-              name="username"
-              value={formParams.data.username}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.username}
+            >
+              <Form.Control
+                placeholder="Hive username"
+                name="username"
+                value={formParams.data.username}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Recipient</InputGroup.Text>
-            <Form.Control
-              title="Account to receive the power up"
-              placeholder="Account to receive the power up"
-              name="recipient"
-              value={formParams.data.recipient}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Account to receive the power up"}
+            >
+              <Form.Control
+                placeholder="Account to receive the power up"
+                name="recipient"
+                value={formParams.data.recipient}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Hive</InputGroup.Text>
-            <Form.Control
-              title="Amount of HIVE to be powered up, requires 3 decimals, i.e: '1.000'"
-              placeholder="Amount of HIVE"
-              name="hive"
-              value={formParams.data.hive}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "Amount of HIVE to be powered up, requires 3 decimals, i.e: '1.000'"
+              }
+            >
+              <Form.Control
+                placeholder="Amount of HIVE"
+                name="hive"
+                value={formParams.data.hive}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>

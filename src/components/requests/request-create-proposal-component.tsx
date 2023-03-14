@@ -1,6 +1,8 @@
 import { CreateProposal } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
@@ -80,83 +82,118 @@ const RequestCreateProposalComponent = ({
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              title="Hive account to perform the request"
-              placeholder="Hive username"
-              name="username"
-              value={formParams.data.username}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.username}
+            >
+              <Form.Control
+                placeholder="Hive username"
+                name="username"
+                value={formParams.data.username}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Receiver@</InputGroup.Text>
-            <Form.Control
-              title="Account receiving the funding if the proposal is voted"
-              placeholder="receiver's account"
-              name="receiver"
-              value={formParams.data.receiver}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "Account receiving the funding if the proposal is voted"
+              }
+            >
+              <Form.Control
+                placeholder="receiver's account"
+                name="receiver"
+                value={formParams.data.receiver}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Subject</InputGroup.Text>
-            <Form.Control
-              title="Title of the DAO"
-              placeholder="Title of the DAO"
-              name="subject"
-              value={formParams.data.subject}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip placement="top" toolTipText={"Title of the DAO"}>
+              <Form.Control
+                placeholder="Title of the DAO"
+                name="subject"
+                value={formParams.data.subject}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Permlink</InputGroup.Text>
-            <Form.Control
-              title="Permlink to the proposal description"
-              placeholder="Permlink to the proposal description"
-              name="permlink"
-              value={formParams.data.permlink}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Permlink to the proposal description"}
+            >
+              <Form.Control
+                placeholder="Permlink to the proposal description"
+                name="permlink"
+                value={formParams.data.permlink}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Start</InputGroup.Text>
-            <Form.Control
-              title="Starting date, requires format: YYYY-DD-MMTHH:MM:SS"
-              placeholder="Starting date i.e: 2023-02-25T00:00:00"
-              name="start"
-              value={formParams.data.start}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "Starting date, requires format: YYYY-DD-MMTHH:MM:SS"
+              }
+            >
+              <Form.Control
+                placeholder="Starting date i.e: 2023-02-25T00:00:00"
+                name="start"
+                value={formParams.data.start}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>End</InputGroup.Text>
-            <Form.Control
-              title="Ending date, requires format: YYYY-DD-MMTHH:MM:SS"
-              placeholder="Ending date i.e: 2024-02-25T00:00:00"
-              name="end"
-              value={formParams.data.end}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Ending date, requires format: YYYY-DD-MMTHH:MM:SS"}
+            >
+              <Form.Control
+                placeholder="Ending date i.e: 2024-02-25T00:00:00"
+                name="end"
+                value={formParams.data.end}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Daily pay</InputGroup.Text>
-            <Form.Control
-              title="Daily amount to be received by receiver. Requires 3 decimals, i.e: '100.000 HBD'"
-              placeholder="Daily amount"
-              name="daily_pay"
-              value={formParams.data.daily_pay}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "Daily amount to be received by receiver. Requires 3 decimals, i.e: '100.000 HBD'"
+              }
+            >
+              <Form.Control
+                placeholder="Daily amount"
+                name="daily_pay"
+                value={formParams.data.daily_pay}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Extensions</InputGroup.Text>
-            <Form.Control
-              title="Stringified Array of extensions"
-              placeholder="Stringified Array of extensions"
-              name="extensions"
-              value={formParams.data.extensions}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Array of extensions i.e: '[1,2]'"}
+            >
+              <Form.Control
+                placeholder="Array of extensions"
+                name="extensions"
+                value={formParams.data.extensions}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>

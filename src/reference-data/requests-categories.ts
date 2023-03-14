@@ -42,7 +42,7 @@ export const requestCategories = [
         requestType: KeychainRequestTypes.removeProposal,
       },
       {
-        name: "Update Proposal",
+        name: "Update Proposal Vote",
         requestType: KeychainRequestTypes.updateProposalVote,
       },
     ],

@@ -1,6 +1,8 @@
 import { SendToken } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
@@ -77,49 +79,75 @@ const RequestSendTokenComponent = ({
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              placeholder="Hive username"
-              name="username"
-              value={formParams.data.username}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.username}
+            >
+              <Form.Control
+                placeholder="Hive username"
+                name="username"
+                value={formParams.data.username}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>To @</InputGroup.Text>
-            <Form.Control
-              placeholder="Hive username to receive"
-              name="to"
-              value={formParams.data.to}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Hive username to receive"}
+            >
+              <Form.Control
+                placeholder="Hive username to receive"
+                name="to"
+                value={formParams.data.to}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Token Symbol</InputGroup.Text>
-            <Form.Control
-              title="Token symbol to be sent, i.e: 'LEO'"
-              placeholder="Token symbol"
-              name="currency"
-              value={formParams.data.currency}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Token symbol to be sent, i.e: 'LEO'"}
+            >
+              <Form.Control
+                placeholder="Token symbol"
+                name="currency"
+                value={formParams.data.currency}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Amount</InputGroup.Text>
-            <Form.Control
-              placeholder="Amount to be transfered. Requires 3 decimals i.e: '1.000'"
-              name="amount"
-              value={formParams.data.amount}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "Amount to be transfered. Requires 3 decimals i.e: '1.000'"
+              }
+            >
+              <Form.Control
+                placeholder="Amount to be transfered. Requires 3 decimals i.e: '1.000'"
+                name="amount"
+                value={formParams.data.amount}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Memo</InputGroup.Text>
-            <Form.Control
-              placeholder="Memo of transfer. Use # to encrypt."
-              name="memo"
-              value={formParams.data.memo}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Memo of transfer. Use # to encrypt."}
+            >
+              <Form.Control
+                placeholder="Memo of transfer. Use # to encrypt."
+                name="memo"
+                value={formParams.data.memo}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>

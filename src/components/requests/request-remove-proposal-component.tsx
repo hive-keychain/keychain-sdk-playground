@@ -1,6 +1,8 @@
 import { RemoveProposal } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
@@ -75,33 +77,47 @@ const RequestRemoveProposalComponent = ({
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              title="Hive account to perform the request"
-              placeholder="Hive username"
-              name="username"
-              value={formParams.data.username}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={fieldToolTipText.username}
+            >
+              <Form.Control
+                placeholder="Hive username"
+                name="username"
+                value={formParams.data.username}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Ids</InputGroup.Text>
-            <Form.Control
-              title="Stringified Array of ids of the proposals to be removed"
-              placeholder="ids of the proposals"
-              name="proposal_ids"
-              value={formParams.data.proposal_ids as string}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                "Array of ids of the proposals to be removed, i.e: '[1,2]'"
+              }
+            >
+              <Form.Control
+                placeholder="Array of ids of the proposals"
+                name="proposal_ids"
+                value={formParams.data.proposal_ids as string}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Extensions</InputGroup.Text>
-            <Form.Control
-              title="Stringified Array of extensions"
-              placeholder="Stringified Array of extensions"
-              name="extensions"
-              value={formParams.data.extensions}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Array of extensions, i.e: '[1,2]'"}
+            >
+              <Form.Control
+                placeholder="Array of extensions"
+                name="extensions"
+                value={formParams.data.extensions}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>
