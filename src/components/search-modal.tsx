@@ -68,6 +68,7 @@ const SearchModal = ({ show, onHide }: Props) => {
               name="search_value"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
+              autoFocus
             />
           </InputGroup>
         </Form>
