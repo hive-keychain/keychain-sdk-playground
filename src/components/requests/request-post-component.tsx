@@ -1,4 +1,3 @@
-import { KeychainSDK } from "keychain-sdk";
 import { Post } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
@@ -32,11 +31,10 @@ const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["title", "parent_username", "rpc"];
 
-const sdk = new KeychainSDK(window);
-
 const RequestPostComponent = ({
   setRequestResult,
   setFormParamsToShow,
+  sdk,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Post;

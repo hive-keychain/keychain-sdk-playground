@@ -16,7 +16,6 @@ import { Utils } from "../utils/utils";
 type Props = {
   show: boolean;
   onHide: () => void;
-  // setRequestResult: React.Dispatch<React.SetStateAction<undefined>>; //TODO removed
 };
 
 interface RequestCategory {

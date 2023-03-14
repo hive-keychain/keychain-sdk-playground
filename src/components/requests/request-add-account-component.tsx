@@ -1,5 +1,4 @@
 import { RequestAddAccountKeys } from "hive-keychain-commons";
-import { KeychainSDK } from "keychain-sdk";
 import { AddAccount } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
@@ -16,11 +15,10 @@ const DEFAULT_PARAMS: AddAccount = {
   } as RequestAddAccountKeys,
 };
 
-const sdk = new KeychainSDK(window);
-
 const RequestAddAccountComponent = ({
   setRequestResult,
   setFormParamsToShow,
+  sdk,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<AddAccount>(DEFAULT_PARAMS);
 

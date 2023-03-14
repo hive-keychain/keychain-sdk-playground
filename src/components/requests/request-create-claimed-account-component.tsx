@@ -1,4 +1,3 @@
-import { KeychainSDK } from "keychain-sdk";
 import { CreateClaimedAccount } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
@@ -18,12 +17,10 @@ const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
 
-const sdk = new KeychainSDK(window);
-
-//TODO needs to be discussed about differ types(keychainsdk vs common-types).
 const RequestCreateClaimedAccountComponent = ({
   setRequestResult,
   setFormParamsToShow,
+  sdk,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: CreateClaimedAccount;

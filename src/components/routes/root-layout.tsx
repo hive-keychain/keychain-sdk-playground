@@ -26,7 +26,6 @@ export default function RootLayout({}: Props) {
       try {
         const enabled = await sdk.isKeyChainInstalled();
         setKeychainInstalled(enabled);
-        // setEnabledKeychain(enabled);
         console.log({ KeychainDetected: enabled });
       } catch (error) {
         console.log({ error });
@@ -39,7 +38,6 @@ export default function RootLayout({}: Props) {
       window.removeEventListener("load", onLoadHandler);
     };
   });
-
   //END navBar
 
   return (

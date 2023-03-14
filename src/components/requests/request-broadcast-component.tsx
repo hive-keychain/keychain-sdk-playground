@@ -1,7 +1,6 @@
 import { Operation, OperationName, VirtualOperationName } from "@hiveio/dhive";
 import { KeychainKeyTypes } from "hive-keychain-commons";
 import json5 from "json5";
-import { KeychainSDK } from "keychain-sdk";
 import { Broadcast } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import {
@@ -37,11 +36,10 @@ const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = [""]; //none to check
 
-const sdk = new KeychainSDK(window);
-
 const RequestBroadcastComponent = ({
   setRequestResult,
   setFormParamsToShow,
+  sdk,
 }: Props & CommonProps) => {
   const [operation, setOperation] = useState<Operation>(DEFAULT_OPERATION);
   const [arrayOperations, setArrayOperations] = useState<Operation[]>([]);

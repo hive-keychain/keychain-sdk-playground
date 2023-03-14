@@ -1,5 +1,4 @@
 import { KeychainKeyTypes } from "hive-keychain-commons";
-import { KeychainSDK } from "keychain-sdk";
 import { Custom } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
@@ -22,11 +21,10 @@ const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["username", "rpc"];
 
-const sdk = new KeychainSDK(window);
-
 const RequestCustomJsonComponent = ({
   setRequestResult,
   setFormParamsToShow,
+  sdk,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Custom;

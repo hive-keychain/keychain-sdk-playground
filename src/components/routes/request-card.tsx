@@ -1,4 +1,5 @@
 import { KeychainRequestTypes } from "hive-keychain-commons";
+import { KeychainSDK } from "keychain-sdk";
 import { ReactNode, useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { CopyBlock, solarizedDark } from "react-code-blocks";
@@ -42,7 +43,10 @@ export interface KeychainOptions {
 export type CommonProps = {
   setFormParamsToShow: React.Dispatch<React.SetStateAction<{}>>;
   setRequestResult: any;
+  sdk: KeychainSDK;
 };
+
+const sdk = new KeychainSDK(window);
 
 type Props = {};
 
@@ -58,6 +62,7 @@ const RequestCard = (props: Props) => {
   const commonProps: CommonProps = {
     setFormParamsToShow,
     setRequestResult,
+    sdk,
   };
 
   useEffect(() => {
@@ -155,7 +160,7 @@ const RequestCard = (props: Props) => {
         console.log("trying to set: ", { requestType });
         throw new Response("", {
           status: 404,
-          statusText: "Not Found",
+          statusText: "Not Found Request, please check",
         });
     }
   }, [requestType]);

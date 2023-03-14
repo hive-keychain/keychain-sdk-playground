@@ -1,5 +1,4 @@
 import { KeychainKeyTypes } from "hive-keychain-commons";
-import { KeychainSDK } from "keychain-sdk";
 import { Decode } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
@@ -8,18 +7,17 @@ import CustomToolTip from "../custom-tool-tip";
 import { CommonProps } from "../routes/request-card";
 
 type Props = {};
-//TODO check why changes the width of the container when adding message to decode
+
 const DEFAULT_PARAMS: Decode = {
   username: localStorage.getItem("last_username") || "keychain.tests",
   message: "#message to encode here, # is required",
   method: KeychainKeyTypes.active,
 };
 
-const sdk = new KeychainSDK(window);
-
 const RequestVerifyKeyComponent = ({
   setRequestResult,
   setFormParamsToShow,
+  sdk,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<Decode>(DEFAULT_PARAMS);
 

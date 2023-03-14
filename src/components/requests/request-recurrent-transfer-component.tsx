@@ -1,4 +1,3 @@
-import { KeychainSDK } from "keychain-sdk";
 import { RecurrentTransfer } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
@@ -22,8 +21,8 @@ const undefinedParamsToValidate = ["rpc"];
 const RequestRecurrentTransferComponent = ({
   setRequestResult,
   setFormParamsToShow,
+  sdk,
 }: Props & CommonProps) => {
-  const sdk = new KeychainSDK(window);
   const [formParams, setFormParams] = useState<{
     data: RecurrentTransfer;
     options: KeychainOptions;

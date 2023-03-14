@@ -1,5 +1,4 @@
 import { KeychainKeyTypes } from "hive-keychain-commons";
-import { KeychainSDK } from "keychain-sdk";
 import { Login } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
@@ -17,13 +16,12 @@ const DEFAULT_PARAMS: Login = {
 };
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
-const sdk = new KeychainSDK(window); //TODO move it to request-card?
-
 const undefinedParamsToValidate = ["username", "message", "title", "rpc"];
 
 const RequestLoginComponent = ({
   setRequestResult,
   setFormParamsToShow,
+  sdk,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Login;
