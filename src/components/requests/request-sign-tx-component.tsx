@@ -16,9 +16,11 @@ import {
   Card,
   Container,
   Form,
+  Image,
   InputGroup,
   ListGroup,
 } from "react-bootstrap";
+import DeleteBlackSVG from "../../assets/images/svgs/delete_black.svg";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
@@ -130,15 +132,19 @@ const RequestSignTxComponent = ({
     }
   };
 
+  const handleRemoveOperation = (itemIndex: number) => {
+    const copyArrayOperations = [...arrayOperations];
+    copyArrayOperations.splice(itemIndex, 1);
+    setArrayOperations(copyArrayOperations);
+  };
+
   useEffect(() => {
-    if (arrayOperations) {
-      handleFormParams({
-        target: {
-          value: arrayOperations,
-          name: "operations",
-        },
-      });
-    }
+    handleFormParams({
+      target: {
+        value: arrayOperations,
+        name: "operations",
+      },
+    });
   }, [arrayOperations]);
 
   const handleResetList = () => {
@@ -265,12 +271,19 @@ const RequestSignTxComponent = ({
               </CustomToolTip>
             </Container>
             {arrayOperations.length > 0 && (
-              <Container>
+              <Container className="d-flex justify-content-center align-content-center">
                 <ListGroup>
                   {arrayOperations.map((op, index) => {
                     return (
                       <ListGroup.Item key={`${index}-op-queue`}>
-                        On Queue: {op[0]} {op[1].amount ? op[1].amount : ""}
+                        On Queue: {op[0]} {op[1].amount ? op[1].amount : ""}{" "}
+                        <Button variant="outline-primary" size="sm">
+                          <Image
+                            src={DeleteBlackSVG}
+                            width={20}
+                            onClick={() => handleRemoveOperation(index)}
+                          />
+                        </Button>
                       </ListGroup.Item>
                     );
                   })}

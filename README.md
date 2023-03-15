@@ -1,7 +1,5 @@
 ### SDK-Playground
 
-//TODO fix those sdk -> keychain
-
 The playground can be used to understand how to use the keychain requests. Any time you select a request, the code will be shown next to the input parameters, so you can copy & paste the typescript code and use it.
 
 #### Useful links
@@ -28,10 +26,10 @@ To instatiate a new class, just follow the sample code bellow.
 - No rpc options needed.
 
 ```
-const sdk = new KeychainSDK(window);
+const keychain = new KeychainSDK(window);
 try
   {
-    const encodeMessage = await sdk.encode(formParams);
+    const encodeMessage = await keychain.encode(formParams);
     console.log({ encodeMessage });
    } catch (error) {
     console.log({ error });
@@ -42,10 +40,10 @@ try
 
 ```
 const options = { rpc: 'https://rpcnode-url '};
-const sdk = new KeychainSDK(window, options);
+const keychain = new KeychainSDK(window, options);
 try
   {
-    const encodeMessage = await sdk.encode(formParams);
+    const encodeMessage = await keychain.encode(formParams);
     console.log({ encodeMessage });
    } catch (error) {
     console.log({ error });
@@ -61,7 +59,7 @@ useEffect(() => {
     const onLoadHandler = async () => {
       console.log('Fully loaded!');
       try {
-        const enabled = await sdk.isKeyChainInstalled();
+        const enabled = await keychain.isKeyChainInstalled();
         console.log({ KeychainDetected: enabled });
         //
         //run all the code you need for your requests.

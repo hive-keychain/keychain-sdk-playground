@@ -8,9 +8,11 @@ import {
   Card,
   Container,
   Form,
+  Image,
   InputGroup,
   ListGroup,
 } from "react-bootstrap";
+import DeleteBlackSVG from "../../assets/images/svgs/delete_black.svg";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
@@ -84,15 +86,19 @@ const RequestBroadcastComponent = ({
     }
   };
 
+  const handleRemoveOperation = (itemIndex: number) => {
+    const copyArrayOperations = [...arrayOperations];
+    copyArrayOperations.splice(itemIndex, 1);
+    setArrayOperations(copyArrayOperations);
+  };
+
   useEffect(() => {
-    if (arrayOperations) {
-      handleFormParams({
-        target: {
-          value: arrayOperations,
-          name: "operations",
-        },
-      });
-    }
+    handleFormParams({
+      target: {
+        value: arrayOperations,
+        name: "operations",
+      },
+    });
   }, [arrayOperations]);
 
   const handleResetList = () => {
@@ -197,7 +203,7 @@ const RequestBroadcastComponent = ({
                   onClick={handleResetList}
                   variant="outline-primary"
                 >
-                  reset queue list
+                  reset
                 </Button>
               </CustomToolTip>
             </Container>
@@ -208,7 +214,14 @@ const RequestBroadcastComponent = ({
                     {arrayOperations.map((op, index) => {
                       return (
                         <ListGroup.Item key={`${index}-op-queue`}>
-                          On Queue: {op[0]} {op[1].amount ? op[1].amount : ""}
+                          On Queue: {op[0]} {op[1].amount ? op[1].amount : ""}{" "}
+                          <Button variant="outline-primary" size="sm">
+                            <Image
+                              src={DeleteBlackSVG}
+                              width={20}
+                              onClick={() => handleRemoveOperation(index)}
+                            />
+                          </Button>
                         </ListGroup.Item>
                       );
                     })}
