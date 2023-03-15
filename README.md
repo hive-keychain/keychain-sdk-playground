@@ -1,5 +1,7 @@
 ### SDK-Playground
 
+//TODO fix those sdk -> keychain
+
 The playground can be used to understand how to use the keychain requests. Any time you select a request, the code will be shown next to the input parameters, so you can copy & paste the typescript code and use it.
 
 #### Useful links

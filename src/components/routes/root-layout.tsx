@@ -71,7 +71,7 @@ export default function RootLayout({}: Props) {
                   : "Install keychain or reload extension on settings."
               }
               placement={"bottom"}
-            />
+            />{" "}
             <CustomToolTip
               children={
                 <Image

@@ -20,7 +20,6 @@ const fromCodeToText = (
   const extraCodeOnSignTx = formParams.broadcastSignedTx
     ? `const client = new Client([
       "https://api.hive.blog",
-      "https://anyx.io",
       "https://api.openhive.network",
     ]);
     let signedTxBroadcast = await client.broadcast.send(signtx.result as any);

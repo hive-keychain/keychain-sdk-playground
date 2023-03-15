@@ -1,6 +1,8 @@
 import { Delegation } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
+import CustomToolTip from "../custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
@@ -76,30 +78,49 @@ const RequestDelegationComponent = ({
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>@</InputGroup.Text>
-            <Form.Control
-              placeholder="Hive username, leave blank for dropdown"
-              name="username"
-              value={formParams.data.username}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={
+                fieldToolTipText.username +
+                " " +
+                fieldToolTipText.leaveBlankDropdown
+              }
+            >
+              <Form.Control
+                placeholder="Hive username"
+                name="username"
+                value={formParams.data.username}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Delegatee</InputGroup.Text>
-            <Form.Control
-              placeholder="Account to receive the delegation"
-              name="delegatee"
-              value={formParams.data.delegatee}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText={"Account to receive the delegation"}
+            >
+              <Form.Control
+                placeholder="Account to receive the delegation"
+                name="delegatee"
+                value={formParams.data.delegatee}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Amount</InputGroup.Text>
-            <Form.Control
-              placeholder="Requires 3 decimals, i.e: '1.000'"
-              name="amount"
-              value={formParams.data.amount}
-              onChange={handleFormParams}
-            />
+            <CustomToolTip
+              placement="top"
+              toolTipText="Amount, Requires 3 decimals, i.e: '1.000'"
+            >
+              <Form.Control
+                placeholder="Amount"
+                name="amount"
+                value={formParams.data.amount}
+                onChange={handleFormParams}
+              />
+            </CustomToolTip>
             <Form.Select
               onChange={handleFormParams}
               value={formParams.data.unit}

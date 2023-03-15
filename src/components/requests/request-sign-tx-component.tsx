@@ -52,7 +52,6 @@ const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const client = new Client([
   "https://api.hive.blog",
-  "https://anyx.io",
   "https://api.openhive.network",
 ]);
 

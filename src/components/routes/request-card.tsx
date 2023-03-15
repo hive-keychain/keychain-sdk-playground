@@ -49,7 +49,37 @@ export type CommonProps = {
 const sdk = new KeychainSDK(window);
 
 type Props = {};
-
+//TODO test each request to double check on types as they being defined on keychain-sdk(specifically on
+//  KeychainResponse -> result.)
+//  but using this branch hotfix/requests-result-add-transaction-id
+//TODO testing each request to match with one of above types //TODO remove when done.
+//    - login       -> 'string'
+//    - encode      -> 'string'
+//    - decode      -> 'string'
+//    - signBuffer  -> 'string'
+//    - addAccountAuthority -> object as HiveTxConfirmationResult
+//    - removeAccountAuthority  -> object as HiveTxConfirmationResult
+//    - addKeyAuthority -> object as HiveTxConfirmationResult
+//    - removeKeyAuthority -> object as HiveTxConfirmationResult
+//    - broadcast -> object as HiveTxConfirmationResult
+//    - signTx  -> added as ResponseSignedTx in keychain-sdk
+//    - post    -> object as HiveTxConfirmationResult
+//    - vote  -> object as HiveTxConfirmationResult
+//    - custom -> object as HiveTxConfirmationResult
+//    - transfer -> object as HiveTxConfirmationResult
+//    - sendToken -> object as HiveEngineTransactionStatus
+//    - delegation -> object as HiveTxConfirmationResult
+//    - witnessVote -> object as HiveTxConfirmationResult
+//    - proxy -> object as HiveTxConfirmationResult
+//    - powerUp -> object as HiveTxConfirmationResult
+//    - powerDown -> object as HiveTxConfirmationResult
+//    - createClaimedAccount -> not able to test
+//    - createProposal -> not able to test
+//    - removeProposal -> not able to test
+//    - updateProposalVote -> object as HiveTxConfirmationResult
+//    - addAccount -> boolean
+//    - convert -> object as HiveTxConfirmationResult
+//    - recurrentTransfer -> object as HiveTxConfirmationResult
 const RequestCard = (props: Props) => {
   let { requestType } = useParams();
 

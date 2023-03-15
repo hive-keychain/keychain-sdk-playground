@@ -18,6 +18,7 @@ const RequestResultsComponent = ({
 
   useEffect(() => {
     console.log({ requestResult });
+    console.log({ typeOf: typeof requestResult.result }); //TODO to remove
     if (requestResult && requestResult.data && requestResult.data.username) {
       localStorage.setItem("last_username", requestResult.data.username);
     }
