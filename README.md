@@ -29,6 +29,12 @@ To instatiate a new class, just follow the sample code bellow.
 const keychain = new KeychainSDK(window);
 try
   {
+    const formParams = {
+      username: "keychain.tests",
+      receiver: "keychain.tests",
+      message: "#Keychain SDK v 1.0",
+      method: KeychainKeyTypes.active,
+    }
     const encodeMessage = await keychain.encode(formParams);
     console.log({ encodeMessage });
    } catch (error) {
@@ -43,6 +49,12 @@ const options = { rpc: 'https://rpcnode-url '};
 const keychain = new KeychainSDK(window, options);
 try
   {
+    const formParams = {
+      username: "keychain.tests",
+      receiver: "keychain.tests",
+      message: "#Keychain SDK v 1.0",
+      method: KeychainKeyTypes.active,
+    }
     const encodeMessage = await keychain.encode(formParams);
     console.log({ encodeMessage });
    } catch (error) {
