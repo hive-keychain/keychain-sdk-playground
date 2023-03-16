@@ -6,7 +6,7 @@ import AlertIconRed from "../assets/images/pngs/icons8-alert-sign.png";
 import KeyChainPngIcon from "../assets/images/pngs/keychain_icon_small.png";
 import CheckMarkGreen from "../assets/images/svgs/icons8-check-mark-green.svg";
 import MouseClickIconSvg from "../assets/images/svgs/mouse_black.svg";
-import CustomToolTip from "./custom-tool-tip";
+import CustomToolTip from "./common_ui/custom-tool-tip";
 
 type Props = {
   setEnabledKeychain: React.Dispatch<React.SetStateAction<boolean>>;

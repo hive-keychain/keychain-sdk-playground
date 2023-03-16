@@ -6,7 +6,7 @@ import { CopyBlock, solarizedDark } from "react-code-blocks";
 import { useParams } from "react-router-dom";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import { Utils } from "../../utils/utils";
-import CustomToolTip from "../custom-tool-tip";
+import CustomToolTip from "../common_ui/custom-tool-tip";
 import RequestResultsComponent from "../request-results-component";
 import RequestAddAccountAuthorityComponent from "../requests/request-add-account-authority-component";
 import RequestAddAccountComponent from "../requests/request-add-account-component";

@@ -14,15 +14,14 @@ import { useEffect, useState } from "react";
 import {
   Button,
   Card,
+  Collapse,
   Container,
   Form,
-  Image,
   InputGroup,
-  ListGroup,
 } from "react-bootstrap";
-import DeleteBlackSVG from "../../assets/images/svgs/delete_black.svg";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
-import CustomToolTip from "../custom-tool-tip";
+import CustomToolTip from "../common_ui/custom-tool-tip";
+import OperationListComponent from "../common_ui/operation-list-component";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
@@ -75,6 +74,7 @@ const RequestSignTxComponent = ({
     options: DEFAULT_OPTIONS,
     broadcastSignedTx: false,
   });
+  const [editOperationMode, setEditOperationMode] = useState<boolean>(false);
 
   useEffect(() => {
     setFormParamsToShow(formParams);
@@ -104,7 +104,8 @@ const RequestSignTxComponent = ({
     setDHiveProps(await client.database.getDynamicGlobalProperties());
   };
 
-  const handleOperation = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //array operations
+  const handleOnChangeOperation = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === "operation_name") {
       setOperation([
@@ -132,11 +133,22 @@ const RequestSignTxComponent = ({
     }
   };
 
+  const handleAddEditedOperation = (indexOperation: number) => {
+    if (operation[0] && operation["1"]) {
+      const copyArrayOperations = [...arrayOperations];
+      copyArrayOperations[indexOperation] = operation;
+      setArrayOperations(copyArrayOperations);
+      setEditOperationMode(false);
+      setOperation(DEFAULT_OPERATION);
+    }
+  };
+
   const handleRemoveOperation = (itemIndex: number) => {
     const copyArrayOperations = [...arrayOperations];
     copyArrayOperations.splice(itemIndex, 1);
     setArrayOperations(copyArrayOperations);
   };
+  //end array operations
 
   useEffect(() => {
     handleFormParams({
@@ -205,6 +217,7 @@ const RequestSignTxComponent = ({
       setRequestResult(error);
     }
   };
+
   return (
     <Card className="d-flex justify-content-center">
       <Card.Header as={"h5"}>Request Sign Tx</Card.Header>
@@ -226,68 +239,66 @@ const RequestSignTxComponent = ({
           </InputGroup>
           <Form.Group className="mb-3">
             <Form.Label>Operations</Form.Label>
-            <Container>
-              <CustomToolTip
-                placement="top"
-                toolTipText={fieldToolTipText.operationType}
-              >
-                <Form.Control
-                  placeholder="Operation type"
-                  name="operation_name"
-                  onChange={handleOperation}
-                />
-              </CustomToolTip>
-              <CustomToolTip
-                placement="top"
-                toolTipText={fieldToolTipText.jsonObject}
-              >
-                <Form.Control
-                  as="textarea"
-                  rows={5}
-                  placeholder="JSON"
-                  name="json"
-                  onChange={handleOperation}
-                />
-              </CustomToolTip>
-            </Container>
-            <Container className="d-flex mt-2 mb-2 justify-content-center">
-              <CustomToolTip
-                placement="top"
-                toolTipText={fieldToolTipText.clickToAddOperation}
-              >
-                <Button onClick={handleAddOperation}>+</Button>
-              </CustomToolTip>
-              <CustomToolTip
-                placement="top"
-                toolTipText={fieldToolTipText.resetOperationList}
-              >
-                <Button
-                  className="ms-3"
-                  onClick={handleResetList}
-                  variant="outline-primary"
-                >
-                  reset queue list
-                </Button>
-              </CustomToolTip>
-            </Container>
+            <Collapse in={!editOperationMode}>
+              <Container>
+                <Container>
+                  <CustomToolTip
+                    placement="top"
+                    toolTipText={fieldToolTipText.operationType}
+                  >
+                    <Form.Control
+                      placeholder="Operation type"
+                      name="operation_name"
+                      onChange={handleOnChangeOperation}
+                    />
+                  </CustomToolTip>
+                  <CustomToolTip
+                    placement="top"
+                    toolTipText={fieldToolTipText.jsonObject}
+                  >
+                    <Form.Control
+                      as="textarea"
+                      rows={5}
+                      placeholder="JSON"
+                      name="json"
+                      onChange={handleOnChangeOperation}
+                    />
+                  </CustomToolTip>
+                </Container>
+                <Container className="d-flex mt-2 mb-2 justify-content-center">
+                  <CustomToolTip
+                    placement="top"
+                    toolTipText={fieldToolTipText.clickToAddOperation}
+                  >
+                    <Button onClick={handleAddOperation}>+</Button>
+                  </CustomToolTip>
+                  <CustomToolTip
+                    placement="top"
+                    toolTipText={fieldToolTipText.resetOperationList}
+                  >
+                    <Button
+                      className="ms-3"
+                      onClick={handleResetList}
+                      variant="outline-primary"
+                    >
+                      reset queue list
+                    </Button>
+                  </CustomToolTip>
+                </Container>
+              </Container>
+            </Collapse>
             {arrayOperations.length > 0 && (
-              <Container className="d-flex justify-content-center align-content-center">
-                <ListGroup>
-                  {arrayOperations.map((op, index) => {
-                    return (
-                      <ListGroup.Item key={`${index}-op-queue`}>
-                        On Queue: {op[0]} {op[1].amount ? op[1].amount : ""}{" "}
-                        <Button variant="outline-primary" size="sm">
-                          <Image
-                            src={DeleteBlackSVG}
-                            width={20}
-                            onClick={() => handleRemoveOperation(index)}
-                          />
-                        </Button>
-                      </ListGroup.Item>
-                    );
-                  })}
-                </ListGroup>
+              <Container
+                className="d-flex justify-content-center align-content-center"
+                fluid
+              >
+                <OperationListComponent
+                  list={arrayOperations}
+                  handleRemoveItem={handleRemoveOperation}
+                  handleOnChangeOperation={handleOnChangeOperation}
+                  handleAddEditedOperation={handleAddEditedOperation}
+                  setEditOperationMode={setEditOperationMode}
+                />
               </Container>
             )}
           </Form.Group>

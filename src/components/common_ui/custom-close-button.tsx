@@ -1,5 +1,5 @@
 import { Button, Image } from "react-bootstrap";
-import CancelIconSvg from "../assets/images/svgs/cancel_black.svg";
+import CancelIconSvg from "../../assets/images/svgs/cancel_black.svg";
 import CustomToolTip from "./custom-tool-tip";
 
 type Props = {

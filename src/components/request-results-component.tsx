@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Accordion, Card, Container, ListGroup } from "react-bootstrap";
-import CustomCloseButton from "./custom-close-button";
+import CustomCloseButton from "./common_ui/custom-close-button";
 
 type Props = {
   requestResult: any;

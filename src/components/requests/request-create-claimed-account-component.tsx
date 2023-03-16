@@ -3,7 +3,7 @@ import { CreateClaimedAccount } from "keychain-sdk/dist/interfaces/keychain-sdk.
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
-import CustomToolTip from "../custom-tool-tip";
+import CustomToolTip from "../common_ui/custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
