@@ -7,14 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: Transfer = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  to: localStorage.getItem("last_username") || "keychain.tests",
-  amount: "1.000",
-  memo: "#Test Keychain SDK transfer(will be encrypted)",
-  enforce: false,
-  currency: "HIVE",
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
@@ -23,7 +15,16 @@ const RequestTransferComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
+  const DEFAULT_PARAMS: Transfer = {
+    username: lastUsernameFound,
+    to: lastUsernameFound,
+    amount: "1.000",
+    memo: "#Test Keychain SDK transfer(will be encrypted)",
+    enforce: false,
+    currency: "HIVE",
+  };
   const [formParams, setFormParams] = useState<{
     data: Transfer;
     options: KeychainOptions;

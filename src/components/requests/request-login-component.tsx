@@ -8,12 +8,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: Login = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  message: '{"login":"123"}',
-  method: KeychainKeyTypes.posting,
-  title: "Login",
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["username", "message", "title", "rpc"];
@@ -22,12 +16,18 @@ const RequestLoginComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Login;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      message: '{"login":"123"}',
+      method: KeychainKeyTypes.posting,
+      title: "Login",
+    },
     options: DEFAULT_OPTIONS,
   });
 

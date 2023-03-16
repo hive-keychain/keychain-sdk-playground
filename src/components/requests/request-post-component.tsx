@@ -7,28 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: Post = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  title: "Keychain Playground SDK",
-  body: "## This is a blog post n And this is some text. Testing the brand new Keychain SDK v1.0",
-  parent_perm: "blog",
-  parent_username: undefined,
-  json_metadata: JSON.stringify({
-    format: "markdown",
-    description: "A blog post",
-    tags: ["Blog"],
-  }),
-  permlink: "a-permlink-post-sample",
-  comment_options: JSON.stringify({
-    author: localStorage.getItem("last_username") || "keychain.tests",
-    permlink: "a-post-by-keychaintests-fourth-part-post",
-    max_accepted_payout: "10000.000 SBD",
-    allow_votes: true,
-    allow_curation_rewards: true,
-    extensions: [],
-    percent_hbd: 63,
-  }),
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["title", "parent_username", "rpc"];
@@ -37,7 +15,30 @@ const RequestPostComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
+  const DEFAULT_PARAMS: Post = {
+    username: lastUsernameFound,
+    title: "Keychain Playground SDK",
+    body: "## This is a blog post n And this is some text. Testing the brand new Keychain SDK v1.0",
+    parent_perm: "blog",
+    parent_username: undefined,
+    json_metadata: JSON.stringify({
+      format: "markdown",
+      description: "A blog post",
+      tags: ["Blog"],
+    }),
+    permlink: "a-permlink-post-sample",
+    comment_options: JSON.stringify({
+      author: lastUsernameFound,
+      permlink: "a-post-by-keychaintests-fourth-part-post",
+      max_accepted_payout: "10000.000 SBD",
+      allow_votes: true,
+      allow_curation_rewards: true,
+      extensions: [],
+      percent_hbd: 63,
+    }),
+  };
   const [formParams, setFormParams] = useState<{
     data: Post;
     options: KeychainOptions;

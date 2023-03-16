@@ -8,12 +8,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: RemoveAccountAuthority = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  authorizedUsername: localStorage.getItem("last_username") || "keychain.tests",
-  role: KeychainKeyTypes.posting,
-  method: KeychainKeyTypes.active,
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = [""]; //none to check
@@ -22,12 +16,18 @@ const RequestRemoveAccountAuthorityComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: RemoveAccountAuthority;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      authorizedUsername: lastUsernameFound,
+      role: KeychainKeyTypes.posting,
+      method: KeychainKeyTypes.active,
+    },
     options: DEFAULT_OPTIONS,
   });
 

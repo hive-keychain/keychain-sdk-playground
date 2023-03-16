@@ -7,15 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: RecurrentTransfer = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  to: localStorage.getItem("last_username") || "keychain.tests",
-  amount: "1.000",
-  currency: "HIVE",
-  memo: "#Encrypted memo sample",
-  recurrence: 24,
-  executions: 2,
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
@@ -24,7 +15,17 @@ const RequestRecurrentTransferComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
+  const DEFAULT_PARAMS: RecurrentTransfer = {
+    username: lastUsernameFound,
+    to: lastUsernameFound,
+    amount: "1.000",
+    currency: "HIVE",
+    memo: "#Encrypted memo sample",
+    recurrence: 24,
+    executions: 2,
+  };
   const [formParams, setFormParams] = useState<{
     data: RecurrentTransfer;
     options: KeychainOptions;

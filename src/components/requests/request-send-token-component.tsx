@@ -7,13 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: SendToken = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  to: localStorage.getItem("last_username") || "keychain.tests",
-  amount: "0.001",
-  memo: "#Test Keychain SDK transfer(will be encrypted)",
-  currency: "LEO",
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
@@ -22,12 +15,19 @@ const RequestSendTokenComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: SendToken;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      to: lastUsernameFound,
+      amount: "0.001",
+      memo: "#Test Keychain SDK transfer(will be encrypted)",
+      currency: "LEO",
+    },
     options: DEFAULT_OPTIONS,
   });
 

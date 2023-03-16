@@ -8,12 +8,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: RemoveKeyAuthority = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  authorizedKey: "STM7KKUZb1CzwRiaN2RQcGeJUpcHM5BmCNudxXW21xqktBe91RpD8",
-  role: KeychainKeyTypes.posting,
-  method: KeychainKeyTypes.active,
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = [""]; //none to check
@@ -22,12 +16,18 @@ const RequestRemoveKeyAuthorityComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: RemoveKeyAuthority;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      authorizedKey: "STM7KKUZb1CzwRiaN2RQcGeJUpcHM5BmCNudxXW21xqktBe91RpD8",
+      role: KeychainKeyTypes.posting,
+      method: KeychainKeyTypes.active,
+    },
     options: DEFAULT_OPTIONS,
   });
 

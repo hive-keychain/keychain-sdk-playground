@@ -7,12 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: Vote = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  permlink: "perm-link-post-sample",
-  author: localStorage.getItem("last_username") || "keychain.tests",
-  weight: 10000,
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
@@ -21,12 +15,18 @@ const RequestVoteComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Vote;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      permlink: "perm-link-post-sample",
+      author: lastUsernameFound,
+      weight: 10000,
+    },
     options: DEFAULT_OPTIONS,
   });
 

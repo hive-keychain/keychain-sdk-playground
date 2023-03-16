@@ -8,13 +8,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: AddKeyAuthority = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  authorizedKey: "STM7KKUZb1CzwRiaN2RQcGeJUpcHM5BmCNudxXW21xqktBe91RpD8",
-  role: KeychainKeyTypes.posting,
-  weight: 1,
-  method: KeychainKeyTypes.active,
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = [""]; //none to check
@@ -23,12 +16,19 @@ const RequestAddKeyAuthorityComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: AddKeyAuthority;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      authorizedKey: "STM7KKUZb1CzwRiaN2RQcGeJUpcHM5BmCNudxXW21xqktBe91RpD8",
+      role: KeychainKeyTypes.posting,
+      weight: 1,
+      method: KeychainKeyTypes.active,
+    },
     options: DEFAULT_OPTIONS,
   });
 

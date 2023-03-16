@@ -7,16 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: CreateProposal = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  receiver: localStorage.getItem("last_username") || "keychain.tests",
-  subject: "The New proposal title",
-  permlink: "proposal-keychain-dev-permlink",
-  start: "2023-02-25T00:00:00",
-  end: "2024-02-25T00:00:00",
-  daily_pay: "390.000 HBD",
-  extensions: JSON.stringify([]),
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
@@ -25,7 +15,18 @@ const RequestCreateProposalComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
+  const DEFAULT_PARAMS: CreateProposal = {
+    username: lastUsernameFound,
+    receiver: lastUsernameFound,
+    subject: "The New proposal title",
+    permlink: "proposal-keychain-dev-permlink",
+    start: "2023-02-25T00:00:00",
+    end: "2024-02-25T00:00:00",
+    daily_pay: "390.000 HBD",
+    extensions: JSON.stringify([]),
+  };
   const [formParams, setFormParams] = useState<{
     data: CreateProposal;
     options: KeychainOptions;

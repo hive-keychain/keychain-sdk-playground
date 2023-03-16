@@ -7,12 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: Delegation = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  delegatee: localStorage.getItem("last_username") || "keychain.tests",
-  amount: "1.000",
-  unit: "HP",
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["username", "rpc"];
@@ -21,12 +15,18 @@ const RequestDelegationComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Delegation;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      delegatee: lastUsernameFound,
+      amount: "1.000",
+      unit: "HP",
+    },
     options: DEFAULT_OPTIONS,
   });
 

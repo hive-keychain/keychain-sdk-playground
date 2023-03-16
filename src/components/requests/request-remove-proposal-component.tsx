@@ -7,11 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: RemoveProposal = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  proposal_ids: JSON.stringify([1, 2, 3]),
-  extensions: JSON.stringify([]),
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
@@ -20,12 +15,17 @@ const RequestRemoveProposalComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: RemoveProposal;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      proposal_ids: JSON.stringify([1, 2, 3]),
+      extensions: JSON.stringify([]),
+    },
     options: DEFAULT_OPTIONS,
   });
 

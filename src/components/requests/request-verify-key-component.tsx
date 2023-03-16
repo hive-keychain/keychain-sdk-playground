@@ -8,18 +8,17 @@ import { CommonProps } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: Decode = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  message: "#message to encode here, # is required",
-  method: KeychainKeyTypes.active,
-};
-
 const RequestVerifyKeyComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
-  const [formParams, setFormParams] = useState<Decode>(DEFAULT_PARAMS);
+  const [formParams, setFormParams] = useState<Decode>({
+    username: lastUsernameFound,
+    message: "#message to encode here, # is required",
+    method: KeychainKeyTypes.active,
+  });
 
   useEffect(() => {
     setFormParamsToShow(formParams);

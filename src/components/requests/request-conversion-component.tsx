@@ -7,11 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: Convert = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  amount: "1.000",
-  collaterized: false,
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
@@ -20,12 +15,17 @@ const RequestConversionComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Convert;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      amount: "1.000",
+      collaterized: false,
+    },
     options: DEFAULT_OPTIONS,
   });
 

@@ -6,17 +6,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: Custom = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  id: "1",
-  method: KeychainKeyTypes.posting,
-  json: JSON.stringify({
-    items: ["9292cd44ccaef8b73a607949cc787f1679ede10b-93"],
-    currency: "DEC",
-    days: 1,
-  }),
-  display_msg: "Rent a Card Man!",
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["username", "rpc"];
@@ -25,7 +14,19 @@ const RequestCustomJsonComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
+  const DEFAULT_PARAMS: Custom = {
+    username: lastUsernameFound,
+    id: "1",
+    method: KeychainKeyTypes.posting,
+    json: JSON.stringify({
+      items: ["9292cd44ccaef8b73a607949cc787f1679ede10b-93"],
+      currency: "DEC",
+      days: 1,
+    }),
+    display_msg: "Rent a Card Man!",
+  };
   const [formParams, setFormParams] = useState<{
     data: Custom;
     options: KeychainOptions;

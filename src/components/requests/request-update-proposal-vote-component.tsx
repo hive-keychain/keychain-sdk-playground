@@ -7,12 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: UpdateProposalVote = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  proposal_ids: JSON.stringify([1, 2, 3]),
-  approve: false,
-  extensions: JSON.stringify([1, 2]),
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
@@ -21,12 +15,18 @@ const RequestUpdateProposalVoteComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: UpdateProposalVote;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      proposal_ids: JSON.stringify([1, 2, 3]),
+      approve: false,
+      extensions: JSON.stringify([1, 2]),
+    },
     options: DEFAULT_OPTIONS,
   });
 

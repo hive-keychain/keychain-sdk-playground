@@ -26,16 +26,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_OPERATION: Operation = [
-  "transfer",
-  {
-    from: localStorage.getItem("last_username") || "keychain.tests",
-    to: localStorage.getItem("last_username") || "keychain.tests",
-    amount: "0.001 HIVE",
-    memo: "Testing keychain SDK - requestSignTx & broadcast",
-  },
-];
-
 const DEFAULT_TX: Transaction = {
   ref_block_num: 1,
   ref_block_prefix: 1,
@@ -44,11 +34,6 @@ const DEFAULT_TX: Transaction = {
   extensions: [],
 };
 
-const DEFAULT_PARAMS: SignTx = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  tx: DEFAULT_TX,
-  method: KeychainKeyTypes.posting,
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const client = new Client([
@@ -62,7 +47,17 @@ const RequestSignTxComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
+  const DEFAULT_OPERATION: Operation = [
+    "transfer",
+    {
+      from: lastUsernameFound,
+      to: lastUsernameFound,
+      amount: "0.001 HIVE",
+      memo: "Testing keychain SDK - requestSignTx & broadcast",
+    },
+  ];
   const [operation, setOperation] = useState<Operation>(DEFAULT_OPERATION);
   const [arrayOperations, setArrayOperations] = useState<Operation[]>([]);
   const [formParams, setFormParams] = useState<{
@@ -70,7 +65,11 @@ const RequestSignTxComponent = ({
     options: KeychainOptions;
     broadcastSignedTx: boolean;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      tx: DEFAULT_TX,
+      method: KeychainKeyTypes.posting,
+    },
     options: DEFAULT_OPTIONS,
     broadcastSignedTx: false,
   });

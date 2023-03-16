@@ -5,11 +5,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: WitnessVote = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  witness: "keychain",
-  vote: true,
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["username", "rpc"];
@@ -18,12 +13,17 @@ const RequestWitnessVoteComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: WitnessVote;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      witness: "keychain",
+      vote: true,
+    },
     options: DEFAULT_OPTIONS,
   });
 

@@ -15,21 +15,20 @@ import { CommonProps } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: AddAccount = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  keys: {
-    posting: undefined,
-    active: undefined,
-    memo: undefined,
-  } as RequestAddAccountKeys,
-};
-
 const RequestAddAccountComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
-  const [formParams, setFormParams] = useState<AddAccount>(DEFAULT_PARAMS);
+  const [formParams, setFormParams] = useState<AddAccount>({
+    username: lastUsernameFound,
+    keys: {
+      posting: "5ft....",
+      active: "5ft....",
+      memo: "5ft....",
+    } as RequestAddAccountKeys,
+  });
 
   useEffect(() => {
     setFormParamsToShow(formParams);

@@ -14,23 +14,24 @@ const DEFAULT_AUTHORITY = {
   key_auths: [["STM8eALyQwyb2C4XhXJ7eZfjfjfSeNeeZREaxPcJRApie1uwzzcuF", 1]],
 } as Authority;
 
-const DEFAULT_PARAMS: CreateClaimedAccount = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  new_account: localStorage.getItem("last_username") || "keychain.tests",
-  owner: JSON.stringify(DEFAULT_AUTHORITY),
-  active: JSON.stringify(DEFAULT_AUTHORITY),
-  posting: JSON.stringify(DEFAULT_AUTHORITY),
-  memo: "STM8eALyQwyb2C4XhXJ7eZfjfjfSeNeeZREaxPcJRApie1uwzzcuF",
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
-//TODO here add customTooltip
+
 const RequestCreateClaimedAccountComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
+  const DEFAULT_PARAMS: CreateClaimedAccount = {
+    username: lastUsernameFound,
+    new_account: lastUsernameFound,
+    owner: JSON.stringify(DEFAULT_AUTHORITY),
+    active: JSON.stringify(DEFAULT_AUTHORITY),
+    posting: JSON.stringify(DEFAULT_AUTHORITY),
+    memo: "STM8eALyQwyb2C4XhXJ7eZfjfjfSeNeeZREaxPcJRApie1uwzzcuF",
+  };
   const [formParams, setFormParams] = useState<{
     data: CreateClaimedAccount;
     options: KeychainOptions;

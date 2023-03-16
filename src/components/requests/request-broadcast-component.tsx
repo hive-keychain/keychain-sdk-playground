@@ -18,21 +18,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_OPERATION: Operation = [
-  "transfer",
-  {
-    from: localStorage.getItem("last_username") || "keychain.tests",
-    to: localStorage.getItem("last_username") || "keychain.tests",
-    amount: "0.001 HIVE",
-    memo: "testing keychain SDK - requestBroadcast",
-  },
-];
-
-const DEFAULT_PARAMS: Broadcast = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  operations: [],
-  method: KeychainKeyTypes.active,
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = [""]; //none to check
@@ -41,14 +26,28 @@ const RequestBroadcastComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
+  const DEFAULT_OPERATION: Operation = [
+    "transfer",
+    {
+      from: lastUsernameFound,
+      to: lastUsernameFound,
+      amount: "0.001 HIVE",
+      memo: "testing keychain SDK - requestBroadcast",
+    },
+  ];
   const [operation, setOperation] = useState<Operation>(DEFAULT_OPERATION);
   const [arrayOperations, setArrayOperations] = useState<Operation[]>([]);
   const [formParams, setFormParams] = useState<{
     data: Broadcast;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      operations: [],
+      method: KeychainKeyTypes.active,
+    },
     options: DEFAULT_OPTIONS,
   });
   const [editOperationMode, setEditOperationMode] = useState<boolean>(false);

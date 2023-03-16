@@ -8,19 +8,18 @@ import { CommonProps } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: Encode = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  receiver: "keychain.tests",
-  message: "#Keychain SDK v 1.0",
-  method: KeychainKeyTypes.active,
-};
-
 const RequestEncodeMessageComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
-  const [formParams, setFormParams] = useState<Encode>(DEFAULT_PARAMS);
+  const [formParams, setFormParams] = useState<Encode>({
+    username: lastUsernameFound,
+    receiver: "keychain.tests",
+    message: "#Keychain SDK v 1.0",
+    method: KeychainKeyTypes.active,
+  });
 
   useEffect(() => {
     setFormParamsToShow(formParams);

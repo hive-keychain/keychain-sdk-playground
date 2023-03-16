@@ -8,12 +8,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: SignBuffer = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  message: "sample message to sign",
-  method: KeychainKeyTypes.active,
-  title: "title",
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["username", "title", "rpc"];
@@ -22,12 +16,18 @@ const RequestSignBufferComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: SignBuffer;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      message: "sample message to sign",
+      method: KeychainKeyTypes.active,
+      title: "title",
+    },
     options: DEFAULT_OPTIONS,
   });
 

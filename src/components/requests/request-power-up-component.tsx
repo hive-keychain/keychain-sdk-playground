@@ -7,11 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_PARAMS: PowerUp = {
-  username: localStorage.getItem("last_username") || "keychain.tests",
-  recipient: localStorage.getItem("last_username") || "keychain.tests",
-  hive: "1.000",
-};
 const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["rpc"];
@@ -20,12 +15,17 @@ const RequestPowerUpComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
+  lastUsernameFound,
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: PowerUp;
     options: KeychainOptions;
   }>({
-    data: DEFAULT_PARAMS,
+    data: {
+      username: lastUsernameFound,
+      recipient: lastUsernameFound,
+      hive: "1.000",
+    },
     options: DEFAULT_OPTIONS,
   });
 
