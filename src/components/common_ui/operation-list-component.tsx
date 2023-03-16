@@ -16,6 +16,8 @@ type Props = {
   handleOnChangeOperation: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleAddEditedOperation: (indexOperation: number) => void;
   setEditOperationMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setOperation: React.Dispatch<React.SetStateAction<Operation>>;
+  badFormatJSONFlag: boolean;
 };
 
 const OperationListComponent = ({
@@ -24,6 +26,8 @@ const OperationListComponent = ({
   handleOnChangeOperation,
   handleAddEditedOperation,
   setEditOperationMode,
+  setOperation,
+  badFormatJSONFlag,
 }: Props) => {
   const [selectedItemIndexToEdit, setSelectedItemIndexToEdit] =
     useState<number>();
@@ -31,6 +35,7 @@ const OperationListComponent = ({
   const handleEnterEditMode = (itemIndex: number) => {
     setEditOperationMode(true);
     setSelectedItemIndexToEdit(itemIndex);
+    setOperation(list[itemIndex]);
   };
 
   const handleEditOperation = (itemIndex: number) => {
@@ -45,14 +50,14 @@ const OperationListComponent = ({
 
   return (
     <ListGroup className="d-flex w-100 justify-content-center align-content-center">
+      <ListGroup.Item className="text-center">On Queue:</ListGroup.Item>
       {list.map((itemList, index) => {
         return (
           <ListGroup.Item key={`item-list-${index}`}>
             <Container>
               <Row>
                 <Col sm={8}>
-                  On Queue: {itemList[0]}{" "}
-                  {itemList[1].amount ? itemList[1].amount : ""}{" "}
+                  {itemList[0]} {itemList[1].amount ? itemList[1].amount : ""}{" "}
                 </Col>
                 <Col sm={4} className="d-flex justify-content-center">
                   {selectedItemIndexToEdit !== index && (
@@ -90,11 +95,7 @@ const OperationListComponent = ({
                         <InputGroup className="mb-3">
                           <InputGroup.Text>Type</InputGroup.Text>
                           <Form.Control
-                            // placeholder="Rpc node to broadcast - optional"
-                            // name="rpc"
                             defaultValue={itemList[0]}
-                            // value={operation[0]}
-                            // onChange={handleFormParams}
                             placeholder="Operation type"
                             name="operation_name"
                             onChange={handleOnChangeOperation}
@@ -117,6 +118,9 @@ const OperationListComponent = ({
                             onChange={handleOnChangeOperation}
                           />
                         </InputGroup>
+                        {badFormatJSONFlag && (
+                          <Form.Text muted>Please check JSON format!</Form.Text>
+                        )}
                       </Row>
                     </Container>
                   </Form.Group>

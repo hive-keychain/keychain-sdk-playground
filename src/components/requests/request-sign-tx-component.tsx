@@ -75,6 +75,7 @@ const RequestSignTxComponent = ({
     broadcastSignedTx: false,
   });
   const [editOperationMode, setEditOperationMode] = useState<boolean>(false);
+  const [badFormatJSONFlag, setBadFormatJSONFlag] = useState(false);
 
   useEffect(() => {
     setFormParamsToShow(formParams);
@@ -118,7 +119,9 @@ const RequestSignTxComponent = ({
         const jsonParsed = json5.parse<object>(value);
         console.log({ jsonParsed });
         setOperation([operation[0], jsonParsed]);
+        setBadFormatJSONFlag(false);
       } catch (error) {
+        setBadFormatJSONFlag(true);
         console.log("Error trying to parse json: ", error);
       }
     }
@@ -237,8 +240,9 @@ const RequestSignTxComponent = ({
               />
             </CustomToolTip>
           </InputGroup>
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-3" id="form-operations">
             <Form.Label>Operations</Form.Label>
+
             <Collapse in={!editOperationMode}>
               <Container>
                 <Container>
@@ -264,6 +268,9 @@ const RequestSignTxComponent = ({
                       onChange={handleOnChangeOperation}
                     />
                   </CustomToolTip>
+                  {badFormatJSONFlag && (
+                    <Form.Text muted>Please check JSON format!</Form.Text>
+                  )}
                 </Container>
                 <Container className="d-flex mt-2 mb-2 justify-content-center">
                   <CustomToolTip
@@ -287,6 +294,7 @@ const RequestSignTxComponent = ({
                 </Container>
               </Container>
             </Collapse>
+
             {arrayOperations.length > 0 && (
               <Container
                 className="d-flex justify-content-center align-content-center"
@@ -298,6 +306,8 @@ const RequestSignTxComponent = ({
                   handleOnChangeOperation={handleOnChangeOperation}
                   handleAddEditedOperation={handleAddEditedOperation}
                   setEditOperationMode={setEditOperationMode}
+                  setOperation={setOperation}
+                  badFormatJSONFlag={badFormatJSONFlag}
                 />
               </Container>
             )}
