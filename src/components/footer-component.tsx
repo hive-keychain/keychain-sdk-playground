@@ -1,5 +1,6 @@
 import { Container, Image, ListGroup } from "react-bootstrap";
 import DiscordLogoSvg from "../assets/images/svgs/discord.svg";
+import GitSvg from "../assets/images/svgs/github.svg";
 import HiveLogoSvg from "../assets/images/svgs/hive.svg";
 import TwitterLogoSvg from "../assets/images/svgs/twitter.svg";
 
@@ -14,16 +15,32 @@ function FooterComponent({}: Props): JSX.Element {
         </ListGroup.Item>
         <ListGroup.Item className="d-flex justify-content-center">
           <ListGroup horizontal>
-            <ListGroup.Item action href={"https://hive.blog/@keychain"}>
+            <ListGroup.Item
+              action
+              href={"https://github.com/hive-keychain/keychain-sdk"}
+              target="_blank"
+            >
+              <Image src={GitSvg} width={20} />
+            </ListGroup.Item>
+            <ListGroup.Item
+              action
+              href={"https://hive.blog/@keychain"}
+              target="_blank"
+            >
               <Image src={HiveLogoSvg} width={20} />
             </ListGroup.Item>
             <ListGroup.Item
               action
               href={"https://discord.com/invite/E6P6Gjv9MC"}
+              target="_blank"
             >
               <Image src={DiscordLogoSvg} width={20} />
             </ListGroup.Item>
-            <ListGroup.Item action href={"https://twitter.com/HiveKeychain"}>
+            <ListGroup.Item
+              action
+              href={"https://twitter.com/HiveKeychain"}
+              target="_blank"
+            >
               <Image src={TwitterLogoSvg} width={20} />
             </ListGroup.Item>
           </ListGroup>

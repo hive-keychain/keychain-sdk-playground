@@ -2,3 +2,7 @@
 .input-group-text:not(.normal) {
   width: 30% !important;
 }
+.list-group-item.active {
+  background-color: white;
+  border-color: lightgrey;
+}
