@@ -1,4 +1,4 @@
 /* Modifications on width of label(s) -> InputGroup.Text */
-.input-group-text {
-  width: 25% !important;
+.input-group-text:not(.normal) {
+  width: 30% !important;
 }

@@ -74,7 +74,8 @@ const RequestVoteComponent = ({
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
-            <InputGroup.Text>@</InputGroup.Text>
+            <InputGroup.Text>Username</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <CustomToolTip
               placement="top"
               toolTipText={fieldToolTipText.username}
@@ -98,6 +99,7 @@ const RequestVoteComponent = ({
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Author</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <Form.Control
               placeholder="Author of post"
               name="author"

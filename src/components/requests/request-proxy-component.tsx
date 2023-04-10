@@ -70,7 +70,8 @@ const RequestProxyComponent = ({
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
-            <InputGroup.Text>@</InputGroup.Text>
+            <InputGroup.Text>Username</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <Form.Control
               placeholder="Hive username, leave blank for dropdown"
               name="username"
@@ -80,6 +81,7 @@ const RequestProxyComponent = ({
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Proxy</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <Form.Control
               placeholder="Account to become the proxy. Empty string ('') to remove a proxy"
               name="proxy"

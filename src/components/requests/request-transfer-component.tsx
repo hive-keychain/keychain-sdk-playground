@@ -77,7 +77,8 @@ const RequestTransferComponent = ({
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
-            <InputGroup.Text>@</InputGroup.Text>
+            <InputGroup.Text>Username</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <CustomToolTip
               placement="top"
               toolTipText={fieldToolTipText.username}
@@ -91,7 +92,8 @@ const RequestTransferComponent = ({
             </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup.Text>To @</InputGroup.Text>
+            <InputGroup.Text>Receiver</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <CustomToolTip
               placement="top"
               toolTipText={"Hive username to receive"}

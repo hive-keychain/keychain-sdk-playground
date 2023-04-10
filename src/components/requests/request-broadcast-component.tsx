@@ -161,7 +161,8 @@ const RequestBroadcastComponent = ({
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Username @</InputGroup.Text>
+            <InputGroup.Text>Username</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <CustomToolTip
               placement="top"
               toolTipText={fieldToolTipText.username}

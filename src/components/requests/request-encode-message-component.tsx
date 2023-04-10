@@ -49,7 +49,8 @@ const RequestEncodeMessageComponent = ({
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
-            <InputGroup.Text>@</InputGroup.Text>
+            <InputGroup.Text>Username</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <CustomToolTip
               children={
                 <Form.Control
@@ -64,7 +65,8 @@ const RequestEncodeMessageComponent = ({
             />
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Receiver @</InputGroup.Text>
+            <InputGroup.Text>Receiver</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <Form.Control
               placeholder="Hive receiver's username"
               name="receiver"

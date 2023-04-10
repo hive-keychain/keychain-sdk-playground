@@ -87,7 +87,8 @@ const RequestCreateClaimedAccountComponent = ({
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
-            <InputGroup.Text>@</InputGroup.Text>
+            <InputGroup.Text>Username</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <CustomToolTip
               placement="top"
               toolTipText={fieldToolTipText.username}
@@ -101,7 +102,8 @@ const RequestCreateClaimedAccountComponent = ({
             </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup.Text>New account@</InputGroup.Text>
+            <InputGroup.Text>New account</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <CustomToolTip
               placement="top"
               toolTipText={fieldToolTipText.newAccount}

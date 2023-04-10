@@ -64,7 +64,7 @@ const SearchModal = ({ show, onHide }: Props) => {
           <InputGroup className="mb-2">
             <Form.Control
               title="Type to show content bellow"
-              placeholder="type to search"
+              placeholder="Search"
               name="search_value"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}

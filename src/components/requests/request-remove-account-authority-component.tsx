@@ -77,7 +77,8 @@ const RequestRemoveAccountAuthorityComponent = ({
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
-            <InputGroup.Text>@</InputGroup.Text>
+            <InputGroup.Text>Username</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <CustomToolTip
               placement="top"
               toolTipText={fieldToolTipText.username}
@@ -91,7 +92,8 @@ const RequestRemoveAccountAuthorityComponent = ({
             </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Authorized @</InputGroup.Text>
+            <InputGroup.Text>Authorized account</InputGroup.Text>
+            <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
             <CustomToolTip
               placement="top"
               toolTipText={fieldToolTipText.toUnauthorizedAccount}
