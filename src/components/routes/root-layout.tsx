@@ -1,17 +1,15 @@
-import { KeychainSDK } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import { Button, Container, Form, Image, Nav, Navbar } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
 import AlertIconRed from "../../assets/images/pngs/icons8-alert-sign.png";
 import KeyChainPngIcon from "../../assets/images/pngs/keychain_icon_small.png";
 import CheckMarkGreen from "../../assets/images/svgs/icons8-check-mark-green.svg";
+import { Utils } from "../../utils/utils";
 import CustomToolTip from "../common_ui/custom-tool-tip";
 import FooterComponent from "../footer-component";
 import SearchModal from "../search-modal";
 
 type Props = {};
-
-const sdk = new KeychainSDK(window);
 
 export default function RootLayout({}: Props) {
   //navBar
@@ -24,7 +22,7 @@ export default function RootLayout({}: Props) {
     const onLoadHandler = async () => {
       console.log("Fully loaded!");
       try {
-        const enabled = await sdk.isKeyChainInstalled();
+        const enabled = await Utils.getSDK().isKeyChainInstalled();
         setKeychainInstalled(enabled);
         console.log({ KeychainDetected: enabled });
       } catch (error) {

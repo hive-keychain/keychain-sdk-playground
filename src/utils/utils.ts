@@ -1,5 +1,13 @@
 import { KeychainRequestTypes } from "hive-keychain-commons";
+import { KeychainSDK } from "keychain-sdk";
 
+let sdk: KeychainSDK;
+const getSDK = () => {
+  if (!sdk) {
+    sdk = new KeychainSDK(window);
+  }
+  return sdk;
+};
 const fromCodeToText = (
   formParams: any,
   requestType: KeychainRequestTypes | string
@@ -49,4 +57,4 @@ const sortByKeyNames = (a: any, b: any, key: string) => {
   return 0;
 };
 
-export const Utils = { fromCodeToText, sortByKeyNames };
+export const Utils = { fromCodeToText, sortByKeyNames, getSDK };

@@ -47,7 +47,7 @@ export type CommonProps = {
   lastUsernameFound: string;
 };
 
-const sdk = new KeychainSDK(window);
+const sdk = Utils.getSDK();
 
 type Props = {};
 
