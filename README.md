@@ -71,7 +71,7 @@ useEffect(() => {
     const onLoadHandler = async () => {
       console.log('Fully loaded!');
       try {
-        const enabled = await keychain.isKeyChainInstalled();
+        const enabled = await keychain.isKeychainInstalled();
         console.log({ KeychainDetected: enabled });
         //
         //run all the code you need for your requests.

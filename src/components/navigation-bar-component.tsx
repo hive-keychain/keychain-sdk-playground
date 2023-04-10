@@ -29,7 +29,7 @@ const NavigationBarComponent = ({
     const onLoadHandler = async () => {
       if (enableLogs) console.log("Fully loaded!");
       try {
-        const enabled = await sdk.isKeyChainInstalled();
+        const enabled = await sdk.isKeychainInstalled();
         setKeychainInstalled(enabled);
         setEnabledKeychain(enabled);
         if (enableLogs) console.log({ KeychainDetected: enabled });

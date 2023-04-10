@@ -22,7 +22,7 @@ export default function RootLayout({}: Props) {
     const onLoadHandler = async () => {
       console.log("Fully loaded!");
       try {
-        const enabled = await Utils.getSDK().isKeyChainInstalled();
+        const enabled = await Utils.getSDK().isKeychainInstalled();
         setKeychainInstalled(enabled);
         console.log({ KeychainDetected: enabled });
       } catch (error) {
