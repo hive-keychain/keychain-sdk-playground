@@ -32,7 +32,7 @@ const RequestPostComponent = ({
     comment_options: JSON.stringify({
       author: lastUsernameFound,
       permlink: "a-post-by-keychaintests-fourth-part-post",
-      max_accepted_payout: "10000.000 SBD",
+      max_accepted_payout: "10000.000 HBD",
       allow_votes: true,
       allow_curation_rewards: true,
       extensions: [],
