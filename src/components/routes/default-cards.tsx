@@ -3,7 +3,12 @@ import { Card } from "react-bootstrap";
 const DefaultCard = () => {
   return (
     <Card
-      style={{ width: "40%", margin: "auto", padding: 50, textAlign: "center" }}
+      style={{
+        maxWidth: 650,
+        margin: "auto",
+        padding: 50,
+        textAlign: "center",
+      }}
     >
       <h3>Welcome to the Keychain Playground!</h3>
       <br />
