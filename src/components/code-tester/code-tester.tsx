@@ -1,3 +1,6 @@
+import { KeychainKeyTypes } from "hive-keychain-commons";
+import { KeychainSDK } from "keychain-sdk";
+import { Encode } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { Button, Card, Form } from "react-bootstrap";
 
 type Props = {};
@@ -7,6 +10,20 @@ const CodeTester = (props: Props) => {
     e.preventDefault();
     //////////////////////
     //copy & paste here///
+
+    try {
+      const keychain = new KeychainSDK(window);
+      const formParamsAsObject = {
+        username: "jobaboard",
+        receiver: "keychain.tests",
+        message: "#Keychain SDK v 1.0",
+        method: KeychainKeyTypes.active,
+      };
+      const encode = await keychain.encode(formParamsAsObject as Encode);
+      console.log({ encode });
+    } catch (error) {
+      console.log({ error });
+    }
 
     //end copy/paste//////
     //////////////////////
