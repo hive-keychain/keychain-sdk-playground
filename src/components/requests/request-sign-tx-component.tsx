@@ -22,7 +22,7 @@ import {
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../common_ui/custom-tool-tip";
 import OperationListComponent from "../common_ui/operation-list-component";
-import { CommonProps, KeychainOptions } from "../routes/request-card";
+import { CommonProps } from "../routes/request-card";
 
 type Props = {};
 
@@ -33,8 +33,6 @@ const DEFAULT_TX: Transaction = {
   operations: [],
   extensions: [],
 };
-
-const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const client = new Client([
   "https://api.hive.blog",
@@ -62,7 +60,6 @@ const RequestSignTxComponent = ({
   const [arrayOperations, setArrayOperations] = useState<Operation[]>([]);
   const [formParams, setFormParams] = useState<{
     data: SignTx;
-    options: KeychainOptions;
     broadcastSignedTx: boolean;
   }>({
     data: {
@@ -70,7 +67,6 @@ const RequestSignTxComponent = ({
       tx: DEFAULT_TX,
       method: KeychainKeyTypes.posting,
     },
-    options: DEFAULT_OPTIONS,
     broadcastSignedTx: false,
   });
   const [editOperationMode, setEditOperationMode] = useState<boolean>(false);
@@ -182,7 +178,6 @@ const RequestSignTxComponent = ({
     } else if (name === "options") {
       setFormParams((prevFormParams) => ({
         ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
       }));
     } else if (name === "operations") {
       setFormParams((prevFormParams) => ({
@@ -202,7 +197,7 @@ const RequestSignTxComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const sign = await sdk.signTx(formParams.data, formParams.options);
+      const sign = await sdk.signTx(formParams.data);
       let signedTxBroadcast;
       if (formParams.broadcastSignedTx) {
         signedTxBroadcast = await client.broadcast.send(sign.result as any);
@@ -354,15 +349,7 @@ const RequestSignTxComponent = ({
               />
             </CustomToolTip>
           </InputGroup>
-          <InputGroup className="mb-3">
-            <InputGroup.Text>Rpc</InputGroup.Text>
-            <Form.Control
-              placeholder="Rpc node to broadcast - optional"
-              name="rpc"
-              value={formParams.options.rpc}
-              onChange={handleFormParams}
-            />
-          </InputGroup>
+
           <Button variant="primary" type="submit" className="mt-1">
             Submit
           </Button>

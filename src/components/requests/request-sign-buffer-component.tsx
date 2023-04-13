@@ -4,11 +4,9 @@ import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../common_ui/custom-tool-tip";
-import { CommonProps, KeychainOptions } from "../routes/request-card";
+import { CommonProps } from "../routes/request-card";
 
 type Props = {};
-
-const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["username", "title", "rpc"];
 
@@ -20,7 +18,6 @@ const RequestSignBufferComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: SignBuffer;
-    options: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
@@ -28,7 +25,6 @@ const RequestSignBufferComponent = ({
       method: KeychainKeyTypes.active,
       title: "title",
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -52,7 +48,6 @@ const RequestSignBufferComponent = ({
     } else {
       setFormParams((prevFormParams) => ({
         ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
       }));
     }
   };
@@ -61,10 +56,7 @@ const RequestSignBufferComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const signBuffer = await sdk.signBuffer(
-        formParams.data,
-        formParams.options
-      );
+      const signBuffer = await sdk.signBuffer(formParams.data);
       setRequestResult(signBuffer);
       console.log({ signBuffer });
     } catch (error) {
@@ -134,15 +126,6 @@ const RequestSignBufferComponent = ({
                 {KeychainKeyTypes.memo}
               </option>
             </Form.Select>
-          </InputGroup>
-          <InputGroup className="mb-3">
-            <InputGroup.Text>Rpc</InputGroup.Text>
-            <Form.Control
-              placeholder="Rpc node to broadcast - optional"
-              name="rpc"
-              value={formParams.options.rpc}
-              onChange={handleFormParams}
-            />
           </InputGroup>
           <Button variant="primary" type="submit" className="mt-1">
             Submit

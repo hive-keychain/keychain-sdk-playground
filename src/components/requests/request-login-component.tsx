@@ -4,11 +4,9 @@ import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../common_ui/custom-tool-tip";
-import { CommonProps, KeychainOptions } from "../routes/request-card";
+import { CommonProps } from "../routes/request-card";
 
 type Props = {};
-
-const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = ["username", "message", "title", "rpc"];
 
@@ -20,7 +18,6 @@ const RequestLoginComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Login;
-    options: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
@@ -28,7 +25,6 @@ const RequestLoginComponent = ({
       method: KeychainKeyTypes.posting,
       title: "Login",
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -52,7 +48,6 @@ const RequestLoginComponent = ({
     } else {
       setFormParams((prevFormParams) => ({
         ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
       }));
     }
   };
@@ -61,7 +56,7 @@ const RequestLoginComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const login = await sdk.login(formParams.data, formParams.options);
+      const login = await sdk.login(formParams.data);
       setRequestResult(login);
       console.log({ login });
     } catch (error) {
@@ -138,15 +133,7 @@ const RequestLoginComponent = ({
               toolTipText={fieldToolTipText.titlePopUp}
             />
           </InputGroup>
-          <InputGroup className="mb-3">
-            <InputGroup.Text>Rpc</InputGroup.Text>
-            <Form.Control
-              placeholder="Rpc node to broadcast - optional"
-              name="rpc"
-              value={formParams.options.rpc}
-              onChange={handleFormParams}
-            />
-          </InputGroup>
+
           <Button variant="primary" type="submit" className="mt-1">
             Submit
           </Button>
