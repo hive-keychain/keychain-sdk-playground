@@ -8,8 +8,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_OPTIONS: KeychainOptions = {};
-
 const undefinedParamsToValidate = [""]; //none to check
 
 const RequestRemoveAccountAuthorityComponent = ({
@@ -20,15 +18,13 @@ const RequestRemoveAccountAuthorityComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: RemoveAccountAuthority;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
       authorizedUsername: lastUsernameFound,
       role: KeychainKeyTypes.posting,
-      method: KeychainKeyTypes.active,
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -50,10 +46,16 @@ const RequestRemoveAccountAuthorityComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -127,7 +129,7 @@ const RequestRemoveAccountAuthorityComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

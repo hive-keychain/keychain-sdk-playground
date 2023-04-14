@@ -7,8 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_OPTIONS: KeychainOptions = {};
-
 const undefinedParamsToValidate = ["username", "rpc"];
 
 const RequestDelegationComponent = ({
@@ -19,7 +17,7 @@ const RequestDelegationComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Delegation;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
@@ -27,7 +25,6 @@ const RequestDelegationComponent = ({
       amount: "1.000",
       unit: "HP",
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -49,10 +46,16 @@ const RequestDelegationComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0 || !tempValue) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -138,7 +141,7 @@ const RequestDelegationComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

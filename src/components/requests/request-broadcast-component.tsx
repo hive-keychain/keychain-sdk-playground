@@ -18,8 +18,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_OPTIONS: KeychainOptions = {};
-
 const undefinedParamsToValidate = [""]; //none to check
 
 const RequestBroadcastComponent = ({
@@ -41,14 +39,13 @@ const RequestBroadcastComponent = ({
   const [arrayOperations, setArrayOperations] = useState<Operation[]>([]);
   const [formParams, setFormParams] = useState<{
     data: Broadcast;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
       operations: [],
       method: KeychainKeyTypes.active,
     },
-    options: DEFAULT_OPTIONS,
   });
   const [editOperationMode, setEditOperationMode] = useState<boolean>(false);
   const [badFormatJSONFlag, setBadFormatJSONFlag] = useState(false);
@@ -85,10 +82,16 @@ const RequestBroadcastComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0 || !tempValue) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -253,7 +256,7 @@ const RequestBroadcastComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

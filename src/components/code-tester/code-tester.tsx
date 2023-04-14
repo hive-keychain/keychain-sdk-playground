@@ -14,10 +14,10 @@ const CodeTester = (props: Props) => {
     try {
       const keychain = new KeychainSDK(window);
       const formParamsAsObject = {
-        username: "jobaboard",
+        username: "keychain.tests",
         receiver: "keychain.tests",
         message: "#Keychain SDK v 1.0",
-        method: KeychainKeyTypes.active,
+        method: KeychainKeyTypes.memo,
       };
       const encode = await keychain.encode(formParamsAsObject as Encode);
       console.log({ encode });

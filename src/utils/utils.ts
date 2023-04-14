@@ -16,9 +16,6 @@ const fromCodeToText = (
 ) => {
   if (!requestType) return;
 
-  if (formParams.options && Object.keys(formParams.options).length === 0) {
-    delete formParams.options;
-  }
   const capitalizedCastedType =
     requestType[0].toUpperCase() + requestType.substring(1, requestType.length);
 
@@ -51,46 +48,20 @@ const fromCodeToText = (
     console.log({ signedTxBroadcast });`
     : `console.log({ ${requestType.toLowerCase()} });`;
 
-  //TODO check the pattern + extract & reuse...
-  let arrayParam = ["{"];
-  for (const [key, value] of Object.entries(formParams)) {
-    if (typeof value === "object" && key === "data") {
-      let dataArray = ["{"];
-      for (const [innerKey, innerValue] of Object.entries(value as object)) {
-        if (innerKey === "method") {
-          dataArray.push(
-            `\t\t"${innerKey}": KeychainKeyTypes.${(
-              innerValue as string
-            ).toLowerCase()},`
-          );
-        } else {
-          dataArray.push(`\t\t"${innerKey}": "${innerValue}",`);
-        }
-      }
-      dataArray.push("\t}");
-      arrayParam.push(`\t"data": ${dataArray.join("\n")},`);
-    } else {
-      if (key === "method") {
-        arrayParam.push(
-          `\t"${key}": KeychainKeyTypes.${(value as string).toLowerCase()},`
-        );
-      } else {
-        arrayParam.push(
-          `\t"${key}": "${
-            typeof value === "object"
-              ? JSON.stringify(value, undefined, "\t\t")
-              : value
-          }",`
-        );
-      }
-    }
-  }
-  arrayParam.push("\t}");
+  const stringifyed = `${JSON.stringify(formParams, undefined, "     ")}`;
+
+  const temp = stringifyed
+    .replace(/\"method\"\: \"Active\"/g, `"method" : KeychainKeyTypes.active`)
+    .replace(/\"method\"\: \"Posting\"/g, `"method" : KeychainKeyTypes.posting`)
+    .replace(/\"method\"\: \"Memo\"/g, `"method" : KeychainKeyTypes.memo`)
+    .replace(/\"role\"\: \"Active\"/g, `"role" : KeychainKeyTypes.active`)
+    .replace(/\"role\"\: \"Posting\"/g, `"role" : KeychainKeyTypes.posting`)
+    .replace(/\"role\"\: \"Memo\"/g, `"role" : KeychainKeyTypes.memo`);
 
   return `try
   {
     const keychain = new KeychainSDK(window);
-    const formParamsAsObject = ${arrayParam.join("\n")};
+    const formParamsAsObject = ${temp}
     const ${requestType.toLowerCase()} = ${requestObject}
     ${extraCodeLines}
   } catch (error) {
