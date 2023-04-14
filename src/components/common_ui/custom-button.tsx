@@ -15,7 +15,7 @@ export enum IconName {
 
 type Props = {
   icon: IconName;
-  onClickHandler: any; //TODO add type if needed.
+  onClickHandler: any;
   toolTipText: string;
 };
 
