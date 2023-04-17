@@ -78,12 +78,15 @@ const RequestResultsComponent = ({
                     <ListGroup>
                       {Object.entries(requestResult.data).map(
                         (dataItem: any) => {
+                          console.log(dataItem);
                           return (
                             <ListGroup.Item key={dataItem[0]}>
                               {dataItem[0]}:{" "}
-                              {typeof dataItem[1] === "object"
-                                ? JSON.stringify(dataItem[1])
-                                : dataItem[1].toString()}
+                              {dataItem[1]
+                                ? typeof dataItem[1] === "object"
+                                  ? JSON.stringify(dataItem[1])
+                                  : dataItem[1].toString()
+                                : undefined}
                             </ListGroup.Item>
                           );
                         }
