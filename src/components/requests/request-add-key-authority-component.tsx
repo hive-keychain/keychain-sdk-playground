@@ -27,7 +27,6 @@ const RequestAddKeyAuthorityComponent = ({
       authorizedKey: "STM7KKUZb1CzwRiaN2RQcGeJUpcHM5BmCNudxXW21xqktBe91RpD8",
       role: KeychainKeyTypes.posting,
       weight: 1,
-      method: KeychainKeyTypes.active,
     },
     options: DEFAULT_OPTIONS,
   });

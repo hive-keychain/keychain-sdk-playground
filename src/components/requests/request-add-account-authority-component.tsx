@@ -27,7 +27,6 @@ const RequestAddAccountAuthorityComponent = ({
       authorizedUsername: lastUsernameFound,
       role: KeychainKeyTypes.posting,
       weight: 1,
-      method: KeychainKeyTypes.active,
     },
     options: DEFAULT_OPTIONS,
   });

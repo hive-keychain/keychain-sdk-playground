@@ -26,7 +26,6 @@ const RequestRemoveAccountAuthorityComponent = ({
       username: lastUsernameFound,
       authorizedUsername: lastUsernameFound,
       role: KeychainKeyTypes.posting,
-      method: KeychainKeyTypes.active,
     },
     options: DEFAULT_OPTIONS,
   });

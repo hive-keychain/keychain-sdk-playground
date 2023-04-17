@@ -26,7 +26,6 @@ const RequestRemoveKeyAuthorityComponent = ({
       username: lastUsernameFound,
       authorizedKey: "STM7KKUZb1CzwRiaN2RQcGeJUpcHM5BmCNudxXW21xqktBe91RpD8",
       role: KeychainKeyTypes.posting,
-      method: KeychainKeyTypes.active,
     },
     options: DEFAULT_OPTIONS,
   });
