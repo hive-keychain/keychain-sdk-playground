@@ -2,30 +2,44 @@ import { KeychainRequestTypes } from "hive-keychain-commons";
 import { KeychainSDK } from "keychain-sdk";
 
 let sdk: KeychainSDK;
+
 const getSDK = () => {
   if (!sdk) {
     sdk = new KeychainSDK(window);
   }
   return sdk;
 };
+
 const fromCodeToText = (
   formParams: any,
   requestType: KeychainRequestTypes | string
 ) => {
   if (!requestType) return;
-  const capitalized =
+
+  const capitalizedCastedType =
     requestType[0].toUpperCase() + requestType.substring(1, requestType.length);
 
-  const requestObjectCall = !formParams.data
-    ? `await keychain
-              .${requestType}(formParamsAsObject as ${capitalized});`
-    : `await keychain
-              .${requestType}(formParamsAsObject.data as ${
-        capitalized === "SignTx" ? "any" : capitalized
-      },
-              formParamsAsObject.options)`;
+  let requestObject = "";
 
-  const extraCodeOnSignTx = formParams.broadcastSignedTx
+  if (formParams.data) {
+    const formParamsOptions = `${
+      formParams.options
+        ? `,
+              formParamsAsObject.options`
+        : ""
+    });`;
+    requestObject = `await keychain
+         .${requestType}(
+              formParamsAsObject.data as ${
+                capitalizedCastedType === "SignTx"
+                  ? "any"
+                  : capitalizedCastedType
+              }${formParamsOptions}`;
+  } else {
+    requestObject = `await keychain
+         .${requestType}(formParamsAsObject as ${capitalizedCastedType});`;
+  }
+  const extraCodeLines = formParams.broadcastSignedTx
     ? `const client = new Client([
       "https://api.hive.blog",
       "https://api.openhive.network",
@@ -34,12 +48,22 @@ const fromCodeToText = (
     console.log({ signedTxBroadcast });`
     : `console.log({ ${requestType.toLowerCase()} });`;
 
+  const stringifyed = `${JSON.stringify(formParams, undefined, "     ")}`;
+
+  const temp = stringifyed
+    .replace(/\"method\"\: \"Active\"/g, `"method" : KeychainKeyTypes.active`)
+    .replace(/\"method\"\: \"Posting\"/g, `"method" : KeychainKeyTypes.posting`)
+    .replace(/\"method\"\: \"Memo\"/g, `"method" : KeychainKeyTypes.memo`)
+    .replace(/\"role\"\: \"Active\"/g, `"role" : KeychainKeyTypes.active`)
+    .replace(/\"role\"\: \"Posting\"/g, `"role" : KeychainKeyTypes.posting`)
+    .replace(/\"role\"\: \"Memo\"/g, `"role" : KeychainKeyTypes.memo`);
+
   return `try
   {
     const keychain = new KeychainSDK(window);
-    const formParamsAsObject = ${JSON.stringify(formParams, undefined, "    ")};
-    const ${requestType.toLowerCase()} = ${requestObjectCall};
-    ${extraCodeOnSignTx}
+    const formParamsAsObject = ${temp}
+    const ${requestType.toLowerCase()} = ${requestObject}
+    ${extraCodeLines}
   } catch (error) {
     console.log({ error });
   }`;

@@ -7,8 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_OPTIONS: KeychainOptions = {};
-
 const undefinedParamsToValidate = ["rpc"];
 
 const RequestVoteComponent = ({
@@ -19,7 +17,7 @@ const RequestVoteComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Vote;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
@@ -27,7 +25,6 @@ const RequestVoteComponent = ({
       author: lastUsernameFound,
       weight: 10000,
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -49,10 +46,16 @@ const RequestVoteComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0 || !tempValue) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -121,7 +124,7 @@ const RequestVoteComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

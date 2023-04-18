@@ -8,8 +8,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_OPTIONS: KeychainOptions = {};
-
 const undefinedParamsToValidate = [""]; //none to check
 
 const RequestAddKeyAuthorityComponent = ({
@@ -20,16 +18,14 @@ const RequestAddKeyAuthorityComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: AddKeyAuthority;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
       authorizedKey: "STM7KKUZb1CzwRiaN2RQcGeJUpcHM5BmCNudxXW21xqktBe91RpD8",
       role: KeychainKeyTypes.posting,
       weight: 1,
-      method: KeychainKeyTypes.active,
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -51,10 +47,16 @@ const RequestAddKeyAuthorityComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -72,6 +74,7 @@ const RequestAddKeyAuthorityComponent = ({
       setRequestResult(error);
     }
   };
+
   return (
     <Card className="d-flex justify-content-center">
       <Card.Header as={"h5"}>Request Add Key Authority</Card.Header>
@@ -144,7 +147,7 @@ const RequestAddKeyAuthorityComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

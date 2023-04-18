@@ -5,7 +5,9 @@ The playground can be used to understand how to use the keychain requests. Any t
 #### Useful links
 
 - [SDK-playground repository](https://github.com/hive-keychain/keychain-sdk-playground)
+- [SDK-playground](https://play.hive-keychain.com/)
 - [keychain-sdk](https://github.com/hive-keychain/keychain-sdk)
+- [npm package](https://www.npmjs.com/package/keychain-sdk)
 
 #### How to install
 
