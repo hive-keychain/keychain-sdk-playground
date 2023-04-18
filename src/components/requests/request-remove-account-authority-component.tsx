@@ -1,5 +1,7 @@
-import { KeychainKeyTypes } from "hive-keychain-commons";
-import { RemoveAccountAuthority } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import {
+  KeychainKeyTypes,
+  RemoveAccountAuthority,
+} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
@@ -7,8 +9,6 @@ import CustomToolTip from "../common_ui/custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
-
-const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = [""]; //none to check
 
@@ -20,14 +20,13 @@ const RequestRemoveAccountAuthorityComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: RemoveAccountAuthority;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
       authorizedUsername: lastUsernameFound,
       role: KeychainKeyTypes.posting,
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -49,10 +48,16 @@ const RequestRemoveAccountAuthorityComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -126,7 +131,7 @@ const RequestRemoveAccountAuthorityComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

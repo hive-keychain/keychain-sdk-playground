@@ -7,9 +7,11 @@ import {
   VirtualOperationName,
 } from "@hiveio/dhive";
 import { Buffer } from "buffer";
-import { KeychainKeyTypes } from "hive-keychain-commons";
 import json5 from "json5";
-import { SignTx } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import {
+  KeychainKeyTypes,
+  SignTx,
+} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import {
   Button,

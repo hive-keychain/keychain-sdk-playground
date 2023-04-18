@@ -1,5 +1,5 @@
-import { KeychainRequestTypes } from "hive-keychain-commons";
 import { KeychainSDK } from "keychain-sdk";
+import { KeychainRequestTypes } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { ReactNode, useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { CopyBlock, solarizedDark } from "react-code-blocks";
@@ -69,8 +69,19 @@ const RequestCard = (props: Props) => {
     lastUsernameFound,
   };
 
+  // useEffect(() => {
+  //   const formParams: any = formParamsToShow;
+  //   if (formParams.options && Object.keys(formParams.options).length === 0) {
+  //     delete formParams.options;
+  //     setFormParamsToShow(formParams);
+  //   }
+  // }, [formParamsToShow]);
+
   useEffect(() => {
     if (!requestType) return;
+
+    setRequestResult(undefined);
+
     switch (requestType) {
       case "login":
         setRequestCard(<RequestLoginComponent {...commonProps} />);

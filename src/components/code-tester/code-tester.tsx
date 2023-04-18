@@ -1,3 +1,8 @@
+import { KeychainSDK } from "keychain-sdk";
+import {
+  Encode,
+  KeychainKeyTypes,
+} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { Button, Card, Form } from "react-bootstrap";
 
 type Props = {};
@@ -7,6 +12,20 @@ const CodeTester = (props: Props) => {
     e.preventDefault();
     //////////////////////
     //copy & paste here///
+
+    try {
+      const keychain = new KeychainSDK(window);
+      const formParamsAsObject = {
+        username: "keychain.tests",
+        receiver: "keychain.tests",
+        message: "#Keychain SDK v 1.0",
+        method: KeychainKeyTypes.memo,
+      };
+      const encode = await keychain.encode(formParamsAsObject as Encode);
+      console.log({ encode });
+    } catch (error) {
+      console.log({ error });
+    }
 
     //end copy/paste//////
     //////////////////////

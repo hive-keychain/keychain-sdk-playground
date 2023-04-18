@@ -7,8 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_OPTIONS: KeychainOptions = {};
-
 const undefinedParamsToValidate = ["rpc"];
 
 const RequestSendTokenComponent = ({
@@ -19,7 +17,7 @@ const RequestSendTokenComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: SendToken;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
@@ -28,7 +26,6 @@ const RequestSendTokenComponent = ({
       memo: "#Test Keychain SDK transfer(will be encrypted)",
       currency: "LEO",
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -50,10 +47,16 @@ const RequestSendTokenComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0 || !tempValue) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -156,7 +159,7 @@ const RequestSendTokenComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

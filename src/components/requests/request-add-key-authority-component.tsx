@@ -1,5 +1,7 @@
-import { KeychainKeyTypes } from "hive-keychain-commons";
-import { AddKeyAuthority } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import {
+  AddKeyAuthority,
+  KeychainKeyTypes,
+} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
@@ -7,8 +9,6 @@ import CustomToolTip from "../common_ui/custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
-
-const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = [""]; //none to check
 
@@ -20,7 +20,7 @@ const RequestAddKeyAuthorityComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: AddKeyAuthority;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
@@ -28,7 +28,6 @@ const RequestAddKeyAuthorityComponent = ({
       role: KeychainKeyTypes.posting,
       weight: 1,
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -50,10 +49,16 @@ const RequestAddKeyAuthorityComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -71,6 +76,7 @@ const RequestAddKeyAuthorityComponent = ({
       setRequestResult(error);
     }
   };
+
   return (
     <Card className="d-flex justify-content-center">
       <Card.Header as={"h5"}>Request Add Key Authority</Card.Header>
@@ -143,7 +149,7 @@ const RequestAddKeyAuthorityComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

@@ -1,5 +1,7 @@
-import { KeychainKeyTypes } from "hive-keychain-commons";
-import { AddAccountAuthority } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import {
+  AddAccountAuthority,
+  KeychainKeyTypes,
+} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
@@ -7,8 +9,6 @@ import CustomToolTip from "../common_ui/custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
-
-const DEFAULT_OPTIONS: KeychainOptions = {};
 
 const undefinedParamsToValidate = [""]; //none to check
 
@@ -20,15 +20,14 @@ const RequestAddAccountAuthorityComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: AddAccountAuthority;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
       authorizedUsername: lastUsernameFound,
-      role: KeychainKeyTypes.posting,
+      role: KeychainKeyTypes.active,
       weight: 1,
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -50,10 +49,16 @@ const RequestAddAccountAuthorityComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -142,7 +147,7 @@ const RequestAddAccountAuthorityComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

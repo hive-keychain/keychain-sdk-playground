@@ -1,5 +1,7 @@
-import { RequestAddAccountKeys } from "hive-keychain-commons";
-import { AddAccount } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import {
+  AddAccount,
+  RequestAddAccountKeys,
+} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import {
   Button,

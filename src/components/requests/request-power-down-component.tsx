@@ -7,8 +7,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_OPTIONS: KeychainOptions = {};
-
 const undefinedParamsToValidate = ["rpc"];
 
 const RequestPowerDownComponent = ({
@@ -19,13 +17,12 @@ const RequestPowerDownComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: PowerDown;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
       hive_power: "1.000",
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -47,10 +44,16 @@ const RequestPowerDownComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0 || !tempValue) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -109,7 +112,7 @@ const RequestPowerDownComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

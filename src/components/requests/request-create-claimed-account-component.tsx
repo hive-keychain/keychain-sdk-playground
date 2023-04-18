@@ -14,8 +14,6 @@ const DEFAULT_AUTHORITY = {
   key_auths: [["STM8eALyQwyb2C4XhXJ7eZfjfjfSeNeeZREaxPcJRApie1uwzzcuF", 1]],
 } as Authority;
 
-const DEFAULT_OPTIONS: KeychainOptions = {};
-
 const undefinedParamsToValidate = ["rpc"];
 
 const RequestCreateClaimedAccountComponent = ({
@@ -34,10 +32,9 @@ const RequestCreateClaimedAccountComponent = ({
   };
   const [formParams, setFormParams] = useState<{
     data: CreateClaimedAccount;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: DEFAULT_PARAMS,
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -59,10 +56,16 @@ const RequestCreateClaimedAccountComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0 || !tempValue) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -181,7 +184,7 @@ const RequestCreateClaimedAccountComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>

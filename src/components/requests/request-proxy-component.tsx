@@ -5,8 +5,6 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const DEFAULT_OPTIONS: KeychainOptions = {};
-
 const undefinedParamsToValidate = ["username", "rpc"];
 
 const RequestProxyComponent = ({
@@ -17,13 +15,12 @@ const RequestProxyComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<{
     data: Proxy;
-    options: KeychainOptions;
+    options?: KeychainOptions;
   }>({
     data: {
       username: lastUsernameFound,
       proxy: "keychain",
     },
-    options: DEFAULT_OPTIONS,
   });
 
   useEffect(() => {
@@ -45,10 +42,16 @@ const RequestProxyComponent = ({
         data: { ...prevFormParams.data, [name]: tempValue },
       }));
     } else {
-      setFormParams((prevFormParams) => ({
-        ...prevFormParams,
-        options: { ...prevFormParams.options, [name]: tempValue },
-      }));
+      if (String(tempValue).trim().length === 0 || !tempValue) {
+        const copyState = { ...formParams };
+        delete copyState.options;
+        setFormParams(copyState);
+      } else {
+        setFormParams((prevFormParams) => ({
+          ...prevFormParams,
+          options: { ...prevFormParams.options, [name]: tempValue },
+        }));
+      }
     }
   };
 
@@ -94,7 +97,7 @@ const RequestProxyComponent = ({
             <Form.Control
               placeholder="Rpc node to broadcast - optional"
               name="rpc"
-              value={formParams.options.rpc}
+              value={formParams.options?.rpc}
               onChange={handleFormParams}
             />
           </InputGroup>
