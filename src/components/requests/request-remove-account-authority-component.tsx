@@ -1,5 +1,7 @@
-import { KeychainKeyTypes } from "hive-keychain-commons";
-import { RemoveAccountAuthority } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import {
+  KeychainKeyTypes,
+  RemoveAccountAuthority,
+} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";

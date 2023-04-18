@@ -1,5 +1,5 @@
-import { KeychainRequestTypes } from "hive-keychain-commons";
 import { KeychainSDK } from "keychain-sdk";
+import { KeychainRequestTypes } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 
 let sdk: KeychainSDK;
 

@@ -1,7 +1,9 @@
 import { Operation, OperationName, VirtualOperationName } from "@hiveio/dhive";
-import { KeychainKeyTypes } from "hive-keychain-commons";
 import json5 from "json5";
-import { Broadcast } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import {
+  Broadcast,
+  KeychainKeyTypes,
+} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { useEffect, useState } from "react";
 import {
   Button,

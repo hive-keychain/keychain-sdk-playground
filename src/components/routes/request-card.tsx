@@ -1,5 +1,5 @@
-import { KeychainRequestTypes } from "hive-keychain-commons";
 import { KeychainSDK } from "keychain-sdk";
+import { KeychainRequestTypes } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { ReactNode, useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { CopyBlock, solarizedDark } from "react-code-blocks";

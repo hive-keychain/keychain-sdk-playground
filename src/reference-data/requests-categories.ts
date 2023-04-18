@@ -1,4 +1,4 @@
-import { KeychainRequestTypes } from "hive-keychain-commons";
+import { KeychainRequestTypes } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 
 export const requestCategories = [
   {

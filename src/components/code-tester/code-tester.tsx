@@ -1,6 +1,8 @@
-import { KeychainKeyTypes } from "hive-keychain-commons";
 import { KeychainSDK } from "keychain-sdk";
-import { Encode } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import {
+  Encode,
+  KeychainKeyTypes,
+} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
 import { Button, Card, Form } from "react-bootstrap";
 
 type Props = {};

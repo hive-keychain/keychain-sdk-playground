@@ -21,13 +21,15 @@ export default function RootLayout({}: Props) {
   useEffect(() => {
     const onLoadHandler = async () => {
       console.log("Fully loaded!");
-      try {
-        const enabled = await Utils.getSDK().isKeychainInstalled();
-        setKeychainInstalled(enabled);
-        console.log({ KeychainDetected: enabled });
-      } catch (error) {
-        console.log({ error });
-      }
+      setTimeout(async () => {
+        try {
+          const enabled = await Utils.getSDK().isKeychainInstalled();
+          setKeychainInstalled(enabled);
+          console.log({ KeychainDetected: enabled });
+        } catch (error) {
+          console.log({ error });
+        }
+      }, 100);
     };
 
     window.addEventListener("load", onLoadHandler);
@@ -35,7 +37,7 @@ export default function RootLayout({}: Props) {
     return () => {
       window.removeEventListener("load", onLoadHandler);
     };
-  });
+  }, []);
   //END navBar
 
   return (
