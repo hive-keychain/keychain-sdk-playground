@@ -6,7 +6,6 @@ import { CopyBlock, solarizedDark } from "react-code-blocks";
 import { useParams } from "react-router-dom";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import { Utils } from "../../utils/utils";
-import CodeTester from "../code-tester/code-tester";
 import CustomToolTip from "../common_ui/custom-tool-tip";
 import RequestResultsComponent from "../request-results-component";
 import RequestAddAccountAuthorityComponent from "../requests/request-add-account-authority-component";
@@ -227,7 +226,7 @@ const RequestCard = (props: Props) => {
         </Col>
       </Row>
       {/* TESTING to test code. Uncomment bellow to use */}
-      <CodeTester />
+      {/* <CodeTester /> */}
       {/* END testing */}
     </Container>
   ) : null;
