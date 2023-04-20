@@ -108,7 +108,7 @@ export default function RootLayout({}: Props) {
                 <Form.Control
                   onClick={() => setModalShow(true)}
                   type="search"
-                  placeholder="Click me"
+                  placeholder="Request types"
                   className="me-2"
                   aria-label="Search"
                   value={emptyValue}
