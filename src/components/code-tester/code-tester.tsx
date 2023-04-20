@@ -1,8 +1,4 @@
-import { KeychainSDK } from "keychain-sdk";
-import {
-  Encode,
-  KeychainKeyTypes,
-} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { Encode, KeychainKeyTypes, KeychainSDK } from "keychain-sdk";
 import { Button, Card, Form } from "react-bootstrap";
 
 type Props = {};

@@ -8,10 +8,7 @@ import {
 } from "@hiveio/dhive";
 import { Buffer } from "buffer";
 import json5 from "json5";
-import {
-  KeychainKeyTypes,
-  SignTx,
-} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { KeychainKeyTypes, SignTx } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import {
   Button,

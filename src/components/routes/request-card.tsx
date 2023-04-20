@@ -1,5 +1,4 @@
-import { KeychainSDK } from "keychain-sdk";
-import { KeychainRequestTypes } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { KeychainRequestTypes, KeychainSDK } from "keychain-sdk";
 import { ReactNode, useEffect, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import { CopyBlock, solarizedDark } from "react-code-blocks";

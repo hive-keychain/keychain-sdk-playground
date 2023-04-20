@@ -1,7 +1,4 @@
-import {
-  KeychainKeyTypes,
-  SignBuffer,
-} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { KeychainKeyTypes, SignBuffer } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";

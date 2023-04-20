@@ -1,7 +1,4 @@
-import {
-  AddAccount,
-  RequestAddAccountKeys,
-} from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { AddAccount, RequestAddAccountKeys } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import {
   Button,

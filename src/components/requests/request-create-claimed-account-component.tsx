@@ -1,5 +1,5 @@
 import { Authority } from "@hiveio/dhive";
-import { CreateClaimedAccount } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { CreateClaimedAccount } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";

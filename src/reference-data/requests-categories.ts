@@ -1,4 +1,4 @@
-import { KeychainRequestTypes } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { KeychainRequestTypes } from "keychain-sdk";
 
 export const requestCategories = [
   {

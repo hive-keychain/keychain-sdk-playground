@@ -1,4 +1,4 @@
-import { Proxy } from "keychain-sdk/dist/interfaces/keychain-sdk.interface";
+import { Proxy } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
