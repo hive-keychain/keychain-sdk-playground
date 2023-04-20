@@ -69,14 +69,6 @@ const RequestCard = (props: Props) => {
     lastUsernameFound,
   };
 
-  // useEffect(() => {
-  //   const formParams: any = formParamsToShow;
-  //   if (formParams.options && Object.keys(formParams.options).length === 0) {
-  //     delete formParams.options;
-  //     setFormParamsToShow(formParams);
-  //   }
-  // }, [formParamsToShow]);
-
   useEffect(() => {
     if (!requestType) return;
 

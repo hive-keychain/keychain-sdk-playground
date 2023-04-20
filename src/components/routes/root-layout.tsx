@@ -12,22 +12,24 @@ import SearchModal from "../search-modal";
 type Props = {};
 
 export default function RootLayout({}: Props) {
-  //navBar
   const [keychainInstalled, setKeychainInstalled] = useState(false);
   const [activeBorderOnSearchContainer, setActiveBorderOnSearchContainer] =
     useState(false);
   const [modalShow, setModalShow] = useState(false);
+  const [emptyValue, setEmptyValue] = useState("");
 
   useEffect(() => {
     const onLoadHandler = async () => {
       console.log("Fully loaded!");
       setTimeout(async () => {
-        try {
-          const enabled = await Utils.getSDK().isKeychainInstalled();
-          setKeychainInstalled(enabled);
-          console.log({ KeychainDetected: enabled });
-        } catch (error) {
-          console.log({ error });
+        if (document.readyState === "complete") {
+          try {
+            const enabled = await Utils.getSDK().isKeychainInstalled();
+            setKeychainInstalled(enabled);
+            console.log({ KeychainDetected: enabled });
+          } catch (error) {
+            console.log({ error });
+          }
         }
       }, 100);
     };
@@ -38,7 +40,6 @@ export default function RootLayout({}: Props) {
       window.removeEventListener("load", onLoadHandler);
     };
   }, []);
-  //END navBar
 
   return (
     <div className="App">
@@ -105,11 +106,13 @@ export default function RootLayout({}: Props) {
                 toolTipText="Click to show requests list"
               >
                 <Form.Control
+                  onClick={() => setModalShow(true)}
                   type="search"
-                  placeholder="Request types"
+                  placeholder="Click me"
                   className="me-2"
                   aria-label="Search"
-                  disabled
+                  value={emptyValue}
+                  onChange={(e) => setEmptyValue("")}
                 />
               </CustomToolTip>
               <CustomToolTip
