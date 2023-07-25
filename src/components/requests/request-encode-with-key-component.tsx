@@ -45,7 +45,6 @@ const RequestEncodeWithKeysComponent = ({
         ...formParams,
         publicKeys: formParams.publicKeys,
       });
-      console.log({ encodeMessage });
       setRequestResult(encodeMessage);
     } catch (error) {
       setRequestResult(error);
