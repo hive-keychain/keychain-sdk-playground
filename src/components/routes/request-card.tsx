@@ -16,7 +16,8 @@ import RequestCreateClaimedAccountComponent from "../requests/request-create-cla
 import RequestCreateProposalComponent from "../requests/request-create-proposal-component";
 import RequestCustomJsonComponent from "../requests/request-custom-json-component";
 import RequestDelegationComponent from "../requests/request-delegation-component";
-import RequestEncodeMessageComponent from "../requests/request-encode-message-component";
+import RequestEncodeMessageComponent from "../requests/request-encode-message-componen";
+import RequestEncodeWithKeysComponent from "../requests/request-encode-with-key-component";
 import RequestLoginComponent from "../requests/request-login-component";
 import RequestPostComponent from "../requests/request-post-component";
 import RequestPowerDownComponent from "../requests/request-power-down-component";
@@ -53,8 +54,6 @@ type Props = {};
 const RequestCard = (props: Props) => {
   let { requestType } = useParams();
 
-  console.log("assigned request: ", { requestType });
-
   const [requestCard, setRequestCard] = useState<ReactNode>();
   const [requestResult, setRequestResult] = useState();
   const [formParamsToShow, setFormParamsToShow] = useState({});
@@ -79,6 +78,9 @@ const RequestCard = (props: Props) => {
         break;
       case KeychainRequestTypes.encode:
         setRequestCard(<RequestEncodeMessageComponent {...commonProps} />);
+        break;
+      case KeychainRequestTypes.encodeWithKeys:
+        setRequestCard(<RequestEncodeWithKeysComponent {...commonProps} />);
         break;
       case KeychainRequestTypes.decode:
         setRequestCard(<RequestVerifyKeyComponent {...commonProps} />);

@@ -75,6 +75,10 @@ export const requestCategories = [
         name: "Sign Buffer",
         requestType: KeychainRequestTypes.signBuffer,
       },
+      {
+        name: "Encode with keys",
+        requestType: KeychainRequestTypes.encodeWithKeys,
+      },
     ],
   },
   {
