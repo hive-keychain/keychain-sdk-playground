@@ -99,11 +99,15 @@ export const requestCategories = [
     ],
   },
   {
-    category: "Hive Engine",
+    category: "Tokens",
     items: [
       {
         name: "Send Token",
         requestType: KeychainRequestTypes.sendToken,
+      },
+      {
+        name: "Swap",
+        requestType: KeychainRequestTypes.swap,
       },
     ],
   },

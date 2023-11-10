@@ -30,6 +30,7 @@ import RequestRemoveProposalComponent from "../requests/request-remove-proposal-
 import RequestSendTokenComponent from "../requests/request-send-token-component";
 import RequestSignBufferComponent from "../requests/request-sign-buffer-component";
 import RequestSignTxComponent from "../requests/request-sign-tx-component";
+import RequestSwapComponent from "../requests/request-swap-component";
 import RequestTransferComponent from "../requests/request-transfer-component";
 import RequestUpdateProposalVoteComponent from "../requests/request-update-proposal-vote-component";
 import RequestVerifyKeyComponent from "../requests/request-verify-key-component";
@@ -124,6 +125,9 @@ const RequestCard = (props: Props) => {
         break;
       case KeychainRequestTypes.sendToken:
         setRequestCard(<RequestSendTokenComponent {...commonProps} />);
+        break;
+      case KeychainRequestTypes.swap:
+        setRequestCard(<RequestSwapComponent {...commonProps} />);
         break;
       case KeychainRequestTypes.delegation:
         setRequestCard(<RequestDelegationComponent {...commonProps} />);

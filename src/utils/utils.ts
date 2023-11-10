@@ -28,7 +28,7 @@ const fromCodeToText = (
         : ""
     });`;
     requestObject = `await keychain
-         .${requestType}(
+         .${requestType === "swap" ? "swaps.start" : requestType}(
               formParamsAsObject.data as ${
                 capitalizedCastedType === "SignTx"
                   ? "any"
@@ -50,17 +50,32 @@ const fromCodeToText = (
   const stringifyed = `${JSON.stringify(formParams, undefined, "     ")}`;
 
   const temp = stringifyed
-    .replace(/\"method\"\: \"Active\"/g, `"method" : KeychainKeyTypes.active`)
-    .replace(/\"method\"\: \"Posting\"/g, `"method" : KeychainKeyTypes.posting`)
-    .replace(/\"method\"\: \"Memo\"/g, `"method" : KeychainKeyTypes.memo`)
-    .replace(/\"role\"\: \"Active\"/g, `"role" : KeychainKeyTypes.active`)
-    .replace(/\"role\"\: \"Posting\"/g, `"role" : KeychainKeyTypes.posting`)
-    .replace(/\"role\"\: \"Memo\"/g, `"role" : KeychainKeyTypes.memo`);
+    .replace(/"method": "Active"/g, `"method" : KeychainKeyTypes.active`)
+    .replace(/"method": "Posting"/g, `"method" : KeychainKeyTypes.posting`)
+    .replace(/"method": "Memo"/g, `"method" : KeychainKeyTypes.memo`)
+    .replace(/"role": "Active"/g, `"role" : KeychainKeyTypes.active`)
+    .replace(/"role": "Posting"/g, `"role" : KeychainKeyTypes.posting`)
+    .replace(/"role": "Memo"/g, `"role" : KeychainKeyTypes.memo`)
+    .replace(
+      /"steps": \[\]/g,
+      `"steps": ${!formParams.data ? [] : "estimation.steps"}`
+    );
 
   return `try
   {
     const keychain = new KeychainSDK(window);
+    ${
+      formParams.data?.steps &&
+      `const serverStatus = await sdk.swap.getServerStatus();
+    // handle cases where the server is stopped, in maintenance, or behind blocks
+    const config = await sdk.swap.getConfig();
+    // getting swap configs, such as fees and allowed slippage
+    const estimation = await sdk.swaps.getEstimation(${formParams.data.amount},"${formParams.data.startToken}","${formParams.data.endToken}",config)
+    // gets initial estimation
+    `
+    }
     const formParamsAsObject = ${temp}
+    
     const ${requestType.toLowerCase()} = ${requestObject}
     ${extraCodeLines}
   } catch (error) {
