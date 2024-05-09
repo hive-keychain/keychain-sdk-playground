@@ -22,16 +22,12 @@ const RequestAddAccountComponent = ({
 }: Props & CommonProps) => {
   const [formParams, setFormParams] = useState<AddAccount>({
     username: lastUsernameFound,
-    keys: {
-      posting: "5ft....",
-      active: "5ft....",
-      memo: "5ft....",
-    } as RequestAddAccountKeys,
+    keys: {} as RequestAddAccountKeys,
   });
 
   useEffect(() => {
     setFormParamsToShow(formParams);
-  }, [formParams]);
+  }, [formParams, setFormParamsToShow]);
 
   const handleFormParams = (e: any) => {
     const { name, value } = e.target;
