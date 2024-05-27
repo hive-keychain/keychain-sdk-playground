@@ -1,4 +1,8 @@
 import { KeychainRequestTypes, KeychainSDK } from "keychain-sdk";
+import {
+  IFrameDimensions,
+  SwapWidgetCardFormParams,
+} from "../components/routes/swap-widget-card";
 
 let sdk: KeychainSDK;
 
@@ -95,4 +99,33 @@ const sortByKeyNames = (a: any, b: any, key: string) => {
   return 0;
 };
 
-export const Utils = { fromCodeToText, sortByKeyNames, getSDK };
+const fromCodeToTextIframe = (
+  params: SwapWidgetCardFormParams,
+  iframeDimensions: IFrameDimensions
+) => {
+  let addedParams = "";
+  Object.entries(params).forEach((k, v) => {
+    if (!["username", "partnerUsername", "partnerFee"].includes(k[0])) {
+      addedParams += `&${k[0]}=${k[1]}`;
+    }
+  });
+  let finalUrl = `http://localhost:8080/?username=${params.username}&partnerUsername=${params.partnerUsername}&partnerFee=${params.partnerFee}${addedParams}`;
+
+  return `
+    <iframe
+    id="swapWidgetkeychain"
+    title="Swap Tokens with Keychain"
+    src="${finalUrl}"
+    allow="clipboard-write"
+    width="${iframeDimensions.width}"
+    height="${iframeDimensions.height}"
+    />
+  `;
+};
+
+export const Utils = {
+  fromCodeToText,
+  sortByKeyNames,
+  getSDK,
+  fromCodeToTextIframe,
+};
