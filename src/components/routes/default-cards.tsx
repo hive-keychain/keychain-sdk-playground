@@ -1,4 +1,5 @@
-import { Card } from "react-bootstrap";
+import { Badge, Card, ListGroup } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const DefaultCard = () => {
   return (
@@ -25,7 +26,23 @@ const DefaultCard = () => {
         <a href="https://github.com/hive-keychain/keychain-sdk">Github</a>.
         <br />
         <br />
-        <Card.Title as="h4">Keychain requests</Card.Title>
+        <Card.Title as={"h3"}>Play options:</Card.Title>
+        <ListGroup>
+          <ListGroup.Item>
+            <Card.Subtitle
+              as={"h4"}
+              className="d-flex flex-row justify-content-center align-items-center"
+            >
+              <Card.Text as="h6" className="me-1">
+                <Badge bg="danger">NEW</Badge>
+              </Card.Text>
+              <Link to={"swap-widget"}>Keychain Swap Widget</Link>
+            </Card.Subtitle>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            <Card.Subtitle as="h4">Keychain requests</Card.Subtitle>
+          </ListGroup.Item>
+        </ListGroup>
         <br />
         <Card.Text>
           Done setting up the SDK? Discover the different Keychain requests

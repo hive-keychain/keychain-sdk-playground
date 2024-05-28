@@ -1,4 +1,10 @@
 import { KeychainRequestTypes, KeychainSDK } from "keychain-sdk";
+import {
+  IFrameDimensions,
+  SwapWidgetCardFormParams,
+} from "../components/routes/swap-widget-card";
+
+const BASE_SWAP_WIDGET_URL = "https://swapwidget.hive-keychain.com/";
 
 let sdk: KeychainSDK;
 
@@ -95,4 +101,34 @@ const sortByKeyNames = (a: any, b: any, key: string) => {
   return 0;
 };
 
-export const Utils = { fromCodeToText, sortByKeyNames, getSDK };
+const fromCodeToTextIframe = (
+  params: SwapWidgetCardFormParams,
+  iframeDimensions: IFrameDimensions
+) => {
+  let addedParams = "";
+  Object.entries(params).forEach((k, v) => {
+    if (!["username"].includes(k[0])) {
+      addedParams += `&${k[0]}=${k[1]}`;
+    }
+  });
+  let finalUrl = `${BASE_SWAP_WIDGET_URL}?username=${params.username}${addedParams}`;
+
+  return `
+    <iframe
+    id="swapWidgetkeychain"
+    title="Swap Tokens with Keychain"
+    src="${finalUrl}"
+    allow="clipboard-write"
+    width="${iframeDimensions.width}"
+    height="${iframeDimensions.height}"
+    />
+  `;
+};
+
+export const Utils = {
+  fromCodeToText,
+  sortByKeyNames,
+  getSDK,
+  fromCodeToTextIframe,
+  BASE_SWAP_WIDGET_URL,
+};

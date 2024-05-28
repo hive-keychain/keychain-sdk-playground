@@ -7,6 +7,7 @@ import ErrorPage from "./components/pages/error-page";
 import DefaultCard from "./components/routes/default-cards";
 import RequestCard from "./components/routes/request-card";
 import RootLayout from "./components/routes/root-layout";
+import SwapWidgetCard from "./components/routes/swap-widget-card";
 import "./index.css";
 
 const router = createHashRouter([
@@ -22,6 +23,10 @@ const router = createHashRouter([
       {
         path: "request/:requestType",
         element: <RequestCard />,
+      },
+      {
+        path: "swap-widget",
+        element: <SwapWidgetCard />,
       },
     ],
   },
