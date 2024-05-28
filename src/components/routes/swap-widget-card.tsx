@@ -51,6 +51,7 @@ const SwapWidgetCard = () => {
 
   const debouncedFormHook = useDebouncedCallback((e) => {
     const { name, value } = e.target;
+    if (String(value).trim().length === 0) return;
     setFormParams((prevFormParams) => ({
       ...prevFormParams,
       [name]: value,
@@ -59,6 +60,7 @@ const SwapWidgetCard = () => {
 
   const debouncedDimensionsHook = useDebouncedCallback((e) => {
     const { name, value } = e.target;
+    if (String(value).trim().length === 0) return;
     setIframeDimensions((prevDim) => {
       return { ...prevDim, [name]: value };
     });
