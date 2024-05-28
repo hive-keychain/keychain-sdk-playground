@@ -4,6 +4,8 @@ import {
   SwapWidgetCardFormParams,
 } from "../components/routes/swap-widget-card";
 
+const BASE_SWAP_WIDGET_URL = "https://swapwidget.hive-keychain.com/";
+
 let sdk: KeychainSDK;
 
 const getSDK = () => {
@@ -105,11 +107,11 @@ const fromCodeToTextIframe = (
 ) => {
   let addedParams = "";
   Object.entries(params).forEach((k, v) => {
-    if (!["username", "partnerUsername", "partnerFee"].includes(k[0])) {
+    if (!["username"].includes(k[0])) {
       addedParams += `&${k[0]}=${k[1]}`;
     }
   });
-  let finalUrl = `http://localhost:8080/?username=${params.username}&partnerUsername=${params.partnerUsername}&partnerFee=${params.partnerFee}${addedParams}`;
+  let finalUrl = `${BASE_SWAP_WIDGET_URL}?username=${params.username}${addedParams}`;
 
   return `
     <iframe
@@ -128,4 +130,5 @@ export const Utils = {
   sortByKeyNames,
   getSDK,
   fromCodeToTextIframe,
+  BASE_SWAP_WIDGET_URL,
 };

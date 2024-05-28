@@ -15,11 +15,11 @@ import { Utils } from "../../utils/utils";
 
 export interface SwapWidgetCardFormParams {
   username: string;
-  partnerUsername: string;
-  partnerFee: number;
+  partnerUsername?: string;
+  partnerFee?: number;
   from?: string;
   to?: string;
-  slipperage?: string;
+  slippage?: string;
   theme?: string;
 }
 
@@ -28,14 +28,18 @@ export interface IFrameDimensions {
   height: string;
 }
 
+const IFRAME_SUGGESTED_DIMENSIONS: IFrameDimensions = {
+  width: "435",
+  height: "400",
+};
+
 const SwapWidgetCard = () => {
-  const [iframeDimensions, setIframeDimensions] = useState<IFrameDimensions>({
-    width: "435",
-    height: "400",
-  });
+  const [iframeDimensions, setIframeDimensions] = useState<IFrameDimensions>(
+    IFRAME_SUGGESTED_DIMENSIONS
+  );
   const [missingMandatoryParams, setMissingMandatoryParams] = useState(false);
   const [iframeURL, setIframeURL] = useState<string>(
-    "http://localhost:8080/?username=theghost1980&from=hive&to=hbd&slipperage=5&partnerUsername=sexosentido&partnerFee=1"
+    `${Utils.BASE_SWAP_WIDGET_URL}?username=theghost1980`
   );
   const [loadingAllTokens, setLoadingAllTokens] = useState(true);
   const [allTokens, setAllTokens] = useState<any[]>([]);
@@ -43,8 +47,6 @@ const SwapWidgetCard = () => {
     localStorage.getItem("last_username") || "keychain.tests";
   const [formParams, setFormParams] = useState<SwapWidgetCardFormParams>({
     username: lastUsernameFound,
-    partnerFee: 1,
-    partnerUsername: lastUsernameFound,
   });
 
   const debouncedFormHook = useDebouncedCallback((e) => {
@@ -67,18 +69,14 @@ const SwapWidgetCard = () => {
   }, []);
 
   useEffect(() => {
-    if (
-      formParams.username &&
-      formParams.partnerUsername &&
-      formParams.partnerFee
-    ) {
+    if (formParams.username) {
       let addedParams = "";
       Object.entries(formParams).forEach((k, v) => {
-        if (!["username", "partnerUsername", "partnerFee"].includes(k[0])) {
+        if (!["username"].includes(k[0])) {
           addedParams += `&${k[0]}=${k[1]}`;
         }
       });
-      let finalUrl = `http://localhost:8080/?username=${formParams.username}&partnerUsername=${formParams.partnerUsername}&partnerFee=${formParams.partnerFee}${addedParams}`;
+      let finalUrl = `${Utils.BASE_SWAP_WIDGET_URL}?username=${formParams.username}${addedParams}`;
       setIframeURL(finalUrl);
       setMissingMandatoryParams(false);
     } else {
@@ -114,7 +112,7 @@ const SwapWidgetCard = () => {
               <Container className="mt-2">
                 <Form onSubmit={() => {}}>
                   <Container className="d-flex flex-row justify-content-between">
-                    <Card.Text className="mb-3">Mandatory Fields</Card.Text>
+                    <Card.Text className="mb-3">Mandatory Field</Card.Text>
                     {missingMandatoryParams && (
                       <Card.Text className="fw-light fs-6">
                         Missing Params!
@@ -131,28 +129,40 @@ const SwapWidgetCard = () => {
                       onChange={(e) => debouncedFormHook(e)}
                     />
                   </InputGroup>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text>Partner username</InputGroup.Text>
-                    <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
-                    <Form.Control
-                      placeholder="Partner username"
-                      name="partnerUsername"
-                      defaultValue={formParams.partnerUsername}
-                      onChange={(e) => debouncedFormHook(e)}
-                    />
-                  </InputGroup>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text>Partner fee</InputGroup.Text>
-                    <Form.Control
-                      placeholder="Partner fee"
-                      name="partnerFee"
-                      defaultValue={formParams.partnerFee}
-                      onChange={(e) => debouncedFormHook(e)}
-                    />
-                  </InputGroup>
                   <Accordion defaultActiveKey="0">
                     <Accordion.Header>Optional Fields</Accordion.Header>
                     <Accordion.Body>
+                      <Container className="p-0 mb-3">
+                        <InputGroup>
+                          <InputGroup.Text>Partner username</InputGroup.Text>
+                          <InputGroup.Text className="normal">
+                            @
+                          </InputGroup.Text>{" "}
+                          <Form.Control
+                            placeholder="Partner username"
+                            name="partnerUsername"
+                            defaultValue={formParams.partnerUsername}
+                            onChange={(e) => debouncedFormHook(e)}
+                          />
+                        </InputGroup>
+                        {formParams.partnerUsername && (
+                          <>
+                            <Form.Text>
+                              Tip: As soon as you use partnerUsername, you must
+                              provide partnerFee.
+                            </Form.Text>
+                            <InputGroup className="mt-2 mb-3">
+                              <InputGroup.Text>Partner fee</InputGroup.Text>
+                              <Form.Control
+                                placeholder="Partner fee"
+                                name="partnerFee"
+                                defaultValue={formParams.partnerFee}
+                                onChange={(e) => debouncedFormHook(e)}
+                              />
+                            </InputGroup>
+                          </>
+                        )}
+                      </Container>
                       <InputGroup className="mb-3">
                         <InputGroup.Text>IFrame Width</InputGroup.Text>
                         <Form.Control
@@ -162,15 +172,29 @@ const SwapWidgetCard = () => {
                           onChange={(e) => debouncedDimensionsHook(e)}
                         />
                       </InputGroup>
-                      <InputGroup className="mb-3">
-                        <InputGroup.Text>IFrame Height</InputGroup.Text>
-                        <Form.Control
-                          placeholder="Iframe window height"
-                          name="height"
-                          defaultValue={iframeDimensions.height}
-                          onChange={(e) => debouncedDimensionsHook(e)}
-                        />
-                      </InputGroup>
+                      <Container className="p-0 mb-3">
+                        <InputGroup>
+                          <InputGroup.Text>IFrame Height</InputGroup.Text>
+                          <Form.Control
+                            placeholder="Iframe window height"
+                            name="height"
+                            defaultValue={iframeDimensions.height}
+                            onChange={(e) => debouncedDimensionsHook(e)}
+                          />
+                        </InputGroup>
+                        {(parseFloat(iframeDimensions.width) <
+                          parseFloat(IFRAME_SUGGESTED_DIMENSIONS.width) ||
+                          parseFloat(iframeDimensions.height) <
+                            parseFloat(IFRAME_SUGGESTED_DIMENSIONS.height)) && (
+                          <Form.Text>
+                            We suggest using minimum w:{" "}
+                            {IFRAME_SUGGESTED_DIMENSIONS.width}
+                            px & h:
+                            {IFRAME_SUGGESTED_DIMENSIONS.height}px
+                          </Form.Text>
+                        )}
+                      </Container>
+
                       <InputGroup className="mb-3">
                         <InputGroup.Text>From</InputGroup.Text>
                         <Form.Select
@@ -224,11 +248,11 @@ const SwapWidgetCard = () => {
                         </Form.Select>
                       </InputGroup>
                       <InputGroup className="mb-3">
-                        <InputGroup.Text>Slipperage</InputGroup.Text>
+                        <InputGroup.Text>Slippage</InputGroup.Text>
                         <Form.Control
-                          placeholder="Swap slipperage"
-                          name="slipperage"
-                          defaultValue={formParams.slipperage}
+                          placeholder="Swap slippage"
+                          name="slippage"
+                          defaultValue={formParams.slippage}
                           onChange={(e) => debouncedFormHook(e)}
                         />
                       </InputGroup>
@@ -263,10 +287,6 @@ const SwapWidgetCard = () => {
                     allow="clipboard-write"
                     width={iframeDimensions.width}
                     height={iframeDimensions.height}
-                    style={{
-                      border: "1px solid",
-                      padding: "8px",
-                    }}
                   />
                 </Container>
               </Container>
