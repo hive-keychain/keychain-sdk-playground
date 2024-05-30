@@ -14,7 +14,7 @@ import { SwapWidgetCardUtils } from "../../utils/swap-widget-card.utils";
 import { Utils } from "../../utils/utils";
 
 export interface SwapWidgetCardFormParams {
-  username: string;
+  username?: string;
   partnerUsername?: string;
   partnerFee?: number;
   from?: string;
@@ -51,19 +51,29 @@ const SwapWidgetCard = () => {
 
   const debouncedFormHook = useDebouncedCallback((e) => {
     const { name, value } = e.target;
-    if (String(value).trim().length === 0) return;
-    setFormParams((prevFormParams) => ({
-      ...prevFormParams,
-      [name]: value,
-    }));
+    if (String(value).trim().length > 0) {
+      setFormParams((prevFormParams) => ({
+        ...prevFormParams,
+        [name]: value,
+      }));
+    } else {
+      const tempFormParams = { ...formParams };
+      delete tempFormParams[name as keyof SwapWidgetCardFormParams];
+      setFormParams(tempFormParams);
+    }
   }, 1000);
 
   const debouncedDimensionsHook = useDebouncedCallback((e) => {
     const { name, value } = e.target;
-    if (String(value).trim().length === 0) return;
-    setIframeDimensions((prevDim) => {
-      return { ...prevDim, [name]: value };
-    });
+    if (String(value).trim().length > 0) {
+      setIframeDimensions((prevDim) => {
+        return { ...prevDim, [name]: value };
+      });
+    } else {
+      const tempIFrameDimensions = { ...iframeDimensions };
+      delete tempIFrameDimensions[name as keyof IFrameDimensions];
+      setIframeDimensions(tempIFrameDimensions);
+    }
   }, 1000);
 
   useEffect(() => {
@@ -187,7 +197,9 @@ const SwapWidgetCard = () => {
                         {(parseFloat(iframeDimensions.width) <
                           parseFloat(IFRAME_SUGGESTED_DIMENSIONS.width) ||
                           parseFloat(iframeDimensions.height) <
-                            parseFloat(IFRAME_SUGGESTED_DIMENSIONS.height)) && (
+                            parseFloat(IFRAME_SUGGESTED_DIMENSIONS.height) ||
+                          !iframeDimensions.width ||
+                          !iframeDimensions.height) && (
                           <Form.Text className="d-block text-center">
                             We suggest using minimum w:{" "}
                             {IFRAME_SUGGESTED_DIMENSIONS.width}

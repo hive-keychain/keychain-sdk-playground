@@ -111,7 +111,9 @@ const fromCodeToTextIframe = (
       addedParams += `&${k[0]}=${k[1]}`;
     }
   });
-  let finalUrl = `${BASE_SWAP_WIDGET_URL}?username=${params.username}${addedParams}`;
+  let finalUrl = `${BASE_SWAP_WIDGET_URL}?${
+    params.username ? `username=` : ""
+  }${params.username ?? ``}${addedParams}`;
 
   return `
     <iframe
@@ -119,8 +121,8 @@ const fromCodeToTextIframe = (
     title="Swap Tokens with Keychain"
     src="${finalUrl}"
     allow="clipboard-write"
-    width="${iframeDimensions.width}"
-    height="${iframeDimensions.height}"
+    ${iframeDimensions.width ? `width="${iframeDimensions.width}"` : ""}
+    ${iframeDimensions.height ? `height="${iframeDimensions.height}"` : ""}
     />
   `;
 };
