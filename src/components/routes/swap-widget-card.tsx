@@ -149,9 +149,9 @@ const SwapWidgetCard = () => {
                         </InputGroup>
                         {formParams.partnerUsername && (
                           <>
-                            <Form.Text>
-                              Tip: As soon as you use partnerUsername, you must
-                              provide partnerFee.
+                            <Form.Text className="d-block text-center">
+                              Tip: Specify the partner fee that will be received
+                              by this username (0-1 %)
                             </Form.Text>
                             <InputGroup className="mt-2 mb-3">
                               <InputGroup.Text>Partner fee</InputGroup.Text>
@@ -188,7 +188,7 @@ const SwapWidgetCard = () => {
                           parseFloat(IFRAME_SUGGESTED_DIMENSIONS.width) ||
                           parseFloat(iframeDimensions.height) <
                             parseFloat(IFRAME_SUGGESTED_DIMENSIONS.height)) && (
-                          <Form.Text>
+                          <Form.Text className="d-block text-center">
                             We suggest using minimum w:{" "}
                             {IFRAME_SUGGESTED_DIMENSIONS.width}
                             px & h:
