@@ -170,6 +170,7 @@ const SwapWidgetCard = () => {
                                 name="partnerFee"
                                 defaultValue={formParams.partnerFee}
                                 onChange={(e) => debouncedFormHook(e)}
+                                type="number"
                               />
                             </InputGroup>
                           </>
@@ -182,6 +183,7 @@ const SwapWidgetCard = () => {
                           name="width"
                           defaultValue={iframeDimensions.width}
                           onChange={(e) => debouncedDimensionsHook(e)}
+                          type="number"
                         />
                       </InputGroup>
                       <Container className="p-0 mb-3">
@@ -192,6 +194,7 @@ const SwapWidgetCard = () => {
                             name="height"
                             defaultValue={iframeDimensions.height}
                             onChange={(e) => debouncedDimensionsHook(e)}
+                            type="number"
                           />
                         </InputGroup>
                         {(parseFloat(iframeDimensions.width) <
@@ -268,6 +271,7 @@ const SwapWidgetCard = () => {
                           name="slippage"
                           defaultValue={formParams.slippage}
                           onChange={(e) => debouncedFormHook(e)}
+                          type="number"
                         />
                       </InputGroup>
                     </Accordion.Body>
