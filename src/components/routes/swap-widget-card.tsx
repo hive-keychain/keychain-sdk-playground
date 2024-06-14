@@ -96,7 +96,7 @@ const SwapWidgetCard = () => {
         0,
         []
       );
-      setAllTokens(tempTokensMarket);
+      setAllTokens(["HIVE", "HBD", ...tempTokensMarket]);
     } catch (error) {
       console.log("Hive tokens market error!", { error });
     } finally {
