@@ -30,7 +30,7 @@ export interface IFrameDimensions {
 
 const IFRAME_SUGGESTED_DIMENSIONS: IFrameDimensions = {
   width: "435",
-  height: "400",
+  height: "420",
 };
 
 const SwapWidgetCard = () => {
