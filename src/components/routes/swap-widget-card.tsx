@@ -154,8 +154,8 @@ const SwapWidgetCard = () => {
                         {formParams.partnerUsername && (
                           <>
                             <Form.Text>
-                              Tip: As soon as you use partnerUsername, you must
-                              provide partnerFee.
+                              Tip: Since you specified a partnerUsername, you
+                              must also provide partnerFee.
                             </Form.Text>
                             <InputGroup className="mt-2 mb-3">
                               <InputGroup.Text>Partner fee</InputGroup.Text>
