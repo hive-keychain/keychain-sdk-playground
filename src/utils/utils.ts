@@ -34,7 +34,13 @@ const fromCodeToText = (
         : ""
     });`;
     requestObject = `await keychain
-         .${requestType === "swap" ? "swaps.start" : requestType}(
+         .${
+           requestType === "swap"
+             ? "swaps.start"
+             : requestType === "vscCallContract"
+             ? "vsc.callContract"
+             : requestType
+         }(
               formParamsAsObject.data as ${
                 capitalizedCastedType === "SignTx"
                   ? "any"
