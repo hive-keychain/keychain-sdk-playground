@@ -148,4 +148,13 @@ export const requestCategories = [
       { name: "Power Down", requestType: KeychainRequestTypes.powerDown },
     ],
   },
+  {
+    category: "VSC",
+    items: [
+      {
+        name: "Call Contract",
+        requestType: KeychainRequestTypes.vscCallContract,
+      },
+    ],
+  },
 ];
