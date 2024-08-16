@@ -39,6 +39,8 @@ const fromCodeToText = (
              ? "swaps.start"
              : requestType === "vscCallContract"
              ? "vsc.callContract"
+             : requestType === "vscDeposit"
+             ? "vsc.deposit"
              : requestType
          }(
               formParamsAsObject.data as ${

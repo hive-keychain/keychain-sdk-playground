@@ -155,6 +155,10 @@ export const requestCategories = [
         name: "Call Contract",
         requestType: KeychainRequestTypes.vscCallContract,
       },
+      {
+        name: "Deposit",
+        requestType: KeychainRequestTypes.vscDeposit,
+      },
     ],
   },
 ];
