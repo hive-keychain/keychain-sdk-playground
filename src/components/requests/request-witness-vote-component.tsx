@@ -60,6 +60,9 @@ const RequestWitnessVoteComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
+      if (!formParams.data.username?.length) {
+        delete formParams.data.username;
+      }
       const witnessVote = await sdk.witnessVote(
         formParams.data,
         formParams.options

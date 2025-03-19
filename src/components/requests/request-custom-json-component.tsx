@@ -67,6 +67,9 @@ const RequestCustomJsonComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
+      if (!formParams.data.username?.length) {
+        delete formParams.data.username;
+      }
       const customJson = await sdk.custom(formParams.data, formParams.options);
       setRequestResult(customJson);
       console.log({ customJson });

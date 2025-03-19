@@ -67,12 +67,15 @@ const RequestRecurrentTransferComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const conversion = await sdk.recurrentTransfer(
+      if (!formParams.data.username?.length) {
+        delete formParams.data.username;
+      }
+      const rTransfer = await sdk.recurrentTransfer(
         formParams.data,
         formParams.options
       );
-      setRequestResult(conversion);
-      console.log({ conversion });
+      setRequestResult(rTransfer);
+      console.log({ rTransfer });
     } catch (error) {
       setRequestResult(error);
     }

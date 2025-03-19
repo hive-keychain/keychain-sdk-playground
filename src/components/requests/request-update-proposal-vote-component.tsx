@@ -63,6 +63,9 @@ const RequestUpdateProposalVoteComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
+      if (!formParams.data.username?.length) {
+        delete formParams.data.username;
+      }
       const updateProposalVote = await sdk.updateProposalVote(
         formParams.data,
         formParams.options
