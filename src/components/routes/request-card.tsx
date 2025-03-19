@@ -35,6 +35,8 @@ import RequestTransferComponent from "../requests/request-transfer-component";
 import RequestUpdateProposalVoteComponent from "../requests/request-update-proposal-vote-component";
 import RequestVerifyKeyComponent from "../requests/request-verify-key-component";
 import RequestVoteComponent from "../requests/request-vote-component";
+import RequestVscCallContractComponent from "../requests/request-vsc-call-contract-component";
+import RequestVscDepositComponent from "../requests/request-vsc-deposit-component";
 import RequestWitnessVoteComponent from "../requests/request-witness-vote-component";
 
 export interface KeychainOptions {
@@ -166,6 +168,12 @@ const RequestCard = (props: Props) => {
         break;
       case KeychainRequestTypes.recurrentTransfer:
         setRequestCard(<RequestRecurrentTransferComponent {...commonProps} />);
+        break;
+      case KeychainRequestTypes.vscCallContract:
+        setRequestCard(<RequestVscCallContractComponent {...commonProps} />);
+        break;
+      case KeychainRequestTypes.vscDeposit:
+        setRequestCard(<RequestVscDepositComponent {...commonProps} />);
         break;
       default:
         setRequestCard(null);

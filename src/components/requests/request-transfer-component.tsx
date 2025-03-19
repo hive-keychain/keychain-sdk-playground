@@ -66,6 +66,9 @@ const RequestTransferComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
+      if (!formParams.data.username?.length) {
+        delete formParams.data.username;
+      }
       const transfer = await sdk.transfer(formParams.data, formParams.options);
       setRequestResult(transfer);
       console.log({ transfer });

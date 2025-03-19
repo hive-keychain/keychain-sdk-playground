@@ -1,4 +1,4 @@
-import { UpdateProposalVote } from "keychain-sdk";
+import { KeychainKeyTypes, VscCallContract } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
@@ -9,22 +9,25 @@ type Props = {};
 
 const undefinedParamsToValidate = ["rpc"];
 
-const RequestUpdateProposalVoteComponent = ({
+const RequestVscCallContractComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
   lastUsernameFound,
 }: Props & CommonProps) => {
+  const DEFAULT_PARAMS: VscCallContract = {
+    username: lastUsernameFound,
+    contractId:
+      "vs41q9c3ygynfp6kl86qnlaswuwvam748s5lvugns5schg4hte5vhusnx7sg5u8falrt",
+    action: "testJSON",
+    payload: { hello: "World" },
+    method: KeychainKeyTypes.posting,
+  };
   const [formParams, setFormParams] = useState<{
-    data: UpdateProposalVote;
+    data: VscCallContract;
     options?: KeychainOptions;
   }>({
-    data: {
-      username: lastUsernameFound,
-      proposal_ids: JSON.stringify([1, 2, 3]),
-      approve: false,
-      extensions: JSON.stringify([1, 2]),
-    },
+    data: DEFAULT_PARAMS,
   });
 
   useEffect(() => {
@@ -43,7 +46,10 @@ const RequestUpdateProposalVoteComponent = ({
     ) {
       setFormParams((prevFormParams) => ({
         ...prevFormParams,
-        data: { ...prevFormParams.data, [name]: tempValue },
+        data: {
+          ...prevFormParams.data,
+          [name]: name === "payload" ? JSON.parse(tempValue) : tempValue,
+        },
       }));
     } else {
       if (String(tempValue).trim().length === 0 || !tempValue) {
@@ -53,7 +59,10 @@ const RequestUpdateProposalVoteComponent = ({
       } else {
         setFormParams((prevFormParams) => ({
           ...prevFormParams,
-          options: { ...prevFormParams.options, [name]: tempValue },
+          options: {
+            ...prevFormParams.options,
+            [name]: name === "payload" ? JSON.parse(tempValue) : tempValue,
+          },
         }));
       }
     }
@@ -63,15 +72,12 @@ const RequestUpdateProposalVoteComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      if (!formParams.data.username?.length) {
-        delete formParams.data.username;
-      }
-      const updateProposalVote = await sdk.updateProposalVote(
+      const callContract = await sdk.vsc.callContract(
         formParams.data,
         formParams.options
       );
-      setRequestResult(updateProposalVote);
-      console.log({ updateProposalVote });
+      setRequestResult(callContract);
+      console.log({ conversion: callContract });
     } catch (error) {
       setRequestResult(error);
     }
@@ -79,7 +85,7 @@ const RequestUpdateProposalVoteComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={"h5"}>Request Update Proposal Vote</Card.Header>
+      <Card.Header as={"h5"}>Request VSC Call Contract</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -98,52 +104,47 @@ const RequestUpdateProposalVoteComponent = ({
             </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Ids</InputGroup.Text>
-            <CustomToolTip
-              placement="top"
-              toolTipText={
-                "Array of ids of the proposals to be removed, i.e: '[1,10]'"
-              }
-            >
-              <Form.Control
-                placeholder="ids of the proposals"
-                name="proposal_ids"
-                value={formParams.data.proposal_ids as string}
-                onChange={handleFormParams}
-              />
-            </CustomToolTip>
-          </InputGroup>
-          <InputGroup className="d-flex mb-3 align-items-center">
-            <InputGroup.Text>Vote</InputGroup.Text>
-            <Form.Check
-              className="ms-3"
-              type="checkbox"
-              name="approve"
-              value={formParams.data.approve ? "true" : "false"}
-              checked={formParams.data.approve}
-              onChange={(e) =>
-                handleFormParams({
-                  target: {
-                    value: e.target.checked,
-                    name: e.target.name,
-                  },
-                })
-              }
+            <InputGroup.Text>Contract ID</InputGroup.Text>
+            <InputGroup.Text className="normal">#</InputGroup.Text>{" "}
+            <Form.Control
+              placeholder="Receiver username"
+              name="contractId"
+              value={formParams.data.contractId}
+              onChange={handleFormParams}
             />
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Extensions</InputGroup.Text>
-            <CustomToolTip
-              placement="top"
-              toolTipText={"Array of extensions, i.e: '[1,2]'"}
+            <InputGroup.Text>Action</InputGroup.Text>
+
+            <Form.Control
+              placeholder="Amount to send"
+              name="action"
+              value={formParams.data.action}
+              onChange={handleFormParams}
+            />
+            <Form.Select
+              onChange={handleFormParams}
+              value={formParams.data.method}
+              name="method"
             >
-              <Form.Control
-                placeholder="Stringified Array of extensions"
-                name="extensions"
-                value={formParams.data.extensions}
-                onChange={handleFormParams}
-              />
-            </CustomToolTip>
+              <option>Please select a broadcast method</option>
+              <option value={KeychainKeyTypes.posting}>
+                {KeychainKeyTypes.posting}
+              </option>
+              <option value={KeychainKeyTypes.active}>
+                {KeychainKeyTypes.active}
+              </option>
+            </Form.Select>
+          </InputGroup>
+          <InputGroup className="mb-3">
+            <InputGroup.Text>Payload</InputGroup.Text>
+            <Form.Control
+              placeholder="Stringified custom json"
+              type="json"
+              name="payload"
+              value={JSON.stringify(formParams.data.payload)}
+              onChange={handleFormParams}
+            />
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>
@@ -163,4 +164,4 @@ const RequestUpdateProposalVoteComponent = ({
   );
 };
 
-export default RequestUpdateProposalVoteComponent;
+export default RequestVscCallContractComponent;

@@ -59,6 +59,9 @@ const RequestProxyComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
+      if (!formParams.data.username?.length) {
+        delete formParams.data.username;
+      }
       const proxy = await sdk.proxy(formParams.data, formParams.options);
       setRequestResult(proxy);
       console.log({ proxy });

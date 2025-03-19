@@ -1,4 +1,4 @@
-import { UpdateProposalVote } from "keychain-sdk";
+import { VscDeposit } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
@@ -9,22 +9,23 @@ type Props = {};
 
 const undefinedParamsToValidate = ["rpc"];
 
-const RequestUpdateProposalVoteComponent = ({
+const RequestVscDepositComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
   lastUsernameFound,
 }: Props & CommonProps) => {
+  const DEFAULT_PARAMS: VscDeposit = {
+    username: lastUsernameFound,
+    address: "0x4F3f44689B29138BD0563f0ef630FE4834f21087",
+    amount: "0.001",
+    currency: "HIVE",
+  };
   const [formParams, setFormParams] = useState<{
-    data: UpdateProposalVote;
+    data: VscDeposit;
     options?: KeychainOptions;
   }>({
-    data: {
-      username: lastUsernameFound,
-      proposal_ids: JSON.stringify([1, 2, 3]),
-      approve: false,
-      extensions: JSON.stringify([1, 2]),
-    },
+    data: DEFAULT_PARAMS,
   });
 
   useEffect(() => {
@@ -43,7 +44,10 @@ const RequestUpdateProposalVoteComponent = ({
     ) {
       setFormParams((prevFormParams) => ({
         ...prevFormParams,
-        data: { ...prevFormParams.data, [name]: tempValue },
+        data: {
+          ...prevFormParams.data,
+          [name]: tempValue,
+        },
       }));
     } else {
       if (String(tempValue).trim().length === 0 || !tempValue) {
@@ -53,7 +57,10 @@ const RequestUpdateProposalVoteComponent = ({
       } else {
         setFormParams((prevFormParams) => ({
           ...prevFormParams,
-          options: { ...prevFormParams.options, [name]: tempValue },
+          options: {
+            ...prevFormParams.options,
+            [name]: tempValue,
+          },
         }));
       }
     }
@@ -63,15 +70,12 @@ const RequestUpdateProposalVoteComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      if (!formParams.data.username?.length) {
-        delete formParams.data.username;
-      }
-      const updateProposalVote = await sdk.updateProposalVote(
+      const callContract = await sdk.vsc.deposit(
         formParams.data,
         formParams.options
       );
-      setRequestResult(updateProposalVote);
-      console.log({ updateProposalVote });
+      setRequestResult(callContract);
+      console.log({ conversion: callContract });
     } catch (error) {
       setRequestResult(error);
     }
@@ -79,7 +83,7 @@ const RequestUpdateProposalVoteComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={"h5"}>Request Update Proposal Vote</Card.Header>
+      <Card.Header as={"h5"}>Request VSC Call Contract</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -98,53 +102,34 @@ const RequestUpdateProposalVoteComponent = ({
             </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Ids</InputGroup.Text>
-            <CustomToolTip
-              placement="top"
-              toolTipText={
-                "Array of ids of the proposals to be removed, i.e: '[1,10]'"
-              }
-            >
-              <Form.Control
-                placeholder="ids of the proposals"
-                name="proposal_ids"
-                value={formParams.data.proposal_ids as string}
-                onChange={handleFormParams}
-              />
-            </CustomToolTip>
-          </InputGroup>
-          <InputGroup className="d-flex mb-3 align-items-center">
-            <InputGroup.Text>Vote</InputGroup.Text>
-            <Form.Check
-              className="ms-3"
-              type="checkbox"
-              name="approve"
-              value={formParams.data.approve ? "true" : "false"}
-              checked={formParams.data.approve}
-              onChange={(e) =>
-                handleFormParams({
-                  target: {
-                    value: e.target.checked,
-                    name: e.target.name,
-                  },
-                })
-              }
+            <InputGroup.Text>EVM Address</InputGroup.Text>
+            <InputGroup.Text className="normal">#</InputGroup.Text>{" "}
+            <Form.Control
+              placeholder="Receiver address"
+              name="address"
+              value={formParams.data.address}
+              onChange={handleFormParams}
             />
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup.Text>Extensions</InputGroup.Text>
-            <CustomToolTip
-              placement="top"
-              toolTipText={"Array of extensions, i.e: '[1,2]'"}
+            <InputGroup.Text>Amount</InputGroup.Text>
+
+            <Form.Control
+              placeholder="Amount to send"
+              name="amount"
+              value={formParams.data.amount}
+              onChange={handleFormParams}
+            />
+            <Form.Select
+              onChange={handleFormParams}
+              value={formParams.data.currency}
+              name="currency"
             >
-              <Form.Control
-                placeholder="Stringified Array of extensions"
-                name="extensions"
-                value={formParams.data.extensions}
-                onChange={handleFormParams}
-              />
-            </CustomToolTip>
+              <option value="HIVE">HIVE</option>
+              <option value="HBD">HBD</option>
+            </Form.Select>
           </InputGroup>
+
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>
             <Form.Control
@@ -163,4 +148,4 @@ const RequestUpdateProposalVoteComponent = ({
   );
 };
 
-export default RequestUpdateProposalVoteComponent;
+export default RequestVscDepositComponent;

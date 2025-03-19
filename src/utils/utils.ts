@@ -34,7 +34,15 @@ const fromCodeToText = (
         : ""
     });`;
     requestObject = `await keychain
-         .${requestType === "swap" ? "swaps.start" : requestType}(
+         .${
+           requestType === "swap"
+             ? "swaps.start"
+             : requestType === "vscCallContract"
+             ? "vsc.callContract"
+             : requestType === "vscDeposit"
+             ? "vsc.deposit"
+             : requestType
+         }(
               formParamsAsObject.data as ${
                 capitalizedCastedType === "SignTx"
                   ? "any"
@@ -71,14 +79,15 @@ const fromCodeToText = (
   {
     const keychain = new KeychainSDK(window);
     ${
-      formParams.data?.steps &&
-      `const serverStatus = await sdk.swap.getServerStatus();
+      formParams.data?.steps
+        ? `const serverStatus = await sdk.swap.getServerStatus();
     // handle cases where the server is stopped, in maintenance, or behind blocks
     const config = await sdk.swap.getConfig();
     // getting swap configs, such as fees and allowed slippage
     const estimation = await sdk.swaps.getEstimation(${formParams.data.amount},"${formParams.data.startToken}","${formParams.data.endToken}",config)
     // gets initial estimation
     `
+        : ""
     }
     const formParamsAsObject = ${temp}
     

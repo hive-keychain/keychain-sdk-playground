@@ -30,7 +30,7 @@ export interface IFrameDimensions {
 
 const IFRAME_SUGGESTED_DIMENSIONS: IFrameDimensions = {
   width: "435",
-  height: "400",
+  height: "435",
 };
 
 const SwapWidgetCard = () => {
@@ -106,7 +106,11 @@ const SwapWidgetCard = () => {
         0,
         []
       );
-      setAllTokens(tempTokensMarket);
+      setAllTokens([
+        { symbol: "HIVE" },
+        { symbol: "HBD" },
+        ...tempTokensMarket,
+      ]);
     } catch (error) {
       console.log("Hive tokens market error!", { error });
     } finally {
