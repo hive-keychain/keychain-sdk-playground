@@ -83,7 +83,7 @@ const RequestVscDepositComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={"h5"}>Request VSC Call Contract</Card.Header>
+      <Card.Header as={"h5"}>Request VSC Deposit</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
