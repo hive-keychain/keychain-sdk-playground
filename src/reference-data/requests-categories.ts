@@ -151,13 +151,25 @@ export const requestCategories = [
   {
     category: "VSC",
     items: [
-      {
-        name: "Call Contract",
-        requestType: KeychainRequestTypes.vscCallContract,
-      },
+      // {
+      //   name: "Call Contract",
+      //   requestType: KeychainRequestTypes.vscCallContract,
+      // },
       {
         name: "Deposit",
         requestType: KeychainRequestTypes.vscDeposit,
+      },
+      {
+        name: "Withdrawal",
+        requestType: KeychainRequestTypes.vscWithdrawal,
+      },
+      {
+        name: "Transfer",
+        requestType: KeychainRequestTypes.vscTransfer,
+      },
+      {
+        name: "Staking/Unstaking",
+        requestType: KeychainRequestTypes.vscStaking,
       },
     ],
   },

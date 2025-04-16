@@ -1,9 +1,9 @@
-import { VscDeposit } from "keychain-sdk";
+import { VscOptions, VscWithdrawal } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../common_ui/custom-tool-tip";
-import { CommonProps, KeychainOptions } from "../routes/request-card";
+import { CommonProps } from "../routes/request-card";
 
 type Props = {};
 
@@ -15,15 +15,15 @@ const RequestVscWithdrawalComponent = ({
   sdk,
   lastUsernameFound,
 }: Props & CommonProps) => {
-  const DEFAULT_PARAMS: VscDeposit = {
+  const DEFAULT_PARAMS: VscWithdrawal = {
     username: lastUsernameFound,
-    address: "0x4F3f44689B29138BD0563f0ef630FE4834f21087",
+    to: `hive:${lastUsernameFound}`,
     amount: "0.001",
     currency: "HIVE",
   };
   const [formParams, setFormParams] = useState<{
-    data: VscDeposit;
-    options?: KeychainOptions;
+    data: VscWithdrawal;
+    options?: VscOptions;
   }>({
     data: DEFAULT_PARAMS,
   });
@@ -70,7 +70,7 @@ const RequestVscWithdrawalComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const callContract = await sdk.vsc.deposit(
+      const callContract = await sdk.vsc.withdraw(
         formParams.data,
         formParams.options
       );
@@ -102,12 +102,12 @@ const RequestVscWithdrawalComponent = ({
             </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup.Text>EVM Address</InputGroup.Text>
+            <InputGroup.Text> Receiver Address</InputGroup.Text>
             <InputGroup.Text className="normal">#</InputGroup.Text>{" "}
             <Form.Control
               placeholder="Receiver address"
               name="address"
-              value={formParams.data.address}
+              value={formParams.data.to}
               onChange={handleFormParams}
             />
           </InputGroup>
@@ -130,6 +130,15 @@ const RequestVscWithdrawalComponent = ({
             </Form.Select>
           </InputGroup>
 
+          <InputGroup className="mb-3">
+            <InputGroup.Text>Net ID</InputGroup.Text>
+            <Form.Control
+              placeholder="VSC Net - optional"
+              name="netId"
+              value={formParams.options?.netId}
+              onChange={handleFormParams}
+            />
+          </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>
             <Form.Control

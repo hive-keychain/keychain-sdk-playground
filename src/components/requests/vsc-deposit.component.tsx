@@ -17,7 +17,7 @@ const RequestVscDepositComponent = ({
 }: Props & CommonProps) => {
   const DEFAULT_PARAMS: VscDeposit = {
     username: lastUsernameFound,
-    address: "0x4F3f44689B29138BD0563f0ef630FE4834f21087",
+    to: "",
     amount: "0.001",
     currency: "HIVE",
   };
@@ -102,12 +102,12 @@ const RequestVscDepositComponent = ({
             </CustomToolTip>
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup.Text>EVM Address</InputGroup.Text>
+            <InputGroup.Text>Hive or EVM Address (optional)</InputGroup.Text>
             <InputGroup.Text className="normal">#</InputGroup.Text>{" "}
             <Form.Control
               placeholder="Receiver address"
               name="address"
-              value={formParams.data.address}
+              value={formParams.data.to}
               onChange={handleFormParams}
             />
           </InputGroup>

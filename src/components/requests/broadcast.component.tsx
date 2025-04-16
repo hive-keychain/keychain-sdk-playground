@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../common_ui/custom-tool-tip";
-import OperationListComponent from "../common_ui/operation-list-component";
+import OperationListComponent from "../common_ui/operation-list.component";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
