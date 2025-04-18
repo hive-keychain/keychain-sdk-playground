@@ -1,4 +1,4 @@
-import { VscOptions, VscWithdrawal } from "keychain-sdk";
+import { VscOptions, VscTransfer } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
@@ -9,20 +9,21 @@ type Props = {};
 
 const undefinedParamsToValidate = ["rpc"];
 
-const RequestVscWithdrawalComponent = ({
+const RequestVscTransferComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
   lastUsernameFound,
 }: Props & CommonProps) => {
-  const DEFAULT_PARAMS: VscWithdrawal = {
+  const DEFAULT_PARAMS: VscTransfer = {
     username: lastUsernameFound,
-    to: `hive:${lastUsernameFound}`,
+    to: `hive:keychain`,
+    memo: "hi!",
     amount: "0.001",
     currency: "HIVE",
   };
   const [formParams, setFormParams] = useState<{
-    data: VscWithdrawal;
+    data: VscTransfer;
     options?: VscOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -70,7 +71,7 @@ const RequestVscWithdrawalComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const callContract = await sdk.vsc.withdraw(
+      const callContract = await sdk.vsc.transfer(
         formParams.data,
         formParams.options
       );
@@ -83,7 +84,7 @@ const RequestVscWithdrawalComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={"h5"}>Request VSC Withdrawal</Card.Header>
+      <Card.Header as={"h5"}>Request VSC Transfer</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <InputGroup className="mb-3">
@@ -106,7 +107,7 @@ const RequestVscWithdrawalComponent = ({
             <InputGroup.Text className="normal">#</InputGroup.Text>{" "}
             <Form.Control
               placeholder="Receiver address"
-              name="address"
+              name="to"
               value={formParams.data.to}
               onChange={handleFormParams}
             />
@@ -129,7 +130,15 @@ const RequestVscWithdrawalComponent = ({
               <option value="HBD">HBD</option>
             </Form.Select>
           </InputGroup>
-
+          <InputGroup className="mb-3">
+            <InputGroup.Text> Memo</InputGroup.Text>
+            <Form.Control
+              placeholder="Memo"
+              name="memo"
+              value={formParams.data.memo}
+              onChange={handleFormParams}
+            />
+          </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Net ID</InputGroup.Text>
             <Form.Control
@@ -157,4 +166,4 @@ const RequestVscWithdrawalComponent = ({
   );
 };
 
-export default RequestVscWithdrawalComponent;
+export default RequestVscTransferComponent;

@@ -1,4 +1,4 @@
-import { VscOptions, VscWithdrawal } from "keychain-sdk";
+import { VscOptions, VscStaking, VscStakingOperation } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
@@ -9,20 +9,21 @@ type Props = {};
 
 const undefinedParamsToValidate = ["rpc"];
 
-const RequestVscWithdrawalComponent = ({
+const RequestVscStakingComponent = ({
   setRequestResult,
   setFormParamsToShow,
   sdk,
   lastUsernameFound,
 }: Props & CommonProps) => {
-  const DEFAULT_PARAMS: VscWithdrawal = {
+  const DEFAULT_PARAMS: VscStaking = {
     username: lastUsernameFound,
     to: `hive:${lastUsernameFound}`,
+    operation: VscStakingOperation.STAKING,
     amount: "0.001",
-    currency: "HIVE",
+    currency: "HBD",
   };
   const [formParams, setFormParams] = useState<{
-    data: VscWithdrawal;
+    data: VscStaking;
     options?: VscOptions;
   }>({
     data: DEFAULT_PARAMS,
@@ -70,7 +71,7 @@ const RequestVscWithdrawalComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const callContract = await sdk.vsc.withdraw(
+      const callContract = await sdk.vsc.staking(
         formParams.data,
         formParams.options
       );
@@ -83,9 +84,23 @@ const RequestVscWithdrawalComponent = ({
 
   return (
     <Card className="d-flex justify-content-center">
-      <Card.Header as={"h5"}>Request VSC Withdrawal</Card.Header>
+      <Card.Header as={"h5"}>Request VSC Staking/Unstaking</Card.Header>
       <Card.Body>
         <Form onSubmit={handleSubmit}>
+          <InputGroup className="mb-3">
+            <Form.Select
+              onChange={handleFormParams}
+              value={formParams.data.operation}
+              name="operation"
+            >
+              <option value={VscStakingOperation.STAKING}>
+                {VscStakingOperation.STAKING}
+              </option>
+              <option value={VscStakingOperation.UNSTAKING}>
+                {VscStakingOperation.UNSTAKING}
+              </option>
+            </Form.Select>
+          </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Username</InputGroup.Text>
             <InputGroup.Text className="normal">@</InputGroup.Text>{" "}
@@ -106,7 +121,7 @@ const RequestVscWithdrawalComponent = ({
             <InputGroup.Text className="normal">#</InputGroup.Text>{" "}
             <Form.Control
               placeholder="Receiver address"
-              name="address"
+              name="to"
               value={formParams.data.to}
               onChange={handleFormParams}
             />
@@ -125,7 +140,7 @@ const RequestVscWithdrawalComponent = ({
               value={formParams.data.currency}
               name="currency"
             >
-              <option value="HIVE">HIVE</option>
+              {/* <option value="HIVE">HIVE</option> */}
               <option value="HBD">HBD</option>
             </Form.Select>
           </InputGroup>
@@ -157,4 +172,4 @@ const RequestVscWithdrawalComponent = ({
   );
 };
 
-export default RequestVscWithdrawalComponent;
+export default RequestVscStakingComponent;

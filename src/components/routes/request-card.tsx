@@ -37,6 +37,8 @@ import RequestVerifyKeyComponent from "../requests/verify-key.component";
 import RequestVoteComponent from "../requests/vote.component";
 import RequestVscCallContractComponent from "../requests/vsc-call-contract.component";
 import RequestVscDepositComponent from "../requests/vsc-deposit.component";
+import RequestVscStakingComponent from "../requests/vsc-staking.component";
+import RequestVscTransferComponent from "../requests/vsc-transfer.component";
 import RequestVscWithdrawalComponent from "../requests/vsc-withdrawal.component";
 import RequestWitnessVoteComponent from "../requests/witness-vote.component";
 
@@ -178,6 +180,12 @@ const RequestCard = (props: Props) => {
         break;
       case KeychainRequestTypes.vscWithdrawal:
         setRequestCard(<RequestVscWithdrawalComponent {...commonProps} />);
+        break;
+      case KeychainRequestTypes.vscTransfer:
+        setRequestCard(<RequestVscTransferComponent {...commonProps} />);
+        break;
+      case KeychainRequestTypes.vscStaking:
+        setRequestCard(<RequestVscStakingComponent {...commonProps} />);
         break;
       default:
         setRequestCard(null);

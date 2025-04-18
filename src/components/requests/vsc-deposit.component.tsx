@@ -7,7 +7,7 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const undefinedParamsToValidate = ["rpc"];
+const undefinedParamsToValidate = ["username", "to", "rpc"];
 
 const RequestVscDepositComponent = ({
   setRequestResult,
@@ -17,7 +17,7 @@ const RequestVscDepositComponent = ({
 }: Props & CommonProps) => {
   const DEFAULT_PARAMS: VscDeposit = {
     username: lastUsernameFound,
-    to: "",
+    to: undefined,
     amount: "0.001",
     currency: "HIVE",
   };
@@ -70,12 +70,12 @@ const RequestVscDepositComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const callContract = await sdk.vsc.deposit(
+      const deposit = await sdk.vsc.deposit(
         formParams.data,
         formParams.options
       );
-      setRequestResult(callContract);
-      console.log({ conversion: callContract });
+      setRequestResult(deposit);
+      console.log({ conversion: deposit });
     } catch (error) {
       setRequestResult(error);
     }
@@ -106,7 +106,7 @@ const RequestVscDepositComponent = ({
             <InputGroup.Text className="normal">#</InputGroup.Text>{" "}
             <Form.Control
               placeholder="Receiver address"
-              name="address"
+              name="to"
               value={formParams.data.to}
               onChange={handleFormParams}
             />

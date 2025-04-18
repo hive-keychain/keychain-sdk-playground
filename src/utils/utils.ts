@@ -41,6 +41,12 @@ const fromCodeToText = (
              ? "vsc.callContract"
              : requestType === "vscDeposit"
              ? "vsc.deposit"
+             : requestType === "vscWithdrawal"
+             ? "vsc.withdraw"
+             : requestType === "vscTransfer"
+             ? "vsc.transfer"
+             : requestType === "vscStaking"
+             ? "vsc.staking"
              : requestType
          }(
               formParamsAsObject.data as ${

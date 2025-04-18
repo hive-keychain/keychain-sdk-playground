@@ -7,7 +7,7 @@ import { CommonProps } from "../routes/request-card";
 
 type Props = {};
 
-const undefinedParamsToValidate = ["rpc"];
+const undefinedParamsToValidate = ["username", "to", "rpc"];
 
 const RequestVscWithdrawalComponent = ({
   setRequestResult,
@@ -18,6 +18,7 @@ const RequestVscWithdrawalComponent = ({
   const DEFAULT_PARAMS: VscWithdrawal = {
     username: lastUsernameFound,
     to: `hive:${lastUsernameFound}`,
+    memo: "",
     amount: "0.001",
     currency: "HIVE",
   };
@@ -106,7 +107,7 @@ const RequestVscWithdrawalComponent = ({
             <InputGroup.Text className="normal">#</InputGroup.Text>{" "}
             <Form.Control
               placeholder="Receiver address"
-              name="address"
+              name="to"
               value={formParams.data.to}
               onChange={handleFormParams}
             />
@@ -129,7 +130,15 @@ const RequestVscWithdrawalComponent = ({
               <option value="HBD">HBD</option>
             </Form.Select>
           </InputGroup>
-
+          <InputGroup className="mb-3">
+            <InputGroup.Text> Memo</InputGroup.Text>
+            <Form.Control
+              placeholder="Memo"
+              name="memo"
+              value={formParams.data.memo}
+              onChange={handleFormParams}
+            />
+          </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Net ID</InputGroup.Text>
             <Form.Control
