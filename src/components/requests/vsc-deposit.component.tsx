@@ -70,12 +70,15 @@ const RequestVscDepositComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const deposit = await sdk.vsc.deposit(
+      const depositRes = await sdk.vsc.deposit(
         formParams.data,
         formParams.options
       );
-      setRequestResult(deposit);
-      console.log({ conversion: deposit });
+      setRequestResult(depositRes);
+      console.log({ depositRes });
+      const confirmationStatus = await sdk.vsc.awaitConfirmation(depositRes);
+      console.log({ confirmationStatus });
+      setRequestResult({ ...depositRes, newStatus: confirmationStatus });
     } catch (error) {
       setRequestResult(error);
     }

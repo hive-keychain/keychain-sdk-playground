@@ -71,12 +71,15 @@ const RequestVscStakingComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const callContract = await sdk.vsc.staking(
+      const stakingRes = await sdk.vsc.staking(
         formParams.data,
         formParams.options
       );
-      setRequestResult(callContract);
-      console.log({ conversion: callContract });
+      setRequestResult(stakingRes);
+      console.log({ stakingRes });
+      const confirmationStatus = await sdk.vsc.awaitConfirmation(stakingRes);
+      console.log({ confirmationStatus });
+      setRequestResult({ ...stakingRes, newStatus: confirmationStatus });
     } catch (error) {
       setRequestResult(error);
     }

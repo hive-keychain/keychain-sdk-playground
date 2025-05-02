@@ -58,14 +58,21 @@ const fromCodeToText = (
     requestObject = `await keychain
          .${requestType}(formParamsAsObject as ${capitalizedCastedType});`;
   }
-  const extraCodeLines = formParams.broadcastSignedTx
+  let extraCodeLines = formParams.broadcastSignedTx
     ? `const client = new Client([
       "https://api.hive.blog",
       "https://api.openhive.network",
     ]);
     let signedTxBroadcast = await client.broadcast.send(signtx.result as any);
     console.log({ signedTxBroadcast });`
-    : `console.log({ ${requestType.toLowerCase()} });`;
+    : `console.log({ ${requestType}Res });`;
+
+  if (requestType.startsWith("vsc")) {
+    extraCodeLines += `
+      const confirmationStatus = await sdk.vsc.awaitConfirmation(${requestType}Res);
+      console.log({ confirmationStatus });
+      `;
+  }
 
   const stringifyed = `${JSON.stringify(formParams, undefined, "     ")}`;
 
@@ -97,7 +104,7 @@ const fromCodeToText = (
     }
     const formParamsAsObject = ${temp}
     
-    const ${requestType.toLowerCase()} = ${requestObject}
+    const ${requestType}Res = ${requestObject}
     ${extraCodeLines}
   } catch (error) {
     console.log({ error });

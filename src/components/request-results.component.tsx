@@ -103,6 +103,9 @@ const RequestResultsComponent = ({
                     </Accordion.Item>
                   </Accordion>
                 )}
+                {requestResult.newStatus && (
+                  <Card.Text>New Status: {requestResult.newStatus}</Card.Text>
+                )}
               </Card.Body>
             )}
           </Card>

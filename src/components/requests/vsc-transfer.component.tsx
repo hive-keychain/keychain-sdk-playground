@@ -71,12 +71,15 @@ const RequestVscTransferComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const callContract = await sdk.vsc.transfer(
+      const transferRes = await sdk.vsc.transfer(
         formParams.data,
         formParams.options
       );
-      setRequestResult(callContract);
-      console.log({ conversion: callContract });
+      setRequestResult(transferRes);
+      console.log({ transferRes });
+      const confirmationStatus = await sdk.vsc.awaitConfirmation(transferRes);
+      console.log({ confirmationStatus });
+      setRequestResult({ ...transferRes, newStatus: confirmationStatus });
     } catch (error) {
       setRequestResult(error);
     }

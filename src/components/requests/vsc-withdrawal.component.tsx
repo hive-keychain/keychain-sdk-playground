@@ -71,12 +71,15 @@ const RequestVscWithdrawalComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
-      const callContract = await sdk.vsc.withdraw(
+      const withdrawRes = await sdk.vsc.withdraw(
         formParams.data,
         formParams.options
       );
-      setRequestResult(callContract);
-      console.log({ conversion: callContract });
+      setRequestResult(withdrawRes);
+      console.log({ withdrawRes });
+      const confirmationStatus = await sdk.vsc.awaitConfirmation(withdrawRes);
+      console.log({ confirmationStatus });
+      setRequestResult({ ...withdrawRes, newStatus: confirmationStatus });
     } catch (error) {
       setRequestResult(error);
     }
