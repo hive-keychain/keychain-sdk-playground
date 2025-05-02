@@ -77,7 +77,9 @@ const RequestVscTransferComponent = ({
       );
       setRequestResult(transferRes);
       console.log({ transferRes });
-      const confirmationStatus = await sdk.vsc.awaitConfirmation(transferRes);
+      const confirmationStatus = await sdk.vsc.awaitConfirmation(
+        transferRes.result?.id!
+      );
       console.log({ confirmationStatus });
       setRequestResult({ ...transferRes, newStatus: confirmationStatus });
     } catch (error) {

@@ -77,7 +77,9 @@ const RequestVscWithdrawalComponent = ({
       );
       setRequestResult(withdrawRes);
       console.log({ withdrawRes });
-      const confirmationStatus = await sdk.vsc.awaitConfirmation(withdrawRes);
+      const confirmationStatus = await sdk.vsc.awaitConfirmation(
+        withdrawRes.result?.id!
+      );
       console.log({ confirmationStatus });
       setRequestResult({ ...withdrawRes, newStatus: confirmationStatus });
     } catch (error) {

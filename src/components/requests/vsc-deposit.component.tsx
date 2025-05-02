@@ -76,7 +76,9 @@ const RequestVscDepositComponent = ({
       );
       setRequestResult(depositRes);
       console.log({ depositRes });
-      const confirmationStatus = await sdk.vsc.awaitConfirmation(depositRes);
+      const confirmationStatus = await sdk.vsc.awaitConfirmation(
+        depositRes.result?.id!
+      );
       console.log({ confirmationStatus });
       setRequestResult({ ...depositRes, newStatus: confirmationStatus });
     } catch (error) {

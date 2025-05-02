@@ -69,7 +69,7 @@ const fromCodeToText = (
 
   if (requestType.startsWith("vsc")) {
     extraCodeLines += `
-      const confirmationStatus = await sdk.vsc.awaitConfirmation(${requestType}Res);
+      const confirmationStatus = await sdk.vsc.awaitConfirmation(${requestType}Res.result.id);
       console.log({ confirmationStatus });
       `;
   }

@@ -77,7 +77,9 @@ const RequestVscStakingComponent = ({
       );
       setRequestResult(stakingRes);
       console.log({ stakingRes });
-      const confirmationStatus = await sdk.vsc.awaitConfirmation(stakingRes);
+      const confirmationStatus = await sdk.vsc.awaitConfirmation(
+        stakingRes.result?.id!
+      );
       console.log({ confirmationStatus });
       setRequestResult({ ...stakingRes, newStatus: confirmationStatus });
     } catch (error) {
