@@ -168,7 +168,7 @@ export const requestCategories = [
         requestType: KeychainRequestTypes.vscTransfer,
       },
       {
-        name: "Staking/Unstaking",
+        name: "HBD Staking / Unstaking",
         requestType: KeychainRequestTypes.vscStaking,
       },
     ],
