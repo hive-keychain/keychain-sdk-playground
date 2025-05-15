@@ -20,6 +20,8 @@ export interface SwapWidgetCardFormParams {
   from?: string;
   to?: string;
   slippage?: string;
+  rpc?: string;
+  hiveEngineRpc?: string;
   theme?: string;
 }
 
@@ -276,6 +278,26 @@ const SwapWidgetCard = () => {
                           defaultValue={formParams.slippage}
                           onChange={(e) => debouncedFormHook(e)}
                           type="number"
+                        />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text>RPC</InputGroup.Text>
+                        <Form.Control
+                          placeholder="RPC"
+                          name="rpc"
+                          defaultValue={formParams.rpc}
+                          onChange={(e) => debouncedFormHook(e)}
+                          type="string"
+                        />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text>Hive Engine RPC</InputGroup.Text>
+                        <Form.Control
+                          placeholder="Hive Engine RPC"
+                          name="hiveEngineRpc"
+                          defaultValue={formParams.hiveEngineRpc}
+                          onChange={(e) => debouncedFormHook(e)}
+                          type="string"
                         />
                       </InputGroup>
                     </Accordion.Body>
