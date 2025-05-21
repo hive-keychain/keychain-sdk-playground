@@ -14,7 +14,7 @@ type Props = {
   setModalShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const sdk = new KeychainSDK(window);
+let sdk;
 
 const NavigationBarComponent = ({
   setEnabledKeychain,
@@ -29,6 +29,7 @@ const NavigationBarComponent = ({
     const onLoadHandler = async () => {
       if (enableLogs) console.log("Fully loaded!");
       try {
+        sdk = new KeychainSDK(window);
         const enabled = await sdk.isKeychainInstalled();
         setKeychainInstalled(enabled);
         setEnabledKeychain(enabled);

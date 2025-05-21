@@ -1,3 +1,4 @@
+import { KeychainSDK } from "keychain-sdk";
 import { useEffect, useState } from "react";
 import {
   Accordion,
@@ -50,6 +51,7 @@ const SwapWidgetCard = () => {
   const [formParams, setFormParams] = useState<SwapWidgetCardFormParams>({
     username: lastUsernameFound,
   });
+  const [keychainInstalled, setKeychainInstalled] = useState(false);
 
   const debouncedFormHook = useDebouncedCallback((e) => {
     const { name, value } = e.target;
@@ -120,6 +122,29 @@ const SwapWidgetCard = () => {
     }
   };
 
+  useEffect(() => {
+    const onLoadHandler = async () => {
+      setTimeout(async () => {
+        if (document.readyState === "complete") {
+          try {
+            const sdk = new KeychainSDK(window);
+            const enabled = await sdk.isKeychainInstalled();
+            setKeychainInstalled(enabled);
+          } catch (error) {
+            console.log({ error });
+          }
+        }
+      }, 100);
+    };
+
+    window.addEventListener("load", onLoadHandler);
+
+    return () => {
+      window.removeEventListener("load", onLoadHandler);
+    };
+  });
+
+  if (!keychainInstalled) return <></>;
   return (
     <Container>
       <Row>
