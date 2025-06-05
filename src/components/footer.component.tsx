@@ -4,9 +4,7 @@ import GitSvg from "../assets/images/svgs/github.svg";
 import HiveLogoSvg from "../assets/images/svgs/hive.svg";
 import TwitterLogoSvg from "../assets/images/svgs/twitter.svg";
 
-type Props = {};
-
-function FooterComponent({}: Props): JSX.Element {
+function FooterComponent(): JSX.Element {
   return (
     <Container className="d-flex justify-content-center bottom-0 mt-auto">
       <ListGroup className="d-flex justify-content-center mt-4">

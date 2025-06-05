@@ -23,10 +23,10 @@ const CustomButton = ({ icon, onClickHandler, toolTipText }: Props) => {
   const [iconSource, setIconSource] = useState<string>("");
 
   useEffect(() => {
-    selectedIconImage();
+    selectedIconImage(icon);
   }, [icon]);
 
-  const selectedIconImage = () => {
+  const selectedIconImage = (icon: IconName) => {
     switch (icon) {
       case IconName.EDIT:
         setIconSource(EditBlackSVG);
