@@ -17,12 +17,13 @@ const RequestRecurrentTransferComponent = ({
 }: Props & CommonProps) => {
   const DEFAULT_PARAMS: RecurrentTransfer = {
     username: lastUsernameFound,
-    to: lastUsernameFound,
+    to: "keychain",
     amount: "1.000",
     currency: "HIVE",
     memo: "#Encrypted memo sample",
     recurrence: 24,
     executions: 2,
+    pair_id: 0,
   };
   const [formParams, setFormParams] = useState<{
     data: RecurrentTransfer;
@@ -187,6 +188,16 @@ const RequestRecurrentTransferComponent = ({
                 onChange={handleFormParams}
               />
             </CustomToolTip>
+          </InputGroup>
+          <InputGroup className="mb-3">
+            <InputGroup.Text>Pair ID</InputGroup.Text>
+            <Form.Control
+              placeholder="Pair ID"
+              type="number"
+              name="pair_id"
+              value={formParams.data.pair_id}
+              onChange={handleFormParams}
+            />
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text>Rpc</InputGroup.Text>
