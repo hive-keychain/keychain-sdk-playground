@@ -37,12 +37,22 @@ const RequestRecurrentTransferComponent = ({
   }, [formParams]);
 
   const handleFormParams = (e: any) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    // Convert to number if input type is number or field is numeric
+    const numericFields = ["recurrence", "executions", "pair_id"];
+    const isNumericField = numericFields.includes(name);
+    const shouldConvertToNumber = type === "number" || isNumericField;
+
+    let processedValue = value;
+    if (shouldConvertToNumber && value !== "" && !isNaN(Number(value))) {
+      processedValue = Number(value);
+    }
+
     const tempValue =
       undefinedParamsToValidate.findIndex((param) => param === name) !== -1 &&
-      value.trim() === ""
+      String(processedValue).trim() === ""
         ? undefined
-        : value;
+        : processedValue;
     if (
       Object.keys(formParams.data).findIndex((param) => param === name) !== -1
     ) {
