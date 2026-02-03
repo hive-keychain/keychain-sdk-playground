@@ -21,7 +21,7 @@ const RequestRemoveProposalComponent = ({
   }>({
     data: {
       username: lastUsernameFound,
-      proposal_ids: JSON.stringify([1, 2, 3]),
+      proposal_ids: JSON.stringify([0]),
       extensions: JSON.stringify([]),
     },
   });

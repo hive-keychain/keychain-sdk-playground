@@ -21,9 +21,9 @@ const RequestUpdateProposalVoteComponent = ({
   }>({
     data: {
       username: lastUsernameFound,
-      proposal_ids: JSON.stringify([1, 2, 3]),
+      proposal_ids: JSON.stringify([0]),
       approve: false,
-      extensions: JSON.stringify([1, 2]),
+      extensions: JSON.stringify([]),
     },
   });
 
