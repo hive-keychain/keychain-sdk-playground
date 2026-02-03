@@ -21,7 +21,7 @@ const RequestPowerDownComponent = ({
   }>({
     data: {
       username: lastUsernameFound,
-      hive_power: "1.000",
+      hive_power: "0.001",
     },
   });
 
@@ -96,7 +96,7 @@ const RequestPowerDownComponent = ({
             <CustomToolTip
               placement="top"
               toolTipText={
-                "Amount of HP(hive power), to be powered down, i.e: '1.000'"
+                "Amount of HP(hive power), to be powered down, i.e: '0.001'"
               }
             >
               <Form.Control

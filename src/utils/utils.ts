@@ -47,6 +47,10 @@ const fromCodeToText = (
              ? "vsc.transfer"
              : requestType === "vscStaking"
              ? "vsc.staking"
+             : requestType === "savingsDeposit"
+             ? "savings.deposit"
+             : requestType === "savingsWithdraw"
+             ? "savings.withdraw"
              : requestType
          }(
               formParamsAsObject.data as ${

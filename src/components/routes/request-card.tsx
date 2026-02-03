@@ -27,6 +27,8 @@ import RequestRecurrentTransferComponent from "../requests/recurrent-transfer.co
 import RequestRemoveAccountAuthorityComponent from "../requests/remove-account-authority.component";
 import RequestRemoveKeyAuthorityComponent from "../requests/remove-key-authority.component";
 import RequestRemoveProposalComponent from "../requests/remove-proposal.component";
+import RequestSavingsDepositComponent from "../requests/savings-deposit.component";
+import RequestSavingsWithdrawComponent from "../requests/savings-withdraw.component";
 import RequestSendTokenComponent from "../requests/send-token.component";
 import RequestSignBufferComponent from "../requests/sign-buffer.component";
 import RequestSignTxComponent from "../requests/sign-tx.component";
@@ -171,6 +173,12 @@ const RequestCard = (props: Props) => {
         break;
       case KeychainRequestTypes.recurrentTransfer:
         setRequestCard(<RequestRecurrentTransferComponent {...commonProps} />);
+        break;
+      case "savingsDeposit":
+        setRequestCard(<RequestSavingsDepositComponent {...commonProps} />);
+        break;
+      case "savingsWithdraw":
+        setRequestCard(<RequestSavingsWithdrawComponent {...commonProps} />);
         break;
       case KeychainRequestTypes.vscCallContract:
         setRequestCard(<RequestVscCallContractComponent {...commonProps} />);

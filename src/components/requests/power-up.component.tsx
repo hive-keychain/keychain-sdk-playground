@@ -22,7 +22,7 @@ const RequestPowerUpComponent = ({
     data: {
       username: lastUsernameFound,
       recipient: lastUsernameFound,
-      hive: "1.000",
+      hive: "0.001",
     },
   });
 
@@ -109,7 +109,7 @@ const RequestPowerUpComponent = ({
             <CustomToolTip
               placement="top"
               toolTipText={
-                "Amount of HIVE to be powered up, requires 3 decimals, i.e: '1.000'"
+                "Amount of HIVE to be powered up, requires 3 decimals, i.e: '0.001'"
               }
             >
               <Form.Control

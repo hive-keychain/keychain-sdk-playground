@@ -22,7 +22,7 @@ const RequestDelegationComponent = ({
     data: {
       username: lastUsernameFound,
       delegatee: lastUsernameFound,
-      amount: "1.000",
+      amount: "0.001",
       unit: "HP",
     },
   });
@@ -117,7 +117,7 @@ const RequestDelegationComponent = ({
             <InputGroup.Text>Amount</InputGroup.Text>
             <CustomToolTip
               placement="top"
-              toolTipText="Amount, Requires 3 decimals, i.e: '1.000'"
+              toolTipText="Amount, Requires 3 decimals, i.e: '0.001'"
             >
               <Form.Control
                 placeholder="Amount"

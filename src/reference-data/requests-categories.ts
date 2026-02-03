@@ -141,6 +141,19 @@ export const requestCategories = [
     ],
   },
   {
+    category: "Savings",
+    items: [
+      {
+        name: "Savings Deposit",
+        requestType: "savingsDeposit",
+      },
+      {
+        name: "Savings Withdraw",
+        requestType: "savingsWithdraw",
+      },
+    ],
+  },
+  {
     category: "HP (HIVE power)",
     items: [
       { name: "Delegation", requestType: KeychainRequestTypes.delegation },

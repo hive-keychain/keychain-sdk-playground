@@ -18,7 +18,7 @@ const RequestTransferComponent = ({
   const DEFAULT_PARAMS: Transfer = {
     username: lastUsernameFound,
     to: lastUsernameFound,
-    amount: "1.000",
+    amount: "0.001",
     memo: "#Test Keychain SDK transfer(will be encrypted)",
     enforce: false,
     currency: "HIVE",
@@ -117,11 +117,11 @@ const RequestTransferComponent = ({
             <CustomToolTip
               placement="top"
               toolTipText={
-                "Amount to be transfered. Requires 3 decimals i.e: '1.000'"
+                "Amount to be transfered. Requires 3 decimals i.e: '0.001'"
               }
             >
               <Form.Control
-                placeholder="Amount to be transfered. Requires 3 decimals i.e: '1.000'"
+                placeholder="Amount to be transfered. Requires 3 decimals i.e: '0.001'"
                 name="amount"
                 value={formParams.data.amount}
                 onChange={handleFormParams}

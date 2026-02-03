@@ -129,11 +129,11 @@ const RequestSendTokenComponent = ({
             <CustomToolTip
               placement="top"
               toolTipText={
-                "Amount to be transfered. Requires 3 decimals i.e: '1.000'"
+                "Amount to be transfered. Requires 3 decimals i.e: '0.001'"
               }
             >
               <Form.Control
-                placeholder="Amount to be transfered. Requires 3 decimals i.e: '1.000'"
+                placeholder="Amount to be transfered. Requires 3 decimals i.e: '0.001'"
                 name="amount"
                 value={formParams.data.amount}
                 onChange={handleFormParams}

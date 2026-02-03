@@ -21,7 +21,7 @@ const RequestConversionComponent = ({
   }>({
     data: {
       username: lastUsernameFound,
-      amount: "1.000",
+      amount: "0.001",
       collaterized: false,
     },
   });
@@ -121,11 +121,11 @@ const RequestConversionComponent = ({
             <CustomToolTip
               placement="top"
               toolTipText={
-                "Amount to be converted. Requires 3 decimals, i.e: '1.000'."
+                "Amount to be converted. Requires 3 decimals, i.e: '0.001'."
               }
             >
               <Form.Control
-                placeholder="Amount i.e: '1.000'"
+                placeholder="Amount i.e: '0.001'"
                 name="amount"
                 value={formParams.data.amount}
                 onChange={handleFormParams}
