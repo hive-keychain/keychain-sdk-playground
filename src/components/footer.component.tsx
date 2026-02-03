@@ -29,7 +29,7 @@ function FooterComponent(): JSX.Element {
             </ListGroup.Item>
             <ListGroup.Item
               action
-              href={"https://discord.com/invite/E6P6Gjv9MC"}
+              href={"https://discord.com/invite/tUHtyev2xF"}
               target="_blank"
             >
               <Image src={DiscordLogoSvg} width={20} />

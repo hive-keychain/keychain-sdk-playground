@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Form, Image, Nav, Navbar } from "react-bootstrap";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AlertIconRed from "../../assets/images/pngs/icons8-alert-sign.png";
 import KeyChainPngIcon from "../../assets/images/pngs/keychain_icon_small.png";
 import CheckMarkGreen from "../../assets/images/svgs/icons8-check-mark-green.svg";
@@ -17,6 +17,8 @@ export default function RootLayout({}: Props) {
     useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [emptyValue, setEmptyValue] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onLoadHandler = async () => {
@@ -40,6 +42,29 @@ export default function RootLayout({}: Props) {
       window.removeEventListener("load", onLoadHandler);
     };
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("showRequests") === "true") {
+      setModalShow(true);
+    }
+  }, [location.search]);
+
+  const handleModalHide = () => {
+    setModalShow(false);
+    const params = new URLSearchParams(location.search);
+    if (params.has("showRequests")) {
+      params.delete("showRequests");
+      const search = params.toString();
+      navigate(
+        {
+          pathname: location.pathname,
+          search: search ? `?${search}` : "",
+        },
+        { replace: true }
+      );
+    }
+  };
 
   return (
     <div className="App">
@@ -126,7 +151,7 @@ export default function RootLayout({}: Props) {
         </Container>
       </Navbar>
       <Container className="d-flex justify-content-center mt-2 mb-2">
-        <SearchModal show={modalShow} onHide={() => setModalShow(false)} />
+        <SearchModal show={modalShow} onHide={handleModalHide} />
       </Container>
       <div id="detail">
         <Outlet />

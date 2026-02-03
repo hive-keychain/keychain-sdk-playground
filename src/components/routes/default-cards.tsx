@@ -1,4 +1,4 @@
-import { Badge, Card, ListGroup } from "react-bootstrap";
+import { Card, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const DefaultCard = () => {
@@ -33,14 +33,13 @@ const DefaultCard = () => {
               as={"h4"}
               className="d-flex flex-row justify-content-center align-items-center"
             >
-              <Card.Text as="h6" className="me-1">
-                <Badge bg="danger">NEW</Badge>
-              </Card.Text>
               <Link to={"swap-widget"}>Keychain Swap Widget</Link>
             </Card.Subtitle>
           </ListGroup.Item>
           <ListGroup.Item>
-            <Card.Subtitle as="h4">Keychain requests</Card.Subtitle>
+            <Card.Subtitle as="h4">
+              <Link to={"/?showRequests=true"}>Keychain requests</Link>
+            </Card.Subtitle>
           </ListGroup.Item>
         </ListGroup>
         <br />

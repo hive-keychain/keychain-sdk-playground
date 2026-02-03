@@ -137,12 +137,16 @@ const SwapWidgetCard = () => {
       }, 100);
     };
 
-    window.addEventListener("load", onLoadHandler);
+    if (document.readyState === "complete") {
+      onLoadHandler();
+    } else {
+      window.addEventListener("load", onLoadHandler);
+    }
 
     return () => {
       window.removeEventListener("load", onLoadHandler);
     };
-  });
+  }, []);
 
   if (!keychainInstalled) return <></>;
   return (

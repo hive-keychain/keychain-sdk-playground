@@ -18,11 +18,11 @@ const RequestCustomJsonComponent = ({
     id: "1",
     method: KeychainKeyTypes.posting,
     json: JSON.stringify({
-      items: ["9292cd44ccaef8b73a607949cc787f1679ede10b-93"],
+      items: [],
       currency: "DEC",
       days: 1,
     }),
-    display_msg: "Rent a Card Man!",
+    display_msg: "Broadcast JSON",
   };
   const [formParams, setFormParams] = useState<{
     data: Custom;
