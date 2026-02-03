@@ -4,6 +4,7 @@ import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../common_ui/custom-tool-tip";
 import { CommonProps } from "../routes/request-card";
+import { Utils } from "../../utils/utils";
 
 type Props = {};
 
@@ -15,9 +16,10 @@ const RequestVscWithdrawalComponent = ({
   sdk,
   lastUsernameFound,
 }: Props & CommonProps) => {
+  const lastToFound = Utils.getLastTo();
   const DEFAULT_PARAMS: VscWithdrawal = {
     username: lastUsernameFound,
-    to: `hive:${lastUsernameFound}`,
+    to: lastToFound || `hive:${lastUsernameFound}`,
     memo: "",
     amount: "0.001",
     currency: "HIVE",
@@ -40,6 +42,13 @@ const RequestVscWithdrawalComponent = ({
       value.trim() === ""
         ? undefined
         : value;
+    if (name === "to") {
+      const toValue =
+        tempValue === undefined || tempValue === null
+          ? ""
+          : String(tempValue);
+      Utils.rememberTo(toValue);
+    }
     if (
       Object.keys(formParams.data).findIndex((param) => param === name) !== -1
     ) {

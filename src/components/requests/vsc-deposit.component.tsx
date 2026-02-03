@@ -4,6 +4,7 @@ import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { fieldToolTipText } from "../../reference-data/form-field-tool-tip-text";
 import CustomToolTip from "../common_ui/custom-tool-tip";
 import { CommonProps, KeychainOptions } from "../routes/request-card";
+import { Utils } from "../../utils/utils";
 
 type Props = {};
 
@@ -15,9 +16,10 @@ const RequestVscDepositComponent = ({
   sdk,
   lastUsernameFound,
 }: Props & CommonProps) => {
+  const lastToFound = Utils.getLastTo();
   const DEFAULT_PARAMS: VscDeposit = {
     username: lastUsernameFound,
-    to: undefined,
+    to: lastToFound || undefined,
     amount: "0.001",
     currency: "HIVE",
   };
@@ -39,6 +41,13 @@ const RequestVscDepositComponent = ({
       value.trim() === ""
         ? undefined
         : value;
+    if (name === "to") {
+      const toValue =
+        tempValue === undefined || tempValue === null
+          ? ""
+          : String(tempValue);
+      Utils.rememberTo(toValue);
+    }
     if (
       Object.keys(formParams.data).findIndex((param) => param === name) !== -1
     ) {

@@ -5,6 +5,7 @@ import {
 } from "../components/routes/swap-widget-card";
 
 const BASE_SWAP_WIDGET_URL = "https://swapwidget.hive-keychain.com/";
+const LAST_TO_KEY = "last_to";
 
 let sdk: KeychainSDK;
 
@@ -153,10 +154,25 @@ const fromCodeToTextIframe = (
   `;
 };
 
+const getLastTo = () => {
+  return localStorage.getItem(LAST_TO_KEY) ?? "";
+};
+
+const rememberTo = (value: string) => {
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
+    localStorage.removeItem(LAST_TO_KEY);
+  } else {
+    localStorage.setItem(LAST_TO_KEY, trimmed);
+  }
+};
+
 export const Utils = {
   fromCodeToText,
   sortByKeyNames,
   getSDK,
   fromCodeToTextIframe,
   BASE_SWAP_WIDGET_URL,
+  getLastTo,
+  rememberTo,
 };
