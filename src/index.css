@@ -217,6 +217,33 @@ p,
   font-weight: 600;
   padding: 0.3rem 0.2rem;
   color: var(--ink);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar-category summary::-webkit-details-marker {
+  display: none;
+}
+
+.sidebar-category summary::marker {
+  content: "";
+}
+
+.sidebar-category summary::after {
+  content: "";
+  margin-left: auto;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(-45deg);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.sidebar-category[open] summary::after {
+  transform: rotate(45deg);
 }
 
 .sidebar-sublist {
