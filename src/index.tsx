@@ -5,6 +5,7 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import ErrorPage from "./components/pages/error-page";
 import DefaultCard from "./components/routes/default-cards";
+import GetStarted from "./components/routes/get-started";
 import RequestCard from "./components/routes/request-card";
 import RootLayout from "./components/routes/root-layout";
 import SwapWidgetCard from "./components/routes/swap-widget-card";
@@ -19,6 +20,10 @@ const router = createHashRouter([
       {
         index: true,
         element: <DefaultCard />,
+      },
+      {
+        path: "request/get-started",
+        element: <GetStarted />,
       },
       {
         path: "request/:requestType",

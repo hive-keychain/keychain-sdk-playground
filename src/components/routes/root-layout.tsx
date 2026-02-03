@@ -1,24 +1,39 @@
-import { useEffect, useState } from "react";
-import { Container, Form, Image, Nav, Navbar } from "react-bootstrap";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Image } from "react-bootstrap";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import AlertIconRed from "../../assets/images/pngs/icons8-alert-sign.png";
 import KeyChainPngIcon from "../../assets/images/pngs/keychain_icon_small.png";
 import CheckMarkGreen from "../../assets/images/svgs/icons8-check-mark-green.svg";
+import { requestCategories } from "../../reference-data/requests-categories";
 import { Utils } from "../../utils/utils";
 import CustomToolTip from "../common_ui/custom-tool-tip";
 import FooterComponent from "../footer.component";
-import SearchModal from "../search-modal";
 
 type Props = {};
 
 export default function RootLayout({}: Props) {
   const [keychainInstalled, setKeychainInstalled] = useState(false);
-  const [activeBorderOnSearchContainer, setActiveBorderOnSearchContainer] =
-    useState(false);
-  const [modalShow, setModalShow] = useState(false);
-  const [emptyValue, setEmptyValue] = useState("");
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [requestFilter, setRequestFilter] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const filteredRequestCategories = useMemo(() => {
+    const normalizedFilter = requestFilter.trim().toLowerCase();
+    if (!normalizedFilter) return requestCategories;
+
+    return requestCategories
+      .map((category) => {
+        const categoryMatches = category.category
+          .toLowerCase()
+          .includes(normalizedFilter);
+        const filteredItems = categoryMatches
+          ? category.items
+          : category.items.filter((item) =>
+              item.name.toLowerCase().includes(normalizedFilter)
+            );
+        return { ...category, items: filteredItems };
+      })
+      .filter((category) => category.items.length > 0);
+  }, [requestFilter]);
 
   useEffect(() => {
     const onLoadHandler = async () => {
@@ -44,66 +59,52 @@ export default function RootLayout({}: Props) {
   }, []);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get("showRequests") === "true") {
-      setModalShow(true);
-    }
-  }, [location.search]);
+    if (!sidebarOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSidebarOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
 
-  const handleModalHide = () => {
-    setModalShow(false);
-    const params = new URLSearchParams(location.search);
-    if (params.has("showRequests")) {
-      params.delete("showRequests");
-      const search = params.toString();
-      navigate(
-        {
-          pathname: location.pathname,
-          search: search ? `?${search}` : "",
-        },
-        { replace: true }
-      );
+  const handleNavClick = (event: React.MouseEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+    if (target.closest("a")) {
+      setSidebarOpen(false);
     }
   };
 
   return (
-    <div className="App">
-      <Navbar
-        bg="light"
-        expand="lg"
-        className="playground-navbar mb-3"
-        onMouseEnter={() => setActiveBorderOnSearchContainer(true)}
-        onMouseLeave={() => setActiveBorderOnSearchContainer(false)}
-      >
-        <Container>
-          <Navbar.Brand href="/">
-            <CustomToolTip
-              children={
-                <Image
-                  id="keychain-logo"
-                  src={KeyChainPngIcon}
-                  height={30}
-                  width={30}
-                  style={{
-                    backgroundColor: "black",
-                    borderRadius: 50,
-                    padding: 3,
-                  }}
-                />
-              }
-              toolTipText={
-                keychainInstalled
-                  ? "Good to play with requests"
-                  : "Install keychain or reload extension on settings."
-              }
-              placement={"bottom"}
-            />{" "}
+    <div className={`App playground-shell ${sidebarOpen ? "sidebar-open" : ""}`}>
+      <aside className="playground-sidebar" id="playground-sidebar">
+        <div className="sidebar-brand">
+          <Link to="/" className="sidebar-logo">
+            <Image
+              id="keychain-logo"
+              src={KeyChainPngIcon}
+              height={34}
+              width={34}
+              style={{
+                backgroundColor: "black",
+                borderRadius: 50,
+                padding: 3,
+              }}
+            />
+            <span className="sidebar-title">Keychain Playground</span>
+          </Link>
+          <div className="sidebar-status">
             <CustomToolTip
               children={
                 <Image
                   src={keychainInstalled ? CheckMarkGreen : AlertIconRed}
-                  width={30}
-                  height={30}
+                  width={22}
+                  height={22}
                 />
               }
               toolTipText={
@@ -111,66 +112,114 @@ export default function RootLayout({}: Props) {
                   ? "Keychain extension installed and detected!"
                   : "Keychain could not be found, please check documentation, error section."
               }
-              placement={"bottom"}
+              placement={"right"}
             />
-          </Navbar.Brand>
-          <Nav
-            className={
-              activeBorderOnSearchContainer
-                ? "m-auto border border-primary rounded border-1"
-                : "m-auto"
+          </div>
+        </div>
+        <nav className="sidebar-nav" onClick={handleNavClick}>
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? "active" : ""}`
             }
           >
-            <Form
-              className="d-flex playground-search"
-              onClick={() => setModalShow(true)}
-              onSubmit={() => {}}
+            Welcome
+          </NavLink>
+          <div className="sidebar-section">Keychain Swap</div>
+          <NavLink
+            to="/swap-widget"
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? "active" : ""}`
+            }
+          >
+            Swap widget
+          </NavLink>
+          <div className="sidebar-section">Keychain requests</div>
+          <NavLink
+            to="/request/get-started"
+            className={({ isActive }) =>
+              `sidebar-link ${isActive ? "active" : ""}`
+            }
+          >
+            Get started
+          </NavLink>
+          <div className="sidebar-filter">
+            <input
+              type="text"
+              placeholder="Filter requests"
+              value={requestFilter}
+              onChange={(event) => setRequestFilter(event.target.value)}
+              aria-label="Filter requests"
+            />
+          </div>
+          {filteredRequestCategories.length === 0 ? (
+            <div className="sidebar-empty">No matching requests</div>
+          ) : (
+            filteredRequestCategories.map((category) => (
+              <details
+                key={category.category}
+                className="sidebar-category"
+                open
+              >
+                <summary>{category.category}</summary>
+                <div className="sidebar-sublist">
+                  {category.items.map((item) => (
+                    <NavLink
+                      key={item.requestType}
+                      to={`/request/${item.requestType}`}
+                      className={({ isActive }) =>
+                        `sidebar-sublink ${isActive ? "active" : ""}`
+                      }
+                    >
+                      {item.name}
+                    </NavLink>
+                  ))}
+                </div>
+              </details>
+            ))
+          )}
+        </nav>
+      </aside>
+      <div
+        className="sidebar-overlay"
+        role="button"
+        tabIndex={-1}
+        aria-label="Close navigation"
+        onClick={() => setSidebarOpen(false)}
+      />
+      <main className="playground-content">
+        <div className="mobile-topbar">
+          <button
+            className="sidebar-toggle"
+            type="button"
+            aria-label="Open navigation"
+            aria-controls="playground-sidebar"
+            aria-expanded={sidebarOpen}
+            onClick={() => setSidebarOpen(true)}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              <CustomToolTip
-                placement="bottom"
-                toolTipText="Click to show requests list"
-              >
-                <Form.Control
-                  onClick={() => setModalShow(true)}
-                  type="search"
-                  placeholder="Request types"
-                  className="me-2"
-                  aria-label="Search"
-                  value={emptyValue}
-                  onChange={(e) => setEmptyValue("")}
-                />
-              </CustomToolTip>
-              <CustomToolTip
-                placement="bottom"
-                toolTipText="Click to show requests list"
-              >
-                <span className="playground-search-icon" aria-hidden="true">
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="18"
-                    height="18"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="11" cy="11" r="8" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                  </svg>
-                </span>
-              </CustomToolTip>
-            </Form>
-          </Nav>
-        </Container>
-      </Navbar>
-      <Container className="d-flex justify-content-center mt-2 mb-2">
-        <SearchModal show={modalShow} onHide={handleModalHide} />
-      </Container>
-      <div id="detail" className="playground-detail">
-        <Outlet />
-      </div>
-      <FooterComponent />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <span className="mobile-topbar-title">Keychain Playground</span>
+        </div>
+        <div id="detail" className="playground-detail playground-content-inner">
+          <Outlet />
+        </div>
+        <FooterComponent />
+      </main>
     </div>
   );
 }

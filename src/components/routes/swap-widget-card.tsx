@@ -177,8 +177,9 @@ const SwapWidgetCard = () => {
                     />
                   </InputGroup>
                   <Accordion defaultActiveKey="0">
-                    <Accordion.Header>Optional Fields</Accordion.Header>
-                    <Accordion.Body>
+                    <Accordion.Item eventKey="0">
+                      <Accordion.Header>Optional Fields</Accordion.Header>
+                      <Accordion.Body>
                       <Container className="p-0 mb-3">
                         <InputGroup>
                           <InputGroup.Text>Partner username</InputGroup.Text>
@@ -329,7 +330,8 @@ const SwapWidgetCard = () => {
                           type="string"
                         />
                       </InputGroup>
-                    </Accordion.Body>
+                      </Accordion.Body>
+                    </Accordion.Item>
                   </Accordion>
                 </Form>
               </Container>

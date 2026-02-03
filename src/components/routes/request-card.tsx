@@ -215,39 +215,43 @@ const RequestCard = (props: Props) => {
           />
         )}
       </Row>
-      <Row>
-        <Col lg={true} className="mb-3 d-flex">
-          <Card className="d-flex justify-content-center h-100 flex-grow-1">
+      <Row className="request-card-row g-3">
+        <Col lg={true} className="d-flex request-card-col">
+          <Card className="d-flex justify-content-center h-100 flex-grow-1 request-card">
             <Card.Header as={"h4"}>SDK Playground</Card.Header>
-            <Card.Body>
-              <Container className="mt-2">
+            <Card.Body className="d-flex flex-column">
+              <Container className="mt-2 flex-grow-1">
                 {requestCard ? requestCard : null}
               </Container>
             </Card.Body>
           </Card>
         </Col>
-        <Col lg={true} className="d-flex">
-          <CustomToolTip
-            placement={"top"}
-            toolTipText={fieldToolTipText.codeBlockSample}
-          >
-            <Card className="d-flex h-100 flex-grow-1">
-              <Card.Header as={"h4"}>Code Sample</Card.Header>
-              <Card.Body>
-                <CopyBlock
-                  text={Utils.fromCodeToText(
-                    formParamsToShow,
-                    requestType as KeychainRequestTypes
-                  )}
-                  language={"typescript"}
-                  showLineNumbers={false}
-                  startingLineNumber={1}
-                  wrapLines
-                  theme={solarizedDark}
-                />
-              </Card.Body>
-            </Card>
-          </CustomToolTip>
+        <Col lg={true} className="d-flex request-card-col">
+          <div className="d-flex flex-grow-1 w-100">
+            <CustomToolTip
+              placement={"top"}
+              toolTipText={fieldToolTipText.codeBlockSample}
+            >
+              <Card className="d-flex h-100 flex-grow-1 request-card">
+                <Card.Header as={"h4"}>Code Sample</Card.Header>
+                <Card.Body className="d-flex flex-column">
+                  <div className="request-code-block flex-grow-1">
+                    <CopyBlock
+                      text={Utils.fromCodeToText(
+                        formParamsToShow,
+                        requestType as KeychainRequestTypes
+                      )}
+                      language={"typescript"}
+                      showLineNumbers={false}
+                      startingLineNumber={1}
+                      wrapLines
+                      theme={solarizedDark}
+                    />
+                  </div>
+                </Card.Body>
+              </Card>
+            </CustomToolTip>
+          </div>
         </Col>
       </Row>
       {/* TESTING to test code. Uncomment bellow to use */}
