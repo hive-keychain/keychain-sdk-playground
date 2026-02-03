@@ -471,6 +471,18 @@ pre {
   width: 30% !important;
 }
 
+.request-results-close {
+  font-size: 18px;
+  line-height: 1;
+  padding: 6px 10px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.request-results-close:hover {
+  color: var(--accent);
+}
+
 @keyframes rise-in {
   from {
     opacity: 0;

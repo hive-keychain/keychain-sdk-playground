@@ -38,10 +38,7 @@ const RequestResultsComponent = ({
                 : "success"
             }
           >
-            <CustomCloseButton
-              callBack={() => setRequestResult(undefined)}
-              toolTipText={"Reset results"}
-            />
+            <CustomCloseButton callBack={() => setRequestResult(undefined)} />
             {requestResult.error ? (
               <Card.Body>
                 <Card.Text>Error: {error}</Card.Text>

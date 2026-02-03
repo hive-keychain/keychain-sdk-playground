@@ -1,29 +1,19 @@
-import { Button, Image } from "react-bootstrap";
-import CancelIconSvg from "../../assets/images/svgs/cancel_black.svg";
-import CustomToolTip from "./custom-tool-tip";
+import { Button } from "react-bootstrap";
 
 type Props = {
   callBack: () => void;
-  toolTipText: string;
 };
 
-const CustomCloseButton = ({ callBack, toolTipText }: Props) => {
+const CustomCloseButton = ({ callBack }: Props) => {
   return (
-    <CustomToolTip placement="right" toolTipText={toolTipText}>
-      <Button
-        onClick={() => callBack()}
-        variant="outline-light"
-        className="position-absolute top-0 end-0"
-        style={{ width: 30, height: 30, backgroundColor: "none" }}
-      >
-        <Image
-          src={CancelIconSvg}
-          height={30}
-          width={30}
-          className="position-absolute top-0 end-0"
-        />
-      </Button>
-    </CustomToolTip>
+    <Button
+      onClick={() => callBack()}
+      variant="link"
+      className="position-absolute top-0 end-0 request-results-close"
+      aria-label="Reset results"
+    >
+      ×
+    </Button>
   );
 };
 
