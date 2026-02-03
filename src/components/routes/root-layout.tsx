@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Form, Image, Nav, Navbar } from "react-bootstrap";
+import { Container, Form, Image, Nav, Navbar } from "react-bootstrap";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AlertIconRed from "../../assets/images/pngs/icons8-alert-sign.png";
 import KeyChainPngIcon from "../../assets/images/pngs/keychain_icon_small.png";
@@ -71,7 +71,7 @@ export default function RootLayout({}: Props) {
       <Navbar
         bg="light"
         expand="lg"
-        className="mb-2"
+        className="playground-navbar mb-3"
         onMouseEnter={() => setActiveBorderOnSearchContainer(true)}
         onMouseLeave={() => setActiveBorderOnSearchContainer(false)}
       >
@@ -122,7 +122,7 @@ export default function RootLayout({}: Props) {
             }
           >
             <Form
-              className="d-flex"
+              className="d-flex playground-search"
               onClick={() => setModalShow(true)}
               onSubmit={() => {}}
             >
@@ -144,7 +144,21 @@ export default function RootLayout({}: Props) {
                 placement="bottom"
                 toolTipText="Click to show requests list"
               >
-                <Button variant="outline-primary">Search</Button>
+                <span className="playground-search-icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                </span>
               </CustomToolTip>
             </Form>
           </Nav>
@@ -153,7 +167,7 @@ export default function RootLayout({}: Props) {
       <Container className="d-flex justify-content-center mt-2 mb-2">
         <SearchModal show={modalShow} onHide={handleModalHide} />
       </Container>
-      <div id="detail">
+      <div id="detail" className="playground-detail">
         <Outlet />
       </div>
       <FooterComponent />

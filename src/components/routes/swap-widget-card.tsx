@@ -152,8 +152,8 @@ const SwapWidgetCard = () => {
   return (
     <Container>
       <Row>
-        <Col lg={true} className="mb-3">
-          <Card className="d-flex justify-content-center">
+        <Col lg={true} className="mb-3 d-flex">
+          <Card className="d-flex justify-content-center h-100 flex-grow-1">
             <Card.Header as={"h4"}>Keychain Swap Widget Params</Card.Header>
             <Card.Body>
               <Container className="mt-2">
@@ -336,8 +336,8 @@ const SwapWidgetCard = () => {
             </Card.Body>
           </Card>
         </Col>
-        <Col lg={true}>
-          <Card className="d-flex">
+        <Col lg={true} className="d-flex">
+          <Card className="d-flex h-100 flex-grow-1">
             <Card.Header as={"h4"}>Live Sample + Code</Card.Header>
             <Card.Body>
               <Container className="d-flex flex-column justify-content-center mt-2">
