@@ -8,7 +8,7 @@ import { Utils } from "../../utils/utils";
 
 type Props = {};
 
-const undefinedParamsToValidate = ["rpc"];
+const undefinedParamsToValidate = ["username", "rpc"];
 
 const RequestSendTokenComponent = ({
   setRequestResult,
@@ -73,6 +73,9 @@ const RequestSendTokenComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
+      if (!formParams.data.username?.length) {
+        delete formParams.data.username;
+      }
       const sendToken = await sdk.sendToken(
         formParams.data,
         formParams.options
@@ -97,7 +100,7 @@ const RequestSendTokenComponent = ({
               toolTipText={fieldToolTipText.username}
             >
               <Form.Control
-                placeholder="Hive username"
+                placeholder="Hive username (optional)"
                 name="username"
                 value={formParams.data.username}
                 onChange={handleFormParams}

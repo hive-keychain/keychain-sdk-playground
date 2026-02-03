@@ -7,7 +7,7 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const undefinedParamsToValidate = ["rpc"];
+const undefinedParamsToValidate = ["username", "rpc"];
 
 const RequestPowerUpComponent = ({
   setRequestResult,
@@ -62,6 +62,9 @@ const RequestPowerUpComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
+      if (!formParams.data.username?.length) {
+        delete formParams.data.username;
+      }
       const powerUp = await sdk.powerUp(formParams.data, formParams.options);
       setRequestResult(powerUp);
       console.log({ powerUp });
@@ -83,7 +86,7 @@ const RequestPowerUpComponent = ({
               toolTipText={fieldToolTipText.username}
             >
               <Form.Control
-                placeholder="Hive username"
+                placeholder="Hive username (optional)"
                 name="username"
                 value={formParams.data.username}
                 onChange={handleFormParams}

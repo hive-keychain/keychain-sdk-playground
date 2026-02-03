@@ -7,7 +7,7 @@ import { CommonProps, KeychainOptions } from "../routes/request-card";
 
 type Props = {};
 
-const undefinedParamsToValidate = ["rpc"];
+const undefinedParamsToValidate = ["username", "rpc"];
 
 const RequestVoteComponent = ({
   setRequestResult,
@@ -63,6 +63,9 @@ const RequestVoteComponent = ({
     e.preventDefault();
     console.log("about to process ...: ", { formParams });
     try {
+      if (!formParams.data.username?.length) {
+        delete formParams.data.username;
+      }
       const vote = await sdk.vote(formParams.data, formParams.options);
       setRequestResult(vote);
       console.log({ vote });
@@ -84,7 +87,7 @@ const RequestVoteComponent = ({
               toolTipText={fieldToolTipText.username}
             >
               <Form.Control
-                placeholder="Hive username to perform the request"
+                placeholder="Hive username (optional)"
                 name="username"
                 value={formParams.data.username}
                 onChange={handleFormParams}

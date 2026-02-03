@@ -229,7 +229,7 @@ const RequestCard = (props: Props) => {
         <Col lg={true} className="d-flex request-card-col">
           <div className="d-flex flex-grow-1 w-100">
             <CustomToolTip
-              placement={"top"}
+              placement={"bottom"}
               toolTipText={fieldToolTipText.codeBlockSample}
             >
               <Card className="d-flex h-100 flex-grow-1 request-card">
