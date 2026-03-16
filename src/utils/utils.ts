@@ -16,6 +16,35 @@ const getSDK = () => {
   return sdk;
 };
 
+/**
+ * Waits for Keychain to be injected (hive_keychain on window).
+ * Polls at intervals to handle mobile webview where injection can be delayed.
+ * @param sdkInstance - KeychainSDK instance (or use getSDK())
+ * @param options - { intervalMs: 500, timeoutMs: 15000 }
+ * @returns Promise<boolean> - true if Keychain detected, false if timeout
+ */
+const waitForKeychain = async (
+  sdkInstance: KeychainSDK,
+  options: { intervalMs?: number; timeoutMs?: number } = {}
+): Promise<boolean> => {
+  const { intervalMs = 500, timeoutMs = 15000 } = options;
+  const start = Date.now();
+
+  const check = async (): Promise<boolean> => {
+    try {
+      const installed = await sdkInstance.isKeychainInstalled();
+      if (installed) return true;
+    } catch {
+      // ignore, will retry
+    }
+    if (Date.now() - start >= timeoutMs) return false;
+    await new Promise((r) => setTimeout(r, intervalMs));
+    return check();
+  };
+
+  return check();
+};
+
 const fromCodeToText = (
   formParams: any,
   requestType: KeychainRequestTypes | string
@@ -171,6 +200,7 @@ export const Utils = {
   fromCodeToText,
   sortByKeyNames,
   getSDK,
+  waitForKeychain,
   fromCodeToTextIframe,
   BASE_SWAP_WIDGET_URL,
   getLastTo,

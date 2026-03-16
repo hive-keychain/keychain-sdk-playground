@@ -36,24 +36,39 @@ export default function RootLayout({}: Props) {
   }, [requestFilter]);
 
   useEffect(() => {
-    const onLoadHandler = async () => {
-      console.log("Fully loaded!");
-      setTimeout(async () => {
-        if (document.readyState === "complete") {
-          try {
-            const enabled = await Utils.getSDK().isKeychainInstalled();
-            setKeychainInstalled(enabled);
-            console.log({ KeychainDetected: enabled });
-          } catch (error) {
-            console.log({ error });
-          }
+    let cancelled = false;
+
+    const runDetection = async () => {
+      if (document.readyState !== "complete") return;
+      try {
+        // Poll for Keychain injection - handles mobile webview where
+        // hive_keychain can be injected asynchronously after load
+        const enabled = await Utils.waitForKeychain(Utils.getSDK(), {
+          intervalMs: 500,
+          timeoutMs: 15000,
+        });
+        if (!cancelled) {
+          setKeychainInstalled(enabled);
+          console.log({ KeychainDetected: enabled });
         }
-      }, 100);
+      } catch (error) {
+        if (!cancelled) console.log({ error });
+      }
     };
 
-    window.addEventListener("load", onLoadHandler);
+    const onLoadHandler = () => {
+      console.log("Fully loaded!");
+      runDetection();
+    };
+
+    if (document.readyState === "complete") {
+      onLoadHandler();
+    } else {
+      window.addEventListener("load", onLoadHandler);
+    }
 
     return () => {
+      cancelled = true;
       window.removeEventListener("load", onLoadHandler);
     };
   }, []);

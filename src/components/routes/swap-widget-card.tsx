@@ -1,4 +1,5 @@
 import { KeychainSDK } from "keychain-sdk";
+import { Utils } from "../../utils/utils";
 import { useEffect, useState } from "react";
 import {
   Accordion,
@@ -12,7 +13,6 @@ import {
 import { CopyBlock, solarizedDark } from "react-code-blocks";
 import { useDebouncedCallback } from "use-debounce";
 import { SwapWidgetCardUtils } from "../../utils/swap-widget-card.utils";
-import { Utils } from "../../utils/utils";
 
 export interface SwapWidgetCardFormParams {
   username?: string;
@@ -123,19 +123,25 @@ const SwapWidgetCard = () => {
   };
 
   useEffect(() => {
-    const onLoadHandler = async () => {
-      setTimeout(async () => {
-        if (document.readyState === "complete") {
-          try {
-            const sdk = new KeychainSDK(window);
-            const enabled = await sdk.isKeychainInstalled();
-            setKeychainInstalled(enabled);
-          } catch (error) {
-            console.log({ error });
-          }
-        }
-      }, 100);
+    let cancelled = false;
+    const sdk = new KeychainSDK(window);
+
+    const runDetection = async () => {
+      if (document.readyState !== "complete") return;
+      try {
+        // Poll for Keychain injection - handles mobile webview where
+        // hive_keychain can be injected asynchronously after load
+        const enabled = await Utils.waitForKeychain(sdk, {
+          intervalMs: 500,
+          timeoutMs: 15000,
+        });
+        if (!cancelled) setKeychainInstalled(enabled);
+      } catch (error) {
+        if (!cancelled) console.log({ error });
+      }
     };
+
+    const onLoadHandler = () => runDetection();
 
     if (document.readyState === "complete") {
       onLoadHandler();
@@ -144,6 +150,7 @@ const SwapWidgetCard = () => {
     }
 
     return () => {
+      cancelled = true;
       window.removeEventListener("load", onLoadHandler);
     };
   }, []);

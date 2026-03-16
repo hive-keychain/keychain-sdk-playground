@@ -1,5 +1,6 @@
 import { KeychainSDK } from "keychain-sdk";
 import React, { useEffect, useState } from "react";
+import { Utils } from "../utils/utils";
 import { Button, Form, Image, Nav, Navbar } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
 import AlertIconRed from "../assets/images/pngs/icons8-alert-sign.png";
@@ -14,8 +15,6 @@ type Props = {
   setModalShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-let sdk;
-
 const NavigationBarComponent = ({
   setEnabledKeychain,
   enableLogs,
@@ -26,25 +25,44 @@ const NavigationBarComponent = ({
     useState(false);
 
   useEffect(() => {
-    const onLoadHandler = async () => {
-      if (enableLogs) console.log("Fully loaded!");
+    let cancelled = false;
+    const sdk = new KeychainSDK(window);
+
+    const runDetection = async () => {
+      if (document.readyState !== "complete") return;
       try {
-        sdk = new KeychainSDK(window);
-        const enabled = await sdk.isKeychainInstalled();
-        setKeychainInstalled(enabled);
-        setEnabledKeychain(enabled);
-        if (enableLogs) console.log({ KeychainDetected: enabled });
+        // Poll for Keychain injection - handles mobile webview where
+        // hive_keychain can be injected asynchronously after load
+        const enabled = await Utils.waitForKeychain(sdk, {
+          intervalMs: 500,
+          timeoutMs: 15000,
+        });
+        if (!cancelled) {
+          setKeychainInstalled(enabled);
+          setEnabledKeychain(enabled);
+          if (enableLogs) console.log({ KeychainDetected: enabled });
+        }
       } catch (error) {
-        console.log({ error });
+        if (!cancelled) console.log({ error });
       }
     };
 
-    window.addEventListener("load", onLoadHandler);
+    const onLoadHandler = () => {
+      if (enableLogs) console.log("Fully loaded!");
+      runDetection();
+    };
+
+    if (document.readyState === "complete") {
+      onLoadHandler();
+    } else {
+      window.addEventListener("load", onLoadHandler);
+    }
 
     return () => {
+      cancelled = true;
       window.removeEventListener("load", onLoadHandler);
     };
-  });
+  }, [enableLogs]);
 
   return (
     <Navbar
